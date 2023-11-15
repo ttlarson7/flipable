@@ -1,10 +1,12 @@
 import Footer from "./components/Footer"
+import Navbars from "./components/Navbars"
 import './index.css'
 
 const App = () => {
   return (
     <>
-      <div className="min-h-screen"></div>
+      <Navbars page={"landing"}></Navbars>
+      <div className="min-h-screen bg-primary-content"></div>
       <Footer></Footer>
     </>
   )
