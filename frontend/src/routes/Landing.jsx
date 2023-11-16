@@ -30,7 +30,7 @@ const Landing = () => {
                   1000,
                   "Better than memorization",
                   1000,
-                  "Flexible Definition",
+                  "Flexible Definitions",
                   1000,
                 ]}
                 wrapper="span"
@@ -51,14 +51,14 @@ const Landing = () => {
         </div>
       </div>
       <div className="card lg:card-side max-w-2xl bg-teal-900 py-12 flex">
-        <figure className="w-1/2 h-min ml-4">
+        <figure className="lg:w-1/2 h-min ml-4">
           <img
             className="object-fit"
             src={learningImg}
             alt="Learning"
           ></img>
         </figure>
-        <div className="card-body flex-grow p-4 w-1/2">
+        <div className="card-body flex-grow lg:p-4 lg:w-1/2">
           <h2 className="card-title">Optimize your learning!</h2>
           <p className="text-xl">
             Our platform goes beyond memorization, offering flexible tests that
@@ -67,10 +67,10 @@ const Landing = () => {
         </div>
       </div>
       <div className="card lg:card-side max-w-2xl bg-teal-900 p-8 flex my-8">
-        <figure className="w-1/2 h-min">
+        <figure className="lg:w-1/2 h-min">
           <img className="object-fit" src={readingImg} alt="Reading"></img>
         </figure>
-        <div className="card-body flex-grow p-4 w-1/2">
+        <div className="card-body flex-grow p-4 lg:w-1/2">
           <h2 className="card-title">Flexible definitions!</h2>
           <p className="text-xl">
             Using our AI, you can take tests on your definitions and receive
