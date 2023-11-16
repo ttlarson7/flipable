@@ -50,7 +50,7 @@ const Landing = () => {
           </div>
         </div>
       </div>
-      <div className="card lg:card-side max-w-2xl bg-teal-900 py-12 flex">
+      <div className="card lg:card-side max-w-2xl bg-teal-900 py-12 flex text-gray-300">
         <figure className="lg:w-1/2 h-min ml-4">
           <img
             className="object-fit"
@@ -66,7 +66,7 @@ const Landing = () => {
           </p>
         </div>
       </div>
-      <div className="card lg:card-side max-w-2xl bg-teal-900 p-8 flex my-8">
+      <div className="card lg:card-side max-w-2xl bg-teal-900 p-8 flex my-8 text-gray-300">
         <figure className="lg:w-1/2 h-min">
           <img className="object-fit" src={readingImg} alt="Reading"></img>
         </figure>
