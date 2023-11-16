@@ -2,6 +2,9 @@ import Footer from "../components/Footer";
 import Navbars from "../components/Navbars";
 
 const Flashcards = () => {
+
+  
+
   return (
     <div className="bg-neutral">
       <Navbars page="flashcards"></Navbars>
