@@ -12,6 +12,7 @@ import Landing from "./routes/Landing";
 import ScrollTop from "./components/ScrollTop";
 import Invalid from "./routes/Invalid";
 import "./index.css";
+import Flashcards from "./routes/Flashcards";
 
 // we now have context for each componenet wanting to get access to flashcardDecks and flashcards
 export const FlashardContext = createContext();
@@ -45,7 +46,7 @@ const ClerkRoutes = () => {
             element={
               <>
                 <SignedIn>
-                  <Landing />
+                  <Flashcards />
                 </SignedIn>
                 <SignedOut>
                   <RedirectToSignIn />
