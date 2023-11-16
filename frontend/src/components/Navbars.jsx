@@ -37,20 +37,27 @@ const Navbars = ({ page }) => {
     );
   }
 
+
+  // const handleAddDeck = () => {
+
+  // }
+
   if (page == "flashcards") {
-    <div className="navbar glass top-0 fixed z-50 bg-transparent">
-      <div className="flex-1">
-        <Link to="/" className="btn btn-ghost text-xl text-white">
-          Quizify
-        </Link>
-        <button>
-          <FaPlus/> Add
-        </button>
+    return (
+      <div className="navbar glass top-0 fixed z-50 bg-transparent text-white">
+        <div className="flex-1">
+          <Link to="/" className="btn btn-ghost text-xl">
+            Quizify
+          </Link>
+          <button className="btn btn-ghost ml-2">
+            <FaPlus />Add
+          </button>
+        </div>
+        <div className="flex-2 mr-2">
+          <UserButton />
+        </div>
       </div>
-      <div className="flex-2 mr-2">
-        <UserButton />
-      </div>
-    </div>;
+    );
   }
 };
 
