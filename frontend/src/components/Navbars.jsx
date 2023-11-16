@@ -13,7 +13,7 @@ const Navbars = ({ page }) => {
                 Quizify
               </Link>
             </div>
-            <div className="flex-2">
+            <div className="flex-2 mr-2">
               <UserButton />
             </div>
           </div>
@@ -26,7 +26,7 @@ const Navbars = ({ page }) => {
               </Link>
             </div>
             <div className="flex-2">
-              <Link to="/sign-in/*" className="btn btn-ghost">
+              <Link to="/sign-in/*" className="btn btn-ghost text-white mr-2">
                 Sign In
               </Link>
             </div>
