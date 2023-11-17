@@ -2,6 +2,7 @@ import Navbars from "../components/Navbars";
 import Footer from "../components/Footer";
 import { FlashcardContext } from "../App";
 import { useContext } from "react";
+import FlashcardDecks from "./FlashcardDecks";
 
 const FlashcardDeck = () => {
   const { flashCards } = useContext(FlashcardContext);
@@ -25,6 +26,25 @@ const FlashcardDeck = () => {
       </>
     );
   }
+
+  return (
+    <>
+      <Navbars page="flashcards"></Navbars>
+      <div className="mt-24 bg-neutral"></div>
+      <div className=" min-h-screen">
+        <ul className="grid lg:grid-cols-3 sm:grid-cols-2 gap-4 m-4">
+          {flashCards.map((card, i) => (
+            <FlashcardDecks
+              key={i}
+              term={card.term}
+              definition={card.definition}
+            />
+          ))}
+        </ul>
+      </div>
+      <Footer></Footer>
+    </>
+  );
 };
 
 export default FlashcardDeck;
