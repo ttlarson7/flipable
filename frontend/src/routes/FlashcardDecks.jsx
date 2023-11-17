@@ -9,7 +9,7 @@ const FlashcardDecks = () => {
 
   return (
     <div className="bg-neutral">
-      <Navbars page="flashcards"></Navbars>
+      <Navbars page="decks"></Navbars>
 
       <div className="mt-24 bg-neutral"></div>
       <div className=" min-h-screen">
@@ -20,6 +20,7 @@ const FlashcardDecks = () => {
               i={i.toString()}
               title={deck.title}
               desc={deck.desc}
+              category={deck.category}
             />
           ))}
         </ul>

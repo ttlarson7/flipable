@@ -1,12 +1,16 @@
 // a component which will conditionally render our Navbar as to not require 3 different components
 import { Link } from "react-router-dom";
 import { UserButton, SignedIn, SignedOut } from "@clerk/nextjs";
-import { FaPlus } from "react-icons/fa";
+import { FaPlus, FaArrowLeft } from "react-icons/fa";
+
 import { useState } from "react";
 
 const Navbars = ({ page }) => {
   const [deckName, setDeckName] = useState("");
   const [deckDesc, setDeckDesc] = useState("");
+  const [deckCategory, setDeckCategory] = useState("");
+  const [flashcardTerm, setFlashcardTerm] = useState("");
+  const [flashcardDef, setFlashcardDef] = useState("");
 
   if (page === "landing") {
     return (
@@ -49,22 +53,36 @@ const Navbars = ({ page }) => {
     setDeckDesc(e.target.value);
   };
 
+  const handleDeckCategory = (e) => {
+    setDeckCategory(e.target.value);
+  };
+
+  const handleDeckClose = () => {
+    setDeckName("");
+    setDeckDesc("");
+    setDeckCategory("");
+  };
+
   const handleClose = () => {
     setDeckName("");
     setDeckDesc("");
   };
-  const handleAccept = () => {
+
+  const handleDeckAccept = () => {
     //set up axios call to add deck to backend
     setDeckDesc("");
     setDeckName("");
   };
 
-  if (page == "flashcards") {
+  if (page == "decks") {
     return (
       <div className="navbar glass top-0 fixed z-50 bg-transparen">
         <div className="flex-1">
           <Link to="/" className="btn btn-ghost text-xl text-white">
             Quizify
+          </Link>
+          <Link to="/" className="btn btn-ghost text-xl text-white">
+            <FaArrowLeft /> Back
           </Link>
           {/* Open the modal using document.getElementById('ID').showModal() method */}
           <button
@@ -81,7 +99,7 @@ const Navbars = ({ page }) => {
                 value={deckName}
                 type="text"
                 placeholder="Deck Name"
-                className="input input-bordered input-primary w-full max-w-xs self-center  mx-8 my-4"
+                className="input input-bordered input-primary w-full max-w-xs self-center  mx-8 my-2 mt-4"
                 onChange={handleDeckTitle}
               />
               <input
@@ -90,6 +108,115 @@ const Navbars = ({ page }) => {
                 placeholder="Deck Desc."
                 className="input input-bordered input-primary w-full max-w-xs self-center my-2"
                 onChange={handleDeckDesc}
+              />
+              <select
+                className="select select-primary w-full max-w-xs self-center my-2"
+                onChange={handleDeckCategory}
+                value={deckCategory}
+              >
+                <option disabled defaultValue={true}>
+                  Category
+                </option>
+                <option>Math</option>
+                <option>Science</option>
+                <option>Econ</option>
+                <option>Language Arts</option>
+                <option>Engineering</option>
+                <option>Art</option>
+                <option>Language</option>
+              </select>
+              <div className="modal-action flex">
+                <form method="dialog" className="flex justify-center w-full">
+                  {/* if there is a button in form, it will close the modal */}
+                  <button
+                    className="btn mr-8 hover:btn-error text-error font-semibold hover:text-white border border-error hover:border-transparent rounded-lg"
+                    onClick={handleDeckClose}
+                  >
+                    Close
+                  </button>
+                  <button
+                    className="btn ml-8 hover:btn-primary text-primary font-semibold hover:text-white border border-primary hover:border-transparent rounded-lg "
+                    onClick={handleDeckAccept}
+                  >
+                    Add
+                  </button>
+                </form>
+              </div>
+            </div>
+          </dialog>
+        </div>
+        <div className="flex-2 mr-2">
+          <UserButton />
+        </div>
+      </div>
+    );
+  }
+
+  const handleCardTerm = (e) => {
+    setFlashcardTerm(e.target.value);
+  };
+
+  const handleCardDef = (e) => {
+    setFlashcardDef(e.target.value);
+  };
+
+  const handleCardAccept = () => {
+    //set up axios call to add deck to backend
+    setFlashcardDef("");
+    setFlashcardTerm("");
+  };
+
+  if (page == "flashcards") {
+    return (
+      <div className="navbar glass top-0 fixed z-50 bg-transparen">
+        <div className="flex-1">
+          <Link to="/" className="btn btn-ghost text-xl text-white">
+            Quizify
+          </Link>
+          <Link to="/flashcards" className="btn btn-ghost text-xl text-white">
+            <FaArrowLeft /> Back
+          </Link>
+          {/* Open the modal using document.getElementById('ID').showModal() method */}
+          <button
+            className="btn btn-ghost text-white hover:text-white"
+            onClick={() => document.getElementById("my_modal_1").showModal()}
+          >
+            <FaPlus />
+            Add
+          </button>
+          <div className="dropdown text-white">
+            <label tabIndex={0} className="btn btn-ghost m-1">
+              Practice
+            </label>
+            <ul
+              tabIndex={0}
+              className="dropdown-content z-[1] menu p-2 shadow glass rounded-box w-52"
+            >
+              <li>
+                <Link to="flashcards">Flashcards</Link>
+              </li>
+              <li>
+                <Link to="test">Test</Link>
+              </li>
+            </ul>
+          </div>
+          <dialog id="my_modal_1" className="modal">
+            <div className="modal-box flex flex-col bg-neutral">
+              <h3 className="font-bold text-lg self-center">
+                Add New Flashcard
+              </h3>
+              <input
+                value={flashcardTerm}
+                type="text"
+                placeholder="Flashcard Term"
+                className="input input-bordered input-primary w-full max-w-xs self-center  mx-8 my-4"
+                onChange={handleCardTerm}
+              />
+              <textarea
+                value={flashcardDef}
+                placeholder="Flashcard Definition"
+                className="textarea textarea-primary w-full max-w-xs self-center my-2"
+                onChange={handleCardDef}
               />
               <div className="modal-action flex">
                 <form method="dialog" className="flex justify-center w-full">
@@ -102,7 +229,7 @@ const Navbars = ({ page }) => {
                   </button>
                   <button
                     className="btn ml-8 hover:btn-primary text-primary font-semibold hover:text-white border border-primary hover:border-transparent rounded-lg "
-                    onClick={handleAccept}
+                    onClick={handleCardAccept}
                   >
                     Add
                   </button>
