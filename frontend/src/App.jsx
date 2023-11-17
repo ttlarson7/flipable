@@ -12,20 +12,20 @@ import Landing from "./routes/Landing";
 import ScrollTop from "./components/ScrollTop";
 import Invalid from "./routes/Invalid";
 import "./index.css";
-import Flashcards from "./routes/Flashcards";
+import Flashcards from "./routes/FlashcardDecks";
 
 // we now have context for each componenet wanting to get access to flashcardDecks and flashcards
-export const FlashardContext = createContext();
+export const FlashcardContext = createContext();
 
 const ClerkRoutes = () => {
   const clerkPubKey = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
   const navigate = useNavigate();
-  const [flashcardDecks, setFlashcardDecks] = useState([]);
+  const [flashDecks, setFlashcardDecks] = useState([{title: "CS290", desc: "web development"}, {title: "CS261", desc: "data structures"}]);
   const [flashcards, setFlashcards] = useState([]);
 
   return (
-    <FlashardContext.Provider
-      value={{ flashcardDecks, setFlashcardDecks, flashcards, setFlashcards }}
+    <FlashcardContext.Provider
+      value={{ flashDecks, setFlashcardDecks, flashcards, setFlashcards }}
     >
       <ClerkProvider
         publishableKey={clerkPubKey}
@@ -53,11 +53,24 @@ const ClerkRoutes = () => {
                 </SignedOut>
               </>
             }
-          ></Route>
+          />
+          <Route
+            path="/flashcards/:deck_num"
+            element={
+              <>
+                <SignedIn>
+                  <Flashcards />
+                </SignedIn>
+                <SignedOut>
+                  <RedirectToSignIn />
+                </SignedOut>
+              </>
+            }
+          />
           <Route path="*" element={<Invalid />}></Route>
         </Routes>
       </ClerkProvider>
-    </FlashardContext.Provider>
+    </FlashcardContext.Provider>
   );
 };
 
