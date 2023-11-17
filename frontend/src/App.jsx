@@ -22,7 +22,7 @@ const ClerkRoutes = () => {
   const clerkPubKey = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
   const navigate = useNavigate();
   const [flashDecks, setFlashcardDecks] = useState([{title: "CS290", desc: "web development", category: "Comp Sci"}, {title: "CS261", desc: "data structures", category: "Comp Sci"}]);
-  const [flashCards, setFlashCards] = useState([]);
+  const [flashCards, setFlashCards] = useState([{term: "react", definition: "A frontend library for creating components"}]);
 
   return (
     <FlashcardContext.Provider
