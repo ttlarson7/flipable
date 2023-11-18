@@ -6,7 +6,7 @@ const Deckcard = ({ i, title, desc, category }) => {
       <Link to={i}>
         <div className="card-body">
           <h2 className="card-title self-center">{title}</h2>
-          <p className="badge badge-primary self-center">{category}</p>
+          <p className="badge badge-primary badge-outline self-center">{category}</p>
           <p className="self-center">{desc}</p>
         </div>
       </Link>

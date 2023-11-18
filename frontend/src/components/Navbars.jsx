@@ -1,7 +1,7 @@
 // a component which will conditionally render our Navbar as to not require 3 different components
 import { Link } from "react-router-dom";
 import { UserButton, SignedIn, SignedOut } from "@clerk/nextjs";
-import { FaPlus, FaArrowLeft } from "react-icons/fa";
+import { FaPlus, FaCaretLeft } from "react-icons/fa";
 
 import { useState } from "react";
 
@@ -18,7 +18,7 @@ const Navbars = ({ page }) => {
         <SignedIn>
           <div className="navbar glass top-0 fixed z-50 bg-transparent">
             <div className="flex-1">
-              <Link to="/" className="btn btn-ghost text-xl text-white">
+              <Link to="/" className="btn btn-ghost text-lg text-white">
                 Quizify
               </Link>
             </div>
@@ -30,7 +30,7 @@ const Navbars = ({ page }) => {
         <SignedOut>
           <div className="navbar glass top-0 fixed z-50 bg-transparent">
             <div className="flex-1">
-              <Link to="/" className="btn btn-ghost text-xl text-white">
+              <Link to="/" className="btn btn-ghost text-lg text-white">
                 Quizify
               </Link>
             </div>
@@ -78,11 +78,11 @@ const Navbars = ({ page }) => {
     return (
       <div className="navbar glass top-0 fixed z-50 bg-transparen">
         <div className="flex-1">
-          <Link to="/" className="btn btn-ghost text-xl text-white">
+          <Link to="/" className="btn btn-ghost text-lg text-white">
             Quizify
           </Link>
-          <Link to="/" className="btn btn-ghost text-xl text-white">
-            <FaArrowLeft /> Back
+          <Link to="/" className="btn btn-ghost text-md text-white">
+            <FaCaretLeft></FaCaretLeft>Back
           </Link>
           {/* Open the modal using document.getElementById('ID').showModal() method */}
           <button
@@ -170,11 +170,11 @@ const Navbars = ({ page }) => {
     return (
       <div className="navbar glass top-0 fixed z-50 bg-transparen">
         <div className="flex-1">
-          <Link to="/" className="btn btn-ghost text-xl text-white">
+          <Link to="/" className="btn btn-ghost text-lg text-white">
             Quizify
           </Link>
-          <Link to="/flashcards" className="btn btn-ghost text-xl text-white">
-            <FaArrowLeft /> Back
+          <Link to="/flashcards" className="btn btn-ghost text-md text-white">
+            <FaCaretLeft></FaCaretLeft>Back
           </Link>
           {/* Open the modal using document.getElementById('ID').showModal() method */}
           <button
@@ -185,7 +185,7 @@ const Navbars = ({ page }) => {
             Add
           </button>
           <div className="dropdown text-white">
-            <label tabIndex={0} className="btn btn-ghost m-1">
+            <label tabIndex={0} className="btn btn-ghost">
               Practice
             </label>
             <ul
