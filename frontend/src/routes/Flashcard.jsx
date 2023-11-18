@@ -15,8 +15,8 @@ const Flashcard = ({ term, definition }) => {
           </div>
         </div>
         <div className="card items-center text-center swap-on bg-base-100 h-32 flex justify-center overflow-auto">
-          <div className = "max-w-full pt-5">
-            <p className="text-2xl m-4 whitespace-normal break-all">{definition}</p>
+          <div className = "max-w-full pt-6">
+            <p className="text-2xl m-4 whitespace-normal break-words text-accent">{definition}</p>
           </div>
         </div>
       </label>
