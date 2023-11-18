@@ -22,7 +22,7 @@ const ClerkRoutes = () => {
   const clerkPubKey = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
   const navigate = useNavigate();
   const [flashDecks, setFlashcardDecks] = useState([{title: "CS290", desc: "web development", category: "Comp Sci"}, {title: "CS261", desc: "data structures", category: "Comp Sci"}]);
-  const [flashCards, setFlashCards] = useState([{term: "react", definition: "A frontend library for creating components"}]);
+  const [flashCards, setFlashCards] = useState([{term: "react", definition: "A frontend library for creating components. It is widely used in web development and allows users to create reusable components.", deck: "CS290"}, {term: "vue", definition: "A frontend library for creating components. It is widely used in web development and allows users to create reusable components.", deck: "CS290"}, {term: "angular", definition: "A frontend library for creating components. It is widely used in web development and allows users to create reusable components.", deck: "CS290"}, {term: "svelte", definition: "A frontend library for creating components. It is widely used in web development and allows users to create reusable components.", deck: "CS290"}, {term: "ember", definition: "A frontend library for creating components. It is widely used in web development and allows users to create reusable components.", deck: "CS290"}, {term: "backbone", definition: "A frontend library for creating components. It is widely used in web development and allows users to create reusable components.", deck: "CS290"}]);
 
   return (
     <FlashcardContext.Provider
