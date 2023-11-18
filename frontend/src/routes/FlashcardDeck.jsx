@@ -2,12 +2,13 @@ import Navbars from "../components/Navbars";
 import Footer from "../components/Footer";
 import { FlashcardContext } from "../App";
 import { useContext } from "react";
-import FlashcardDecks from "./FlashcardDecks";
+import Flashcard from "./Flashcard";
 
 const FlashcardDeck = () => {
   const { flashCards } = useContext(FlashcardContext);
 
   // if no cards, output empty cards
+  
   if (flashCards.length === 0) {
     return (
       <>
@@ -34,7 +35,7 @@ const FlashcardDeck = () => {
       <div className=" min-h-screen">
         <ul className="grid lg:grid-cols-3 sm:grid-cols-2 gap-4 m-4">
           {flashCards.map((card, i) => (
-            <FlashcardDecks
+            <Flashcard
               key={i}
               term={card.term}
               definition={card.definition}
