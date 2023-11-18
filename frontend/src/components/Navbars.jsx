@@ -190,7 +190,7 @@ const Navbars = ({ page }) => {
             </label>
             <ul
               tabIndex={0}
-              className="dropdown-content z-[1] menu p-2 shadow glass rounded-box w-52"
+              className="dropdown-content z-[1] menu p-2 shadow glass rounded-box w-52 bg-neutral"
             >
               <li>
                 <Link to="flashcards">Flashcards</Link>
