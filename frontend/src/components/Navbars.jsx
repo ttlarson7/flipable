@@ -1,11 +1,12 @@
 // a component which will conditionally render our Navbar as to not require 3 different components
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { UserButton, SignedIn, SignedOut } from "@clerk/nextjs";
 import { FaPlus, FaCaretLeft } from "react-icons/fa";
 
 import { useState } from "react";
 
 const Navbars = ({ page }) => {
+  const navigate = useNavigate();
   const [deckName, setDeckName] = useState("");
   const [deckDesc, setDeckDesc] = useState("");
   const [deckCategory, setDeckCategory] = useState("");
@@ -168,14 +169,14 @@ const Navbars = ({ page }) => {
 
   if (page == "flashcards") {
     return (
-      <div className="navbar glass top-0 fixed z-50 bg-transparen">
+      <div className="navbar glass top-0 fixed z-50">
         <div className="flex-1">
           <Link to="/" className="btn btn-ghost text-lg text-white">
             Quizify
           </Link>
-          <Link to="/flashcards" className="btn btn-ghost text-md text-white">
+          <button onClick={() => navigate(-1)} className="btn btn-ghost text-md text-white">
             <FaCaretLeft></FaCaretLeft>Back
-          </Link>
+          </button>
           {/* Open the modal using document.getElementById('ID').showModal() method */}
           <button
             className="btn btn-ghost text-white hover:text-white"
@@ -193,7 +194,7 @@ const Navbars = ({ page }) => {
               className="dropdown-content z-[1] menu p-2 shadow glass rounded-box w-52 bg-neutral"
             >
               <li>
-                <Link to="flashcards">Flashcards</Link>
+                <Link to="flashcard-practice">Flashcards</Link>
               </li>
               <li>
                 <Link to="test">Test</Link>
@@ -239,6 +240,25 @@ const Navbars = ({ page }) => {
           </dialog>
         </div>
         <div className="flex-2 mr-2">
+          <UserButton />
+        </div>
+      </div>
+    );
+  }
+
+  if (page == "flashcard-practice") {
+    return (
+      <div className="navbar glass top-0 fixed z-50">
+        <div className="flex-1">
+          <Link to="/" className="btn btn-ghost text-lg text-white">
+            Quizify
+          </Link>
+          <button onClick={() => navigate(-1)} className="btn btn-ghost text-md text-white">
+            <FaCaretLeft></FaCaretLeft>Back
+          </button>
+        </div>
+        {/* Open the modal using document.getElementById('ID').showModal() method */}
+        <div className="flex-none mr-2">
           <UserButton />
         </div>
       </div>
