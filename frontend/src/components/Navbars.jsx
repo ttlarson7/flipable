@@ -234,6 +234,7 @@ const Navbars = ({ page }) => {
                   >
                     Add
                   </button>
+
                 </form>
               </div>
             </div>
@@ -246,7 +247,7 @@ const Navbars = ({ page }) => {
     );
   }
 
-  if (page == "flashcard-practice") {
+  if (page == "flashcard-practice" || page == "test") {
     return (
       <div className="navbar glass top-0 fixed z-50">
         <div className="flex-1">
