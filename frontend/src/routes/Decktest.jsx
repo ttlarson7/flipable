@@ -16,7 +16,7 @@ const Decktest = () => {
     
     return (
     <div className="bg-neutral">
-      <Navbars page="decks"></Navbars>
+      <Navbars page="test"></Navbars>
 
       <div className="mt-24 bg-neutral"></div>
       <div className=" min-h-screen flex justify-center">
