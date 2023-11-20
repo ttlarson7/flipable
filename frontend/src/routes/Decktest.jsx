@@ -1,4 +1,3 @@
-import React from 'react'
 import Navbars from '../components/Navbars'
 import Footer from '../components/Footer';
 import { FlashcardContext } from "../App";
