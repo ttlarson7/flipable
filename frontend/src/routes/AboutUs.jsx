@@ -16,8 +16,8 @@ const AboutUs = () => {
         <div className="hero-content flex-col lg:flex-row-reverse">
           <div className="text-center max-w-md">
             <h1 className="text-2xl font-bold">About Us</h1>
-            <p className="py-6 text-2xl">
-              Our decision to develop Quizify, an open-source flashcard
+            <p className="py-6 text-xl font-light">
+              Our decision to develop Quizify, a free flashcard
               application with adaptable testing features, stemmed from a
               collective passion for enhancing the learning experience for
               students. <br></br>
@@ -37,7 +37,7 @@ const AboutUs = () => {
         </div>
       </div>
       <div className="container mx-auto text-center max-w-2xl">
-        <div className="hero-content text-center bg-teal-900 bg-opacity-80 text-gray-300 rounded-2xl">
+        <div className="hero-content text-center bg-teal-900 text-gray-300 rounded-2xl">
           <div className="max-w-2xl">
             <h1 className="text-5xl font-bold">What Do We Offer?</h1>
           </div>
