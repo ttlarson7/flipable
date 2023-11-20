@@ -1,7 +1,11 @@
 import { Link } from "react-router-dom";
 import Navbars from "../components/Navbars";
 import Footer from "../components/Footer";
-
+import graduation from "../assets/undraw_graduation_re_gthn.svg";
+import studying from "../assets/undraw_studying_re_deca.svg";
+import reading from "../assets/undraw_exams_re_4ios.svg";
+import rocket from "../assets/undraw_to_the_stars_re_wq2x.svg";
+import location from "../assets/undraw_best_place_re_lne9.svg";
 import learningImg from "../assets/undraw_notebook_re_id0r.svg";
 import readingImg from "../assets/undraw_reading_re_29f8.svg";
 import { TypeAnimation } from "react-type-animation";
@@ -25,16 +29,16 @@ const Landing = () => {
                 sequence={[
                   // Same substring at the start will only be typed out once, initially
                   "Optimize your learning",
-                  1000, // wait 1s before replacing "Mice" with "Hamsters"
+                  2000, // wait 1s before replacing "Mice" with "Hamsters"
                   "Truly understand the content",
-                  1000,
+                  2000,
                   "Better than memorization",
-                  1000,
+                  2000,
                   "Flexible Definitions",
-                  1000,
+                  2000,
                 ]}
                 wrapper="span"
-                speed={50}
+                speed={40}
                 style={{ fontSize: "2em", display: "inline-block" }}
                 repeat={Infinity}
               />
@@ -50,13 +54,23 @@ const Landing = () => {
           </div>
         </div>
       </div>
-      <div className="card lg:card-side max-w-2xl bg-teal-900 py-12 flex text-gray-300">
+
+      <div
+        className="hero min-h-screen bg-contain bg-no-repeat"
+        style={{
+          backgroundImage: `url(${studying})`,
+        }}
+      />
+
+      <div className="hero-content text-center bg-teal-900 bg-opacity-80 text-base-100 rounded-2xl mt-32">
+        <div className="max-w-2xl">
+          <h1 className="text-5xl font-bold">What Do We Offer?</h1>
+        </div>
+      </div>
+
+      <div className="card lg:card-side max-w-2xl bg-teal-900 py-12 flex text-gray-300 mt-16">
         <figure className="lg:w-1/2 h-min ml-4">
-          <img
-            className="object-fit"
-            src={learningImg}
-            alt="Learning"
-          ></img>
+          <img className="object-fit" src={learningImg} alt="Learning"></img>
         </figure>
         <div className="card-body flex-grow lg:p-4 lg:w-1/2">
           <h2 className="card-title">Optimize your learning!</h2>
@@ -66,7 +80,7 @@ const Landing = () => {
           </p>
         </div>
       </div>
-      <div className="card lg:card-side max-w-2xl bg-teal-900 p-8 flex my-8 text-gray-300">
+      <div className="card lg:card-side max-w-2xl bg-teal-900 p-8 flex mt-8 text-gray-300">
         <figure className="lg:w-1/2 h-min">
           <img className="object-fit" src={readingImg} alt="Reading"></img>
         </figure>
@@ -76,6 +90,33 @@ const Landing = () => {
             Using our AI, you can take tests on your definitions and receive
             points if your definition was similar and holds all the same key
             concepts
+          </p>
+        </div>
+      </div>
+      <div className="card lg:card-side max-w-2xl bg-teal-900 p-8 flex mt-8 text-gray-300">
+        <figure className="lg:w-1/2 h-min">
+          <img className="object-fit" src={location} alt="Reading"></img>
+        </figure>
+        <div className="card-body flex-grow p-4 lg:w-1/2">
+          <h2 className="card-title">Your One Location!</h2>
+          <p className="text-xl">
+            Quizify if your one location for everything studying! Take tests,
+            practice with your flashcards, take it on the go and access from
+            anywhere!
+          </p>
+        </div>
+      </div>
+
+      <div className="card lg:card-side max-w-2xl bg-teal-900 p-8 flex mt-8 mb-20 text-gray-300">
+        <figure className="lg:w-1/2 h-min">
+          <img className="object-fit" src={rocket} alt="Reading"></img>
+        </figure>
+        <div className="card-body flex-grow p-4 lg:w-1/2">
+          <h2 className="card-title">An Expanse Waiting For You!</h2>
+          <p className="text-xl">
+            Explore all the possibilities Quizify gives you! There's an endless
+            amount of pratice to be had, we can't wait to see you explore it
+            all!
           </p>
         </div>
       </div>

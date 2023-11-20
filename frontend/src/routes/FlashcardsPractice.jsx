@@ -1,6 +1,6 @@
 import { useState, useContext } from "react";
 import { FlashcardContext } from "../App";
-import { useNavigate } from 'react-router-dom'
+import { useNavigate } from "react-router-dom";
 import Navbars from "../components/Navbars";
 import Footer from "../components/Footer";
 import { FaCaretLeft, FaCaretRight } from "react-icons/fa";
@@ -34,7 +34,7 @@ function FlashcardsPractice() {
   const reset = () => {
     setCurrentCardIndex(0);
     setDeck([...flashCards]);
-  }
+  };
 
   if (flashCards.length === 0) {
     return (
@@ -87,8 +87,8 @@ function FlashcardsPractice() {
       <Navbars page="flashcard-practice"></Navbars>
       <div>
         {deck.length > 0 && (
-          <div className="absolute left-1/2 transform -translate-x-1/2 w-96 md:w-96 lg:w-96 xl:w-96 top-32">
-            <label className="swap swap-flip text-3xl w-96 md:w-96 lg:w-96 xl:w-96">
+          <div className="absolute left-1/2 transform -translate-x-1/2 w-96 md:w-64 lg:w-80 xl:w-96 top-32">
+            <label className="swap swap-flip text-3xl w-96 md:w-64 lg:w-80 xl:w-96">
               <input type="checkbox" />
               <div className="card items-center text-center swap-off bg-base-100 h-64 md:h-80 lg:h-96 xl:h-96 flex justify-center border border-primary">
                 <div className="bg-primary border border-primary rounded">
@@ -111,7 +111,10 @@ function FlashcardsPractice() {
       <div className="flex justify-center mt-[550px]">
         {deck.length > 0 && (
           <>
-            <button onClick={handleAddBackToDeck} className="btn btn-primary mr-4">
+            <button
+              onClick={handleAddBackToDeck}
+              className="btn btn-primary mr-4"
+            >
               <FaCaretLeft /> Add back to deck
             </button>
             <button onClick={handleGotItRight} className="btn btn-primary">
