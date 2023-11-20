@@ -16,6 +16,7 @@ import Decks from "./routes/FlashcardDecks";
 import FlashcardDeck from "./routes/FlashcardDeck";
 import FlashcardsPractice from "./routes/FlashcardsPractice";
 import Decktest from "./routes/Decktest";
+import AboutUs from "./routes/AboutUs";
 
 // we now have context for each componenet wanting to get access to flashcardDecks and flashcards
 export const FlashcardContext = createContext();
@@ -81,6 +82,7 @@ const ClerkRoutes = () => {
               <Decktest/>
             </SignedIn>
           </>} />
+          <Route path="/about-us" element={<AboutUs></AboutUs>}></Route>
           <Route path="*" element={<Invalid />}></Route>
         </Routes>
       </ClerkProvider>
