@@ -11,10 +11,12 @@ function FlashcardsPractice() {
   const [deck, setDeck] = useState([...flashCards]);
   const [currentCardIndex, setCurrentCardIndex] = useState(0);
 
+  const canAddBack = deck.length === 1;
+
   const handleAddBackToDeck = () => {
     const shuffledDeck = [...deck];
     const removedCard = shuffledDeck.splice(currentCardIndex, 1)[0];
-    const randomIndex = Math.floor(Math.random() * (shuffledDeck.length + 1));
+    const randomIndex = Math.floor(Math.random() * (shuffledDeck.length - 1)) + 1;
     shuffledDeck.splice(randomIndex, 0, removedCard);
     setDeck(shuffledDeck);
 
@@ -113,6 +115,7 @@ function FlashcardsPractice() {
           <>
             <button
               onClick={handleAddBackToDeck}
+              disabled={canAddBack}
               className="btn btn-primary mr-4"
             >
               <FaCaretLeft /> Add back to deck

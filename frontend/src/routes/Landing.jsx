@@ -1,9 +1,10 @@
+/* eslint-disable react/no-unescaped-entities */
 import { Link } from "react-router-dom";
 import Navbars from "../components/Navbars";
 import Footer from "../components/Footer";
-import graduation from "../assets/undraw_graduation_re_gthn.svg";
+// import graduation from "../assets/undraw_graduation_re_gthn.svg";
 import studying from "../assets/undraw_studying_re_deca.svg";
-import reading from "../assets/undraw_exams_re_4ios.svg";
+// import reading from "../assets/undraw_exams_re_4ios.svg";
 import rocket from "../assets/undraw_to_the_stars_re_wq2x.svg";
 import location from "../assets/undraw_best_place_re_lne9.svg";
 import learningImg from "../assets/undraw_notebook_re_id0r.svg";
@@ -55,14 +56,7 @@ const Landing = () => {
         </div>
       </div>
 
-      <div
-        className="hero min-h-screen bg-contain bg-no-repeat"
-        style={{
-          backgroundImage: `url(${studying})`,
-        }}
-      />
-
-      <div className="hero-content text-center bg-teal-900 bg-opacity-80 text-base-100 rounded-2xl mt-32">
+      <div className="hero-content text-center bg-teal-900 bg-opacity-80 text-gray-300 rounded-2xl">
         <div className="max-w-2xl">
           <h1 className="text-5xl font-bold">What Do We Offer?</h1>
         </div>
@@ -107,7 +101,7 @@ const Landing = () => {
         </div>
       </div>
 
-      <div className="card lg:card-side max-w-2xl bg-teal-900 p-8 flex mt-8 mb-20 text-gray-300">
+      <div className="card lg:card-side max-w-2xl bg-teal-900 p-8 flex mt-8 text-gray-300">
         <figure className="lg:w-1/2 h-min">
           <img className="object-fit" src={rocket} alt="Reading"></img>
         </figure>
@@ -120,6 +114,13 @@ const Landing = () => {
           </p>
         </div>
       </div>
+
+      <div
+        className="hero min-h-screen bg-contain bg-no-repeat mb-20 mt-16"
+        style={{
+          backgroundImage: `url(${studying})`,
+        }}
+      />
 
       <Footer></Footer>
     </div>
