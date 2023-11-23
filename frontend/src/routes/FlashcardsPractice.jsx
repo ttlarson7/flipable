@@ -15,6 +15,7 @@ function FlashcardsPractice() {
   );
   const [isAnimating, setIsAnimating] = useState(false);
   const [progress, setProgress] = useState(1);
+  const [isCardFlipped, setIsCardFlipped] = useState(false);
 
   const canAddBack = deck.length === 1;
 
@@ -32,6 +33,7 @@ function FlashcardsPractice() {
 
     setTimeout(() => {
       setDeck(shuffledDeck);
+      setIsCardFlipped(false);
       setCurrentCardIndex((prevIndex) => (prevIndex + 1) % shuffledDeck.length);
     }, 1000);
 
@@ -59,6 +61,7 @@ function FlashcardsPractice() {
 
     setTimeout(() => {
       setDeck(updatedDeck);
+      setIsCardFlipped(false);
       setCurrentCardIndex((prevIndex) => (prevIndex + 1) % updatedDeck.length);
     }, 1000);
 
@@ -130,7 +133,10 @@ function FlashcardsPractice() {
       <Navbars page="flashcard-practice"></Navbars>
       <div className="mt-20"></div>
       <h1 className=" font-thin text-3xl">Welcome to Practice</h1>
-      <div className="tooltip mt-2 tooltip-secondary tooltip-right" data-tip="Number of Cards Left">
+      <div
+        className="tooltip mt-2 tooltip-secondary tooltip-right"
+        data-tip="Number of Cards Left"
+      >
         <progress
           className="progress progress-accent w-48"
           value={progress}
@@ -142,7 +148,11 @@ function FlashcardsPractice() {
         {deck.length > 0 && (
           <div className="absolute left-1/2 transform -translate-x-1/2 w-96 md:w-64 lg:w-80 xl:w-96 top-40">
             <label className={moveState}>
-              <input type="checkbox" />
+              <input
+                type="checkbox"
+                checked={isCardFlipped}
+                onChange={() => setIsCardFlipped(!isCardFlipped)}
+              />
               <div className="card items-center text-center swap-off bg-base-100 h-64 md:h-80 lg:h-96 xl:h-96 flex justify-center border border-primary">
                 <div className="bg-primary border border-primary rounded">
                   <p className="card-title text-base-100 font-bold text-2xl ml-3 mr-3 mb-1">
