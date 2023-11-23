@@ -10,27 +10,66 @@ function FlashcardsPractice() {
   const { flashCards } = useContext(FlashcardContext);
   const [deck, setDeck] = useState([...flashCards]);
   const [currentCardIndex, setCurrentCardIndex] = useState(0);
+  const [moveState, setMoveState] = useState(
+    "swap swap-flip text-3xl w-96 md:w-64 lg:w-80 xl:w-96"
+  );
+  const [isAnimating, setIsAnimating] = useState(false);
 
   const canAddBack = deck.length === 1;
 
   const handleAddBackToDeck = () => {
+    if (isAnimating) return;
+    setIsAnimating(true);
+
+    setMoveState(
+      "animate-fade-right animate-once animate-ease-in-out animate-reverse swap swap-flip text-3xl w-96 md:w-64 lg:w-80 xl:w-96"
+    );
     const shuffledDeck = [...deck];
     const removedCard = shuffledDeck.splice(currentCardIndex, 1)[0];
-    const randomIndex = Math.floor(Math.random() * (shuffledDeck.length - 1)) + 1;
+    const randomIndex =
+      Math.floor(Math.random() * (shuffledDeck.length - 1));
     shuffledDeck.splice(randomIndex, 0, removedCard);
-    setDeck(shuffledDeck);
 
-    // Update currentCardIndex
-    setCurrentCardIndex((prevIndex) => (prevIndex + 1) % shuffledDeck.length);
+    setTimeout(() => {
+      setDeck(shuffledDeck);
+      setCurrentCardIndex((prevIndex) => (prevIndex + 1) % shuffledDeck.length);
+    }, 1000);
+
+    setTimeout(() => {
+      setMoveState(
+        "animate-jump-in animate-once animate-ease-in-out swap swap-flip text-3xl w-96 md:w-64 lg:w-80 xl:w-96"
+      );
+      setTimeout(() => {
+        setMoveState("swap swap-flip text-3xl w-96 md:w-64 lg:w-80 xl:w-96");
+        setIsAnimating(false);
+      }, 750);
+    }, 1000);
   };
 
   const handleGotItRight = () => {
+    if (isAnimating) return;
+    setIsAnimating(true);
+
+    setMoveState(
+      "animate-fade-left animate-once animate-ease-in-out animate-reverse swap swap-flip text-3xl w-96 md:w-64 lg:w-80 xl:w-96"
+    );
     const updatedDeck = [...deck];
     updatedDeck.splice(currentCardIndex, 1);
-    setDeck(updatedDeck);
 
-    // Update currentCardIndex
-    setCurrentCardIndex((prevIndex) => (prevIndex + 1) % updatedDeck.length);
+    setTimeout(() => {
+      setDeck(updatedDeck);
+      setCurrentCardIndex((prevIndex) => (prevIndex + 1) % updatedDeck.length);
+    }, 1000);
+
+    setTimeout(() => {
+      setMoveState(
+        "animate-jump-in animate-once animate-ease-in-out swap swap-flip text-3xl w-96 md:w-64 lg:w-80 xl:w-96"
+      );
+      setTimeout(() => {
+        setMoveState("swap swap-flip text-3xl w-96 md:w-64 lg:w-80 xl:w-96");
+        setIsAnimating(false);
+      }, 750);
+    }, 1000);
   };
 
   const reset = () => {
@@ -90,11 +129,11 @@ function FlashcardsPractice() {
       <div>
         {deck.length > 0 && (
           <div className="absolute left-1/2 transform -translate-x-1/2 w-96 md:w-64 lg:w-80 xl:w-96 top-32">
-            <label className="swap swap-flip text-3xl w-96 md:w-64 lg:w-80 xl:w-96">
+            <label className={moveState}>
               <input type="checkbox" />
               <div className="card items-center text-center swap-off bg-base-100 h-64 md:h-80 lg:h-96 xl:h-96 flex justify-center border border-primary">
                 <div className="bg-primary border border-primary rounded">
-                  <p className="card-title text-base-100 font-bold text-2xl ml-3 mr-3 mb-1 ">
+                  <p className="card-title text-base-100 font-bold text-2xl ml-3 mr-3 mb-1">
                     {deck[currentCardIndex].term}
                   </p>
                 </div>
