@@ -14,6 +14,7 @@ function FlashcardsPractice() {
     "swap swap-flip text-3xl w-96 md:w-64 lg:w-80 xl:w-96"
   );
   const [isAnimating, setIsAnimating] = useState(false);
+  const [progress, setProgress] = useState(1);
 
   const canAddBack = deck.length === 1;
 
@@ -26,8 +27,7 @@ function FlashcardsPractice() {
     );
     const shuffledDeck = [...deck];
     const removedCard = shuffledDeck.splice(currentCardIndex, 1)[0];
-    const randomIndex =
-      Math.floor(Math.random() * (shuffledDeck.length - 1));
+    const randomIndex = Math.floor(Math.random() * (shuffledDeck.length - 1));
     shuffledDeck.splice(randomIndex, 0, removedCard);
 
     setTimeout(() => {
@@ -55,6 +55,7 @@ function FlashcardsPractice() {
     );
     const updatedDeck = [...deck];
     updatedDeck.splice(currentCardIndex, 1);
+    setProgress(updatedDeck.length / flashCards.length);
 
     setTimeout(() => {
       setDeck(updatedDeck);
@@ -75,6 +76,7 @@ function FlashcardsPractice() {
   const reset = () => {
     setCurrentCardIndex(0);
     setDeck([...flashCards]);
+    setProgress(flashCards.length);
   };
 
   if (flashCards.length === 0) {
@@ -126,9 +128,19 @@ function FlashcardsPractice() {
   return (
     <div className="flex flex-col items-center justify-center min-h-screen overflow-hidden">
       <Navbars page="flashcard-practice"></Navbars>
+      <div className="mt-20"></div>
+      <h1 className=" font-thin text-3xl">Welcome to Practice</h1>
+      <div className="tooltip mt-2 tooltip-secondary tooltip-right" data-tip="Number of Cards Left">
+        <progress
+          className="progress progress-accent w-48"
+          value={progress}
+          max="1"
+        ></progress>
+      </div>
+
       <div>
         {deck.length > 0 && (
-          <div className="absolute left-1/2 transform -translate-x-1/2 w-96 md:w-64 lg:w-80 xl:w-96 top-32">
+          <div className="absolute left-1/2 transform -translate-x-1/2 w-96 md:w-64 lg:w-80 xl:w-96 top-40">
             <label className={moveState}>
               <input type="checkbox" />
               <div className="card items-center text-center swap-off bg-base-100 h-64 md:h-80 lg:h-96 xl:h-96 flex justify-center border border-primary">
@@ -149,7 +161,7 @@ function FlashcardsPractice() {
           </div>
         )}
       </div>
-      <div className="flex justify-center mt-[550px]">
+      <div className="flex justify-center mt-[425px]">
         {deck.length > 0 && (
           <>
             <button
