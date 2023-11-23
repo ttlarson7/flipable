@@ -129,24 +129,23 @@ function FlashcardsPractice() {
   }
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen overflow-hidden">
+    <>
       <Navbars page="flashcard-practice"></Navbars>
-      <div className="mt-20"></div>
-      <h1 className=" font-thin text-3xl">Welcome to Practice</h1>
-      <div
-        className="tooltip mt-2 tooltip-secondary tooltip-right"
-        data-tip="Number of Cards Left"
-      >
-        <progress
-          className="progress progress-accent w-48"
-          value={progress}
-          max="1"
-        ></progress>
-      </div>
-
-      <div>
+      <div className="mt-16"></div>
+      <div className="min-h-screen flex flex-col items-center justify-center overflow-hidden">
+        <h1 className=" font-thin text-3xl">Welcome to Practice</h1>
+        <div
+          className="tooltip mt-1 mb-2 tooltip-secondary tooltip-right"
+          data-tip="Number of Cards Left"
+        >
+          <progress
+            className="progress progress-accent w-48"
+            value={progress}
+            max="1"
+          ></progress>
+        </div>
         {deck.length > 0 && (
-          <div className="absolute left-1/2 transform -translate-x-1/2 w-96 md:w-64 lg:w-80 xl:w-96 top-40">
+          <div className="w-96 md:w-64 lg:w-80 xl:w-96 top-40">
             <label className={moveState}>
               <input
                 type="checkbox"
@@ -170,26 +169,27 @@ function FlashcardsPractice() {
             </label>
           </div>
         )}
+        <div className="flex justify-center mt-4">
+          {deck.length > 0 && (
+            <>
+              <button
+                onClick={handleAddBackToDeck}
+                disabled={canAddBack}
+                className="btn btn-primary mr-4"
+              >
+                <FaCaretLeft /> Add back to deck
+              </button>
+              <button onClick={handleGotItRight} className="btn btn-primary">
+                Got it right <FaCaretRight />
+              </button>
+            </>
+          )}
+        </div>
+        <div className="mt-20"></div>
       </div>
-      <div className="flex justify-center mt-[425px]">
-        {deck.length > 0 && (
-          <>
-            <button
-              onClick={handleAddBackToDeck}
-              disabled={canAddBack}
-              className="btn btn-primary mr-4"
-            >
-              <FaCaretLeft /> Add back to deck
-            </button>
-            <button onClick={handleGotItRight} className="btn btn-primary">
-              Got it right <FaCaretRight />
-            </button>
-          </>
-        )}
-      </div>
-      <div className="mt-20"></div>
+
       <Footer></Footer>
-    </div>
+    </>
   );
 }
 
