@@ -1,6 +1,6 @@
 import { CiCircleCheck, CiCircleRemove } from "react-icons/ci";
 
-const DeckcardTest = ({ term, correct, index, setAnswers, answers }) => {
+const DeckcardTest = ({ term, correct, index, setAnswers, answers, domEleID }) => {
   const handleAnswer = (e) => {
     setAnswers(() => {
       const newAnswers = [...answers];
@@ -11,10 +11,10 @@ const DeckcardTest = ({ term, correct, index, setAnswers, answers }) => {
   };
   if (correct[index] === -1) {
     return (
-      <div className="card w-96 bg-base-100 shadow-xl">
+      <div className="card w-96 bg-base-100 shadow-xl" id = {`${domEleID}`}>
         <div className="card-body">
           <p>
-            What is the definition of <b>{term}?</b>
+            {index + 1}. What is the definition of <b>{term}?</b>
           </p>
           <div className="card-actions justify-center">
             <textarea
@@ -49,7 +49,7 @@ const DeckcardTest = ({ term, correct, index, setAnswers, answers }) => {
   if (correct[index] === 1) {
     return (
       <div className="indicator">
-        <div className="card w-96 bg-base-100 shadow-xl border border-success">
+        <div className="card96 bg-base-100 shadow-xl border border-success">
           <span className="indicator-item badge badge-success text-black">
             <CiCircleCheck />
           </span>
