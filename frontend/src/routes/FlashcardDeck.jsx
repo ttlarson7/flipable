@@ -2,7 +2,7 @@ import Navbars from "../components/Navbars";
 import Footer from "../components/Footer";
 import { FlashcardContext } from "../App";
 import { useContext } from "react";
-import Flashcard from "./Flashcard";
+import Flashcard from "../components/Flashcard";
 
 const FlashcardDeck = () => {
   const { flashCards } = useContext(FlashcardContext);

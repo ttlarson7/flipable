@@ -1,7 +1,7 @@
 import { useContext } from "react";
 import Footer from "../components/Footer";
 import Navbars from "../components/Navbars";
-import Deckcard from "./Deckcard";
+import Deckcard from "../components/Deckcard";
 import { FlashcardContext } from "../App";
 
 const FlashcardDecks = () => {
