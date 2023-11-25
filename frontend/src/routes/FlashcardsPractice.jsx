@@ -35,7 +35,7 @@ function FlashcardsPractice() {
       setDeck(shuffledDeck);
       setIsCardFlipped(false);
       setCurrentCardIndex((prevIndex) => (prevIndex + 1) % shuffledDeck.length);
-    }, 1000);
+    }, 650);
 
     setTimeout(() => {
       setMoveState(
@@ -44,8 +44,8 @@ function FlashcardsPractice() {
       setTimeout(() => {
         setMoveState("swap swap-flip text-3xl w-96 md:w-64 lg:w-80 xl:w-96");
         setIsAnimating(false);
-      }, 750);
-    }, 1000);
+      }, 325);
+    }, 650);
   };
 
   const handleGotItRight = () => {
@@ -63,7 +63,7 @@ function FlashcardsPractice() {
       setDeck(updatedDeck);
       setIsCardFlipped(false);
       setCurrentCardIndex((prevIndex) => (prevIndex + 1) % updatedDeck.length);
-    }, 1000);
+    }, 650);
 
     setTimeout(() => {
       setMoveState(
@@ -72,8 +72,8 @@ function FlashcardsPractice() {
       setTimeout(() => {
         setMoveState("swap swap-flip text-3xl w-96 md:w-64 lg:w-80 xl:w-96");
         setIsAnimating(false);
-      }, 750);
-    }, 1000);
+      }, 325);
+    }, 650);
   };
 
   const reset = () => {
