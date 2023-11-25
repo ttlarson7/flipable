@@ -1,8 +1,7 @@
-import React from 'react';
 
 function TestNumbers({ scrollTo, index }) {
     
-    //handling the scrollign
+    //handling the scrolling
     const handleClick = () => {
         const element = document.getElementById(`${scrollTo}`);
         console.log(element)

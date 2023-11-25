@@ -3,8 +3,8 @@ import Footer from "../components/Footer";
 import { FlashcardContext } from "../App";
 import { useContext } from "react";
 import { useState } from "react";
-import DeckcardTest from "./DeckcardTest";
-import TestNumbers from "./TestNumbers";
+import DeckcardTest from "../components/DeckcardTest";
+import TestNumbers from "../components/TestNumbers";
 
 const Decktest = () => {
   const { flashCards } = useContext(FlashcardContext);
