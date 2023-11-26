@@ -21,6 +21,26 @@ async function main() {
   // use `await mongoose.connect('mongodb://user:password@127.0.0.1:27017/test');` if your database has auth enabled
 }
 
+const Schema = mongoose.Schema;
+
+const userSchema = new Schema({
+    id: String,
+    decks: [{type: Schema.Types.ObjectId, ref: "Deck"}],
+});
+
+const deckSchema = new Schema({
+    name: String,
+    category: String,
+    description: String,
+    cards: [{type: Schema.Types.ObjectId, ref: "Card"}],
+    parentUser: {type: Schema.Types.ObjectId, ref: "User"},
+});
+
+const cardSchema = new Schema({
+    term: String,
+    definition: String,
+    parentDeck: {type: Schema.Types.ObjectId, ref:"Deck"},
+});
 
 
 
