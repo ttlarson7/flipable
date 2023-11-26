@@ -15,8 +15,10 @@ if (!process.env.MONGODB_DATABASE_URL) {
 
 main().catch(err => console.log(err));
 
+
 async function main() {
-  await mongoose.connect(`${DBURL}`);
+  //await mongoose.connect(`${DBURL}`);
+    await mongoose.connect('mongodb://Quizzers:I<3Quizify@127.0.0.1:27017/test');
 
   // use `await mongoose.connect('mongodb://user:password@127.0.0.1:27017/test');` if your database has auth enabled
 }
@@ -24,7 +26,7 @@ async function main() {
 const Schema = mongoose.Schema;
 
 const userSchema = new Schema({
-    id: String,
+    user_id: String,
     decks: [{type: Schema.Types.ObjectId, ref: "Deck"}],
 });
 
@@ -41,6 +43,10 @@ const cardSchema = new Schema({
     definition: String,
     parentDeck: {type: Schema.Types.ObjectId, ref:"Deck"},
 });
+
+const User = mongoose.model("User", userSchema);
+const Deck = mongoose.model("Deck", deckSchema);
+const card = mongoose.model("Card", cardSchema);
 
 
 
