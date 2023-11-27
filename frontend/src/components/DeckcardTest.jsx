@@ -18,7 +18,7 @@ const DeckcardTest = ({ term, correct, index, setAnswers, answers, domEleID }) =
           </p>
           <div className="card-actions justify-center">
             <textarea
-              className="textarea textarea-secondary w-full"
+              className="textarea textarea-secondary w-full h-full"
               placeholder="Answer"
               onChange={handleAnswer}
             ></textarea>

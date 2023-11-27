@@ -26,7 +26,19 @@ const ClerkRoutes = () => {
   const clerkPubKey = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
   const navigate = useNavigate();
   const [flashDecks, setFlashcardDecks] = useState([{title: "CS290", desc: "web development", category: "Comp Sci"}, {title: "CS261", desc: "data structures", category: "Comp Sci"}]);
-  const [flashCards, setFlashCards] = useState([{term: "react", definition: "A frontend library for creating components. It is widely used in web development and allows users to create reusable components.", deck: "CS290"}, {term: "vue", definition: "A frontend library for creating components. It is widely used in web development and allows users to create reusable components.", deck: "CS290"}, {term: "angular", definition: "A frontend library for creating components. It is widely used in web development and allows users to create reusable components.", deck: "CS290"}, {term: "svelte", definition: "A frontend library for creating components. It is widely used in web development and allows users to create reusable components.", deck: "CS290"}, {term: "ember", definition: "A frontend library for creating components. It is widely used in web development and allows users to create reusable components.", deck: "CS290"}, {term: "backbone", definition: "A frontend library for creating components. It is widely used in web development and allows users to create reusable components.", deck: "CS290"}]);
+  const [flashCards, setFlashCards] = useState([
+    {term: "react", definition: "A frontend library for creating components. It is widely used in web development and allows users to create reusable components.", deck: "CS290"},
+    {term: "vue", definition: "A frontend library for creating components. It is widely used in web development and allows users to create reusable components.", deck: "CS290"},
+    {term: "angular", definition: "A frontend library for creating components. It is widely used in web development and allows users to create reusable components.", deck: "CS290"},
+    {term: "svelte", definition: "A frontend library for creating components. It is widely used in web development and allows users to create reusable components.", deck: "CS290"},
+    {term: "ember", definition: "A frontend library for creating components. It is widely used in web development and allows users to create reusable components.", deck: "CS290"},
+    {term: "backbone", definition: "A frontend library for creating components. It is widely used in web development and allows users to create reusable components.", deck: "CS290"},
+    // Add more terms below
+    {term: "express", definition: "A web application framework for Node.js, designed for building web applications and APIs.", deck: "Web Development"},
+    {term: "mongoDB", definition: "A NoSQL database that provides high performance, high availability, and easy scalability.", deck: "Database"},
+    // Add as many terms as needed
+  ]);
+  
 
   return (
     <FlashcardContext.Provider
