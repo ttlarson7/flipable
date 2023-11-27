@@ -8,11 +8,25 @@ import TestNumbers from "../components/TestNumbers";
 
 const Decktest = () => {
   const { flashCards } = useContext(FlashcardContext);
+  var randomFlash = [...flashCards];//copy the flash card deck
+  for (var i = 0; i < randomFlash.length; i++){ // randomize flashcards
+    const j = Math.floor(Math.random() * (i + 1));
+    [randomFlash[i], randomFlash[j]] = [randomFlash[j], randomFlash[i]];
+  }
+
   const initialAnswers = Array.from({ length: flashCards.length }, () => "");
   const [answers, setAnswers] = useState(initialAnswers);
   const [correct, setCorrect] = useState(
     Array.from({ length: flashCards.length }, () => -1)
   );
+
+  const [numQ, setNumQ] = useState(randomFlash.length);//going to test adding different length of tests
+
+  const handleNumQ = (e) => {
+    setNumQ(e.target.value);
+  }
+
+
 
 
 
@@ -25,7 +39,7 @@ const Decktest = () => {
                 Quizify
               </span>!</h1>
       <div className="flex flex-nowrap overflow-x-auto" style = {{maxWidth: "50%"}}>
-          {flashCards.map((card, i) => (
+          {randomFlash.map((card, i) => (
             <TestNumbers
               key={i}
               scrollTo={`element${i}`}
@@ -34,8 +48,8 @@ const Decktest = () => {
           ))}
         </div>
           
-        <ul className="grid lg:grid-cols-1 sm:grid-cols-1 gap-4 m-4">
-          {flashCards.map((card, i) => (
+        <ul className="grid lg:grid-cols-2 sm:grid-cols-1 gap-4 m-4">
+          {randomFlash.map((card, i) => (
             <DeckcardTest
               id={`element${i}`}
               key={i}

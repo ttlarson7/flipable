@@ -11,9 +11,9 @@ const DeckcardTest = ({ term, correct, index, setAnswers, answers, domEleID }) =
   };
   if (correct[index] === -1) {
     return (
-      <div className="card w-96 bg-base-100 shadow-xl" id = {`${domEleID}`}>
+      <div className="card w-96 bg-base-100 shadow-xl" id = {`${domEleID}`} >
         <div className="card-body">
-          <p>
+          <p className = "test-base">
             {index + 1}. What is the definition of <b>{term}?</b>
           </p>
           <div className="card-actions justify-center">
