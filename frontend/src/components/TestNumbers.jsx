@@ -15,8 +15,8 @@ function TestNumbers({ scrollTo, index }) {
 
     //To scroll to the different elements
     return (
-        <div className="w-1/2 m-2" style={{width: "100px"}}>
-            <button className="btn btn-outline btn-info w-full" onClick={handleClick}>{index}</button>
+        <div className="m-2" style={{width: "100px"}}>
+            <button className="btn btn-outline btn-secondary w-full" onClick={handleClick}>{index}</button>
         </div>
     )
 }
