@@ -17,7 +17,7 @@ const Navbars = ({ page }) => {
     return (
       <>
         <SignedIn>
-          <div className="navbar glass top-0 fixed z-50 bg-transparent">
+          <div className="navbar glass top-0 fixed z-50 bg-neutral">
             <div className="flex-1">
               <Link to="/" className="btn btn-ghost text-lg text-white">
                 Quizify
@@ -73,11 +73,12 @@ const Navbars = ({ page }) => {
     //set up axios call to add deck to backend
     setDeckDesc("");
     setDeckName("");
+    setDeckCategory("");
   };
 
   if (page == "decks") {
     return (
-      <div className="navbar glass top-0 fixed z-50 bg-transparen">
+      <div className="navbar glass top-0 fixed z-50 bg-neutral">
         <div className="flex-1">
           <Link to="/" className="btn btn-ghost text-lg text-white">
             Quizify
@@ -169,7 +170,7 @@ const Navbars = ({ page }) => {
 
   if (page == "flashcards") {
     return (
-      <div className="navbar glass top-0 fixed z-50">
+      <div className="navbar glass top-0 fixed z-50 bg-neutral">
         <div className="flex-1">
           <Link to="/" className="btn btn-ghost text-lg text-white">
             Quizify
@@ -249,7 +250,7 @@ const Navbars = ({ page }) => {
 
   if (page == "flashcard-practice" || page == "test") {
     return (
-      <div className="navbar glass top-0 fixed z-50">
+      <div className="navbar glass top-0 fixed z-50 bg-neutral">
         <div className="flex-1">
           <Link to="/" className="btn btn-ghost text-lg text-white">
             Quizify
