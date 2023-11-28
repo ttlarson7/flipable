@@ -147,6 +147,9 @@ const Navbars = ({ page }) => {
             </div>
           </dialog>
         </div>
+        <Link to="/profile" className="btn btn-ghost text-lg text-white">
+            Stats
+        </Link>
         <div className="flex-2 mr-2">
           <UserButton />
         </div>
@@ -241,6 +244,9 @@ const Navbars = ({ page }) => {
             </div>
           </dialog>
         </div>
+        <Link to="/profile" className="btn btn-ghost text-lg text-white">
+            Stats
+        </Link>
         <div className="flex-2 mr-2">
           <UserButton />
         </div>
@@ -248,7 +254,7 @@ const Navbars = ({ page }) => {
     );
   }
 
-  if (page == "flashcard-practice" || page == "test") {
+  if (page == "flashcard-practice" || page == "test" || page == "profile") {
     return (
       <div className="navbar glass top-0 fixed z-50 bg-neutral">
         <div className="flex-1">
@@ -260,6 +266,9 @@ const Navbars = ({ page }) => {
           </button>
         </div>
         {/* Open the modal using document.getElementById('ID').showModal() method */}
+        <Link to="/profile" className="btn btn-ghost text-lg text-white">
+            Stats
+        </Link>
         <div className="flex-none mr-2">
           <UserButton />
         </div>
