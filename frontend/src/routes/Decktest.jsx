@@ -24,32 +24,31 @@ const Decktest = () => {
   const [numQ, setNumQ] = useState(-1);//going to test adding different length of tests
   const [qUpdate, setQUpdate] = useState(false);
 
-  const handleNumQ = () => {//updates number of questions
-    const n = document.getElementById('numQuestions')
-    setNumQ(n.value);
-  }
-
-
   const [modalClosed, setModalClose] = useState(false);
   const [renderedQs, setRenderedQs] = useState(false);
 
-  useEffect(() => {
-    const modal = document.getElementById("my_modal_test")
 
+  const handleAccept = (e) => {
+    const n = document.getElementById('numQuestions');
+    if (n.value > 0) {
+      setNumQ(n.value);
+    } else {
+      e.preventDefault(); 
+    }
+  };
+
+
+
+  useEffect(() => {
+    const modal = document.getElementById("my_modal_test");
+  
     if (modal) {
       modal.showModal();
     }
-
-    modal.addEventListener('close', ()=> {
-      
-      const n = document.getElementById('numQuestions')
-      setNumQ(n.value);
-      
-    })
-  }, [])
+  }, []);
 
   useEffect(() => {
-    if (numQ !== -1) {
+    if (numQ >= 0) {
       setTestCards(randomFlash.slice(0, numQ));
       setQUpdate(true);
       setModalClose(true);
@@ -82,7 +81,7 @@ const Decktest = () => {
           </div>
             <div className="modal-action">
               <form method="dialog">
-                <button className="btn btn-secondary" onClick = {handleNumQ}>accept</button>
+                <button className="btn btn-secondary" onClick = {handleAccept}>accept</button>
               </form>
             </div>
           </div>
