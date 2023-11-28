@@ -121,7 +121,7 @@ const Decktest = () => {
         )}
           
         
-        <button className="btn btn-xs sm:btn-sm md:btn-md lg:btn-lg btn-outline btn-info mb-20 w-96">Submit</button>
+        <button className="btn btn-xs sm:btn-sm md:btn-md lg:btn-lg btn-outline btn-success mb-20 w-96">Submit</button>
       </div>)}
       
       <Footer></Footer>
