@@ -1,14 +1,53 @@
+import axios from "axios"
+import { useContext, useEffect, useState } from "react";
+import { useUser } from "@clerk/clerk-react"
 import Navbars from "../components/Navbars";
 import Footer from "../components/Footer";
 import { FlashcardContext } from "../App";
-import { useContext } from "react";
 import Flashcard from "../components/Flashcard";
 
 const FlashcardDeck = () => {
-  const { flashCards } = useContext(FlashcardContext);
+  const { flashCards, setFlashCards} = useContext(FlashcardContext);
+  const [loading, setLoading] = useState(true);
+  let ran = false;
+  const user = useUser().user;
+  const user_id = user?.id.toString();
+
+  useEffect(() => {
+    if (!ran) {
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+      ran = true;
+      setLoading(true);
+      axios
+        .get("/get_flashcards", {
+          params: {
+            user_id: user_id,
+          },
+        })
+        .then((res) => {
+          setFlashCards(res.data);
+          setLoading(false);
+        })
+        .catch((err) => {
+          console.log(err);
+          setLoading(false);
+        });
+    }
+  }, []);
 
   // if no cards, output empty cards
-  
+  if (loading) {
+    return (
+      <div className="bg-neutral">
+        <Navbars page="flashcards"></Navbars>
+        <div className="min-h-screen flex justify-center">
+          <span className="loading loading-infinity loading-lg self-center"></span>
+        </div>
+        <Footer></Footer>
+      </div>
+    );
+  }
+
   if (flashCards.length === 0) {
     return (
       <>
