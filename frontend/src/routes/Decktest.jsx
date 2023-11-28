@@ -2,7 +2,7 @@ import Navbars from "../components/Navbars";
 import Footer from "../components/Footer";
 import { FlashcardContext } from "../App";
 import { useContext } from "react";
-import { useState } from "react";
+import React, { useState, useEffect } from "react";
 import DeckcardTest from "../components/DeckcardTest";
 import TestNumbers from "../components/TestNumbers";
 
@@ -13,6 +13,7 @@ const Decktest = () => {
     const j = Math.floor(Math.random() * (i + 1));
     [randomFlash[i], randomFlash[j]] = [randomFlash[j], randomFlash[i]];
   }
+  const [testCards, setTestCards] = useState(randomFlash)
 
   const initialAnswers = Array.from({ length: flashCards.length }, () => "");
   const [answers, setAnswers] = useState(initialAnswers);
@@ -20,11 +21,49 @@ const Decktest = () => {
     Array.from({ length: flashCards.length }, () => -1)
   );
 
-  const [numQ, setNumQ] = useState(randomFlash.length);//going to test adding different length of tests
+  const [numQ, setNumQ] = useState(-1);//going to test adding different length of tests
+  const [qUpdate, setQUpdate] = useState(false);
 
-  const handleNumQ = (e) => {
-    setNumQ(e.target.value);
+  const handleNumQ = () => {//updates number of questions
+    const n = document.getElementById('numQuestions')
+    setNumQ(n.value);
   }
+
+
+  const [modalClosed, setModalClose] = useState(false);
+  const [renderedQs, setRenderedQs] = useState(false);
+
+  useEffect(() => {
+    const modal = document.getElementById("my_modal_test")
+
+    if (modal) {
+      modal.showModal();
+    }
+
+    modal.addEventListener('close', ()=> {
+      
+      const n = document.getElementById('numQuestions')
+      setNumQ(n.value);
+      
+    })
+  }, [])
+
+  useEffect(() => {
+    if (numQ !== -1) {
+      setTestCards(randomFlash.slice(0, numQ));
+      setQUpdate(true);
+      setModalClose(true);
+      setRenderedQs(true);
+    }
+  }, [numQ])
+
+
+  
+
+  
+  
+
+
 
 
 
@@ -34,12 +73,26 @@ const Decktest = () => {
     <div className="bg-neutral">
       <Navbars page="test"></Navbars>
       <div className="mt-24 bg-neutral"></div>
-      <div className=" min-h-screen flex flex-col items-center justify-center">
+      <dialog id="my_modal_test" className="modal">
+          <div className="modal-box">
+          <h3 className="font-bold text-lg">Hello!</h3>
+          <div className = "flex flex-row">
+          <p className="py-4 mr-5">How many questions would you like?</p>
+          <input id = "numQuestions" type="text" placeholder="Type here" className="input input-bordered input-secondary w-1/4 max-w-xs"/>
+          </div>
+            <div className="modal-action">
+              <form method="dialog">
+                <button className="btn btn-secondary" onClick = {handleNumQ}>accept</button>
+              </form>
+            </div>
+          </div>
+        </dialog>
+      {modalClosed && qUpdate && (<div className=" min-h-screen flex flex-col items-center justify-center">
       <h1 className = "text-4xl font-bold mb-5">Time to <span className="animate-text bg-gradient-to-r from-teal-800 via-green-700 to-blue-800 bg-clip-text text-transparent font-black">
                 Quizify
               </span>!</h1>
       <div className="flex flex-nowrap overflow-x-auto" style = {{maxWidth: "50%"}}>
-          {randomFlash.map((card, i) => (
+          {testCards.map((card, i) => (
             <TestNumbers
               key={i}
               scrollTo={`element${i}`}
@@ -47,9 +100,9 @@ const Decktest = () => {
             />
           ))}
         </div>
-          
-        <ul className="grid lg:grid-cols-2 sm:grid-cols-1 gap-4 m-4">
-          {randomFlash.map((card, i) => (
+        {renderedQs && (
+          <ul className="grid lg:grid-cols-2 sm:grid-cols-1 gap-4 m-4">
+          {testCards.map((card, i) => (
             <DeckcardTest
               id={`element${i}`}
               key={i}
@@ -63,8 +116,12 @@ const Decktest = () => {
           ))}
           
         </ul>
+          
+        )}
+          
+        
         <button className="btn btn-xs sm:btn-sm md:btn-md lg:btn-lg btn-outline btn-info mb-20 w-96">Submit</button>
-      </div>
+      </div>)}
       
       <Footer></Footer>
     </div>
