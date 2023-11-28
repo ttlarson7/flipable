@@ -5,6 +5,7 @@ import { useContext } from "react";
 import React, { useState, useEffect } from "react";
 import DeckcardTest from "../components/DeckcardTest";
 import TestNumbers from "../components/TestNumbers";
+import Loading from "../components/Loading";
 
 const Decktest = () => {
   const { flashCards } = useContext(FlashcardContext);
@@ -72,6 +73,7 @@ const Decktest = () => {
     <div className="bg-neutral">
       <Navbars page="test"></Navbars>
       <div className="mt-24 bg-neutral"></div>
+      {!modalClosed && <Loading />}
       <dialog id="my_modal_test" className="modal">
           <div className="modal-box">
           <h3 className="font-bold text-lg">Hello!</h3>
