@@ -125,6 +125,7 @@ app.post('/add_deck', async(req, res) => {
         console.error(error);
         res.status(404);
     }
+
 })
 
 app.post('/add_card/:decknum', async(req, res) => {
@@ -143,7 +144,6 @@ app.post('/add_card/:decknum', async(req, res) => {
         console.error(error);
         res.status(404);
     }
-})
 
 app.get('/get_decks', async(req, res) => {
     try {
@@ -186,7 +186,6 @@ function removeCard(parentId, deckIndex, cardIndex){
         console.log("error");
     }
 }
-
 
 app.get('/', function (req, res) {
     res.send("Hello World!");
