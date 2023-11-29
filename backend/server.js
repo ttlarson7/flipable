@@ -109,43 +109,41 @@ function addUser(newId){
     }
 }
 
-function addDeck(deckName, deckCategory, deckDesc, i, parentId){
+app.post('/add_deck', async(req, res) => {
+    // deckName, deckCategory, deckDesc
     try{
-        const newDeck = Deck.create({
-            name: deckName,
-            category: deckCategory,
-            description: deckDesc,
-            cards: [],
-            index: i,
-            parentUser: parentId
-        });
+        const newDeck = {
+            name: req.body.deckName,
+            category: req.body.deckCategory,
+            description: req.body.deckDesc
+        };
         //add deck to current user's deck array, update mongoDB
-        const currentUser = User.findOne({userId: parentId});
+        const currentUser = User.findOne({userId: req.body.user_id});
         currentUser.decks.push(newDeck);
         currentUser.save();
-        console.log("success");
     } catch{
-        console.log("error");
+        console.error(error);
+        res.status(404);
     }
-}
+})
 
-function addCard(cardTerm, cardDef, cardDeck, cardUser){
+app.post('/add_card/:decknum', async(req, res) => {
+    // cardTerm, cardDef
     try{
-        const newCard = Card.create({
-            term: cardTerm,
-            definition: cardDef,
-            parentDeck: cardDeck,
-            parentUser: cardUser
-        });
+        const newCard = {
+            term: req.body.cardTerm,
+            definition: req.body.cardDef,
+            deckNum: req.params.decknum
+        };
         //add card to current user's deck, update mongoDB
-        const currentUser = User.findOne({userId: cardUser});
+        const currentUser = User.findOne({userId: req.body.user_id});
         currentUser.decks[cardDeck].push(newCard);
         currentUser.save();
-        console.log("success");
     } catch{
-        console.log("error");
+        console.error(error);
+        res.status(404);
     }
-}
+})
 
 app.get('/get_decks', async(req, res) => {
     try {
@@ -188,21 +186,6 @@ function removeCard(parentId, deckIndex, cardIndex){
         console.log("error");
     }
 }
-
-//remove card from deck, pass in parent user ID, index of deck card is in (i), and index of card (j)
-// app.post('/removecard', async(req, res) => {
-//     try{
-//         const currentUser = User.findOne({userId: req.body.parentUser});
-//         currentUser.decks[res.body.i].splice(res.body.j, 1);
-//         currentUser.save();
-//     } catch{
-//         res.send("error");
-//     }
-// });
-
-
-
-
 
 
 app.get('/', function (req, res) {
