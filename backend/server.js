@@ -204,6 +204,28 @@ function addCard(cardTerm, cardDef, cardDeck, cardUser){
 //     }
 // });
 
+app.get('/get_decks', async(req, res) => {
+    try {
+        const currentUser = User.findOneandUpdate({userId: parentId});
+        const decks = currentUser.decks;
+        console.log("success");
+        return decks;
+    } catch {
+        console.log("error");
+    }
+})
+
+app.get('/get_flashcards', async(req, res) => {
+    try {
+        const currentUser = User.findOneandUpdate({userId: parentId});
+        const card = currentUser.decks[cardDeck];
+        console.log("success");
+        return card;
+    } catch {
+        console.log("failure");
+    }
+})
+
 function removeDeck(parentId, deckIndex){
     try{
         const currentUser = User.findOne({userId: parentId});
@@ -252,12 +274,11 @@ function removeCard(parentId, deckIndex, cardIndex){
 
 
 
-app.get('/', (req, res) => {
+app.get('/', function (req, res) {
     res.send("Hello World!");
     addUser("23rjklsd908f0s");
     addDeck("CS 261", "Computer Science", "Data structures flashcards", 0, "23rjklsd908f0s");
     addCard("Array", "Collection of items of same data type stored at contiguous memory locations", 0, "23rjklsd908f0s");
-  
 })
 
 
