@@ -31,69 +31,24 @@ async function main() {
 const Schema = mongoose.Schema;
 
 const userSchema = new Schema({
-    userId: {
-        type: String, 
-        required: true
-    },
-    decks: [{
-        type: Schema.Types.ObjectId, 
-        ref: "Deck"
-    }],
+    userId: String, 
+    decks: [
+        {
+            title: String,
+            category: String,
+            description: String,
+            cards: [
+                {
+                    term: String,
+                    definition: String
+                }
+            ]
+        }
+    ]
 });
 
-const deckSchema = new Schema({
-    name: {
-        type: String,
-        required: true
-    },
-    category: {
-        type: String,
-        required: true
-    },
-    description: {
-        type: String,
-        required: true
-    },
-    cards: [{
-        type: Schema.Types.ObjectId, 
-        ref: "Card",
-        required: true
-    }],
-    index: {
-        type: Number,
-        required: true
-    },
-    parentUser: {
-        //user id of parent user
-        type: String,
-        required: true
-    },
-});
-
-const cardSchema = new Schema({
-    term: {
-        type: String,
-        required: true
-    },
-    definition: {
-        type: String,
-        required: true
-    },
-    parentDeck: {
-        //index of parent deck
-        type: Number,
-        required: true
-    },
-    parentUser: {
-        //user id of parent user
-        type: String,
-        required: true
-    }
-});
 
 const User = mongoose.model("User", userSchema);
-const Deck = mongoose.model("Deck", deckSchema);
-const Card = mongoose.model("Card", cardSchema);
 
 function addUser(newId){
     try{
@@ -144,6 +99,7 @@ app.post('/add_card/:decknum', async(req, res) => {
         console.error(error);
         res.status(404);
     }
+});
 
 app.get('/get_decks', async(req, res) => {
     try {
