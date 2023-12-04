@@ -13,6 +13,7 @@ const Navbars = ({ page }) => {
   const [flashcardTerm, setFlashcardTerm] = useState("");
   const [flashcardDef, setFlashcardDef] = useState("");
 
+
   if (page === "landing") {
     return (
       <>
@@ -62,11 +63,6 @@ const Navbars = ({ page }) => {
     setDeckName("");
     setDeckDesc("");
     setDeckCategory("");
-  };
-
-  const handleClose = () => {
-    setDeckName("");
-    setDeckDesc("");
   };
 
   const handleDeckAccept = () => {
@@ -147,8 +143,8 @@ const Navbars = ({ page }) => {
             </div>
           </dialog>
         </div>
-        <Link to="/profile" className="btn btn-ghost text-lg text-white">
-            Stats
+        <Link to="/stats" className="btn btn-ghost text-lg text-white">
+          Stats
         </Link>
         <div className="flex-2 mr-2">
           <UserButton />
@@ -171,6 +167,11 @@ const Navbars = ({ page }) => {
     setFlashcardTerm("");
   };
 
+  const handleCardCancel = () => {
+    setFlashcardDef("");
+    setFlashcardTerm("");
+  };
+
   if (page == "flashcards") {
     return (
       <div className="navbar glass top-0 fixed z-50 bg-neutral">
@@ -178,7 +179,10 @@ const Navbars = ({ page }) => {
           <Link to="/" className="btn btn-ghost text-lg text-white">
             Quizify
           </Link>
-          <button onClick={() => navigate(-1)} className="btn btn-ghost text-md text-white">
+          <button
+            onClick={() => navigate(-1)}
+            className="btn btn-ghost text-md text-white"
+          >
             <FaCaretLeft></FaCaretLeft>Back
           </button>
           {/* Open the modal using document.getElementById('ID').showModal() method */}
@@ -228,7 +232,7 @@ const Navbars = ({ page }) => {
                   {/* if there is a button in form, it will close the modal */}
                   <button
                     className="btn mr-8 hover:btn-error text-error font-semibold hover:text-white border border-error hover:border-transparent rounded-lg"
-                    onClick={handleClose}
+                    onClick={handleCardCancel}
                   >
                     Close
                   </button>
@@ -238,14 +242,13 @@ const Navbars = ({ page }) => {
                   >
                     Add
                   </button>
-
                 </form>
               </div>
             </div>
           </dialog>
         </div>
-        <Link to="/profile" className="btn btn-ghost text-lg text-white">
-            Stats
+        <Link to="/stats" className="btn btn-ghost text-lg text-white">
+          Stats
         </Link>
         <div className="flex-2 mr-2">
           <UserButton />
@@ -261,13 +264,16 @@ const Navbars = ({ page }) => {
           <Link to="/" className="btn btn-ghost text-lg text-white">
             Quizify
           </Link>
-          <button onClick={() => navigate(-1)} className="btn btn-ghost text-md text-white">
+          <button
+            onClick={() => navigate(-1)}
+            className="btn btn-ghost text-md text-white"
+          >
             <FaCaretLeft></FaCaretLeft>Back
           </button>
         </div>
         {/* Open the modal using document.getElementById('ID').showModal() method */}
-        <Link to="/profile" className="btn btn-ghost text-lg text-white">
-            Stats
+        <Link to="/stats" className="btn btn-ghost text-lg text-white">
+          Stats
         </Link>
         <div className="flex-none mr-2">
           <UserButton />
