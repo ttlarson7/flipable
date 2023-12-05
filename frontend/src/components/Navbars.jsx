@@ -2,12 +2,15 @@
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { UserButton, SignedIn, SignedOut } from "@clerk/nextjs";
 import { FaPlus, FaCaretLeft } from "react-icons/fa";
+import { useContext } from "react";
 import axios from "axios"
 import { useState } from "react";
+import { useUser } from "@clerk/clerk-react";
 
 const Navbars = ({ page }) => {
   const navigate = useNavigate();
-  const { flashCards, setFlashCards} = useContext(FlashcardContext);
+  const { flashCards, setFlashCards } = useContext(FlashcardContext);
+  const { user } = useUser();
   const [deckName, setDeckName] = useState("");
   const [deckDesc, setDeckDesc] = useState("");
   const [deckCategory, setDeckCategory] = useState("");
@@ -73,10 +76,25 @@ const Navbars = ({ page }) => {
 
   const handleDeckAccept = () => {
     //set up axios call to add deck to backend
+    
+    const newDeck = {
+      deckName: deckName,
+      deckDesc: deckDesc,
+      deckCategory: deckCategory,
+      userId: user.id,
+    }
+    setFlashCards([...flashCards, newTerm]);
+    axios
+      .post(`/addDeck`, newDeck)
+      .catch((err) => console.log(err));
+
+    
     setDeckDesc("");
     setDeckName("");
     setDeckCategory("");
   };
+
+  
 
   
 
@@ -180,7 +198,7 @@ const Navbars = ({ page }) => {
     }
     setFlashCards([...flashCards, newTerm]);
     axios
-      .post(`/add_card/${deckNum}`, newTerm)
+      .post(`/addCard/${deckNum}`, newTerm)
       .catch((err) => console.log(err));
       setFlashcardDef("");
       setFlashcardTerm("");
