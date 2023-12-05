@@ -144,6 +144,7 @@ app.post('/addCard/:decknum', async(req, res) => {
         console.error(error);
         res.status(404);
     }
+});
 
 app.get('/getDecks', async(req, res) => {
     try {
