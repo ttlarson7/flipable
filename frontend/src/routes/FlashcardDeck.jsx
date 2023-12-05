@@ -1,5 +1,6 @@
 import axios from "axios"
 import { useContext, useEffect, useState } from "react";
+import { useParams } from "react-router-dom"
 import { useUser } from "@clerk/clerk-react"
 import Navbars from "../components/Navbars";
 import Footer from "../components/Footer";
@@ -12,6 +13,7 @@ const FlashcardDeck = () => {
   let ran = false;
   const user = useUser().user;
   const user_id = user?.id.toString();
+  const { deckNum } = useParams();
 
   useEffect(() => {
     if (!ran) {
@@ -19,7 +21,7 @@ const FlashcardDeck = () => {
       ran = true;
       setLoading(true);
       axios
-        .get("/get_flashcards", {
+        .get(`/get_flashcards/${deckNum}`, {
           params: {
             user_id: user_id,
           },

@@ -125,6 +125,7 @@ app.post('/addDeck', async(req, res) => {
         console.error(error);
         res.status(404);
     }
+
 })
 
 app.post('/addCard/:decknum', async(req, res) => {
@@ -143,7 +144,6 @@ app.post('/addCard/:decknum', async(req, res) => {
         console.error(error);
         res.status(404);
     }
-})
 
 app.get('/getDecks', async(req, res) => {
     try {
@@ -188,7 +188,6 @@ app.get('/deleteCard', async(req, res) => {
         res.status(404).send('Internal Server Error');
     }
 })
-
 
 app.get('/', function (req, res) {
     res.send("Hello World!");
