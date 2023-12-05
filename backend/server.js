@@ -7,7 +7,7 @@ const mongoose = require('mongoose');
 
 
 const DBURL = process.env.MONGODB_DATABASE_URL
-app.use(cors())
+app.use(cors());
 
 if (!process.env.MONGODB_DATABASE_URL) {
     console.error('MongoDB URL is not provided!');
@@ -16,7 +16,7 @@ if (!process.env.MONGODB_DATABASE_URL) {
 
 main().catch(err => console.log(err));
 
-await mongoose.connect(`${DBURL}`);
+mongoose.connect(`${DBURL}`);
 
 async function main() {
   addUser("23rjklsd908f0s");
@@ -190,18 +190,11 @@ app.get('/deleteCard', async(req, res) => {
     }
 })
 
-app.get('/', function (req, res) {
+app.get('/', async (req, res) => {
     res.send("Hello World!");
-    addUser("23rjklsd908f0s");
-    addDeck("CS 261", "Computer Science", "Data structures flashcards", 0, "23rjklsd908f0s");
-    addCard("Array", "Collection of items of same data type stored at contiguous memory locations", 0, "23rjklsd908f0s");
 })
 
 
 app.listen(PORT, () => {
     console.log('Server is running on port: ' + PORT);
 });
-
-
-
-
