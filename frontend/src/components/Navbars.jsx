@@ -1,12 +1,13 @@
 // a component which will conditionally render our Navbar as to not require 3 different components
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { UserButton, SignedIn, SignedOut } from "@clerk/nextjs";
 import { FaPlus, FaCaretLeft } from "react-icons/fa";
-
+import axios from "axios"
 import { useState } from "react";
 
 const Navbars = ({ page }) => {
   const navigate = useNavigate();
+  const { flashCards, setFlashCards} = useContext(FlashcardContext);
   const [deckName, setDeckName] = useState("");
   const [deckDesc, setDeckDesc] = useState("");
   const [deckCategory, setDeckCategory] = useState("");
@@ -65,12 +66,19 @@ const Navbars = ({ page }) => {
     setDeckCategory("");
   };
 
+  const handleClose = () => {
+    setDeckName("");
+    setDeckDesc("");
+  };
+
   const handleDeckAccept = () => {
     //set up axios call to add deck to backend
     setDeckDesc("");
     setDeckName("");
     setDeckCategory("");
   };
+
+  
 
   if (page == "decks") {
     return (
@@ -144,7 +152,7 @@ const Navbars = ({ page }) => {
           </dialog>
         </div>
         <Link to="/stats" className="btn btn-ghost text-lg text-white">
-          Stats
+            Stats
         </Link>
         <div className="flex-2 mr-2">
           <UserButton />
@@ -161,16 +169,22 @@ const Navbars = ({ page }) => {
     setFlashcardDef(e.target.value);
   };
 
+
   const handleCardAccept = () => {
     //set up axios call to add deck to backend
-    setFlashcardDef("");
-    setFlashcardTerm("");
-  };
-
-  const handleCardCancel = () => {
-    setFlashcardDef("");
-    setFlashcardTerm("");
-  };
+    const { deckNum } = useParams();
+    
+    const newTerm = {
+      term: flashcardTerm,
+      definition: flashcardDef,
+    }
+    setFlashCards([...flashCards, newTerm]);
+    axios
+      .post(`/add_card/${deckNum}`, newTerm)
+      .catch((err) => console.log(err));
+      setFlashcardDef("");
+      setFlashcardTerm("");
+    };
 
   if (page == "flashcards") {
     return (
@@ -179,10 +193,7 @@ const Navbars = ({ page }) => {
           <Link to="/" className="btn btn-ghost text-lg text-white">
             Quizify
           </Link>
-          <button
-            onClick={() => navigate(-1)}
-            className="btn btn-ghost text-md text-white"
-          >
+          <button onClick={() => navigate(-1)} className="btn btn-ghost text-md text-white">
             <FaCaretLeft></FaCaretLeft>Back
           </button>
           {/* Open the modal using document.getElementById('ID').showModal() method */}
@@ -232,7 +243,7 @@ const Navbars = ({ page }) => {
                   {/* if there is a button in form, it will close the modal */}
                   <button
                     className="btn mr-8 hover:btn-error text-error font-semibold hover:text-white border border-error hover:border-transparent rounded-lg"
-                    onClick={handleCardCancel}
+                    onClick={handleClose}
                   >
                     Close
                   </button>
@@ -242,13 +253,14 @@ const Navbars = ({ page }) => {
                   >
                     Add
                   </button>
+
                 </form>
               </div>
             </div>
           </dialog>
         </div>
         <Link to="/stats" className="btn btn-ghost text-lg text-white">
-          Stats
+            Stats
         </Link>
         <div className="flex-2 mr-2">
           <UserButton />
@@ -264,16 +276,13 @@ const Navbars = ({ page }) => {
           <Link to="/" className="btn btn-ghost text-lg text-white">
             Quizify
           </Link>
-          <button
-            onClick={() => navigate(-1)}
-            className="btn btn-ghost text-md text-white"
-          >
+          <button onClick={() => navigate(-1)} className="btn btn-ghost text-md text-white">
             <FaCaretLeft></FaCaretLeft>Back
           </button>
         </div>
         {/* Open the modal using document.getElementById('ID').showModal() method */}
         <Link to="/stats" className="btn btn-ghost text-lg text-white">
-          Stats
+            Stats
         </Link>
         <div className="flex-none mr-2">
           <UserButton />
