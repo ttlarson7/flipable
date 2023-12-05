@@ -2,21 +2,25 @@
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { UserButton, SignedIn, SignedOut } from "@clerk/nextjs";
 import { FaPlus, FaCaretLeft } from "react-icons/fa";
-import { useContext } from "react";
-import axios from "axios"
+import axios from "axios";
 import { useState } from "react";
 import { useUser } from "@clerk/clerk-react";
 
-const Navbars = ({ page }) => {
+const Navbars = ({
+  page,
+  flashCards,
+  setFlashCards,
+  flashDecks,
+  setFlashcardDecks,
+}) => {
+  const { deckNum } = useParams();
   const navigate = useNavigate();
-  const { flashCards, setFlashCards } = useContext(FlashcardContext);
   const user = useUser().user;
   const [deckName, setDeckName] = useState("");
   const [deckDesc, setDeckDesc] = useState("");
-  const [deckCategory, setDeckCategory] = useState("");
+  const [deckCategory, setDeckCategory] = useState("Math");
   const [flashcardTerm, setFlashcardTerm] = useState("");
   const [flashcardDef, setFlashcardDef] = useState("");
-
 
   if (page === "landing") {
     return (
@@ -66,37 +70,32 @@ const Navbars = ({ page }) => {
   const handleDeckClose = () => {
     setDeckName("");
     setDeckDesc("");
-    setDeckCategory("");
+    setDeckCategory("Math");
   };
 
   const handleClose = () => {
     setDeckName("");
     setDeckDesc("");
+    setDeckCategory("Math");
   };
 
   const handleDeckAccept = () => {
     //set up axios call to add deck to backend
-    
+
     const newDeck = {
       deckName: deckName,
       deckDesc: deckDesc,
       deckCategory: deckCategory,
       userId: user?.id.toString(),
-    }
-    setFlashCards([...flashCards, newTerm]);
-    axios
-      .post(`/addDeck`, newDeck)
-      .catch((err) => console.log(err));
+    };
+    console.log(flashDecks, newDeck);
+    setFlashcardDecks([...flashDecks, newDeck]);
+    axios.post(`/addDeck`, newDeck).catch((err) => console.log(err));
 
-    
     setDeckDesc("");
     setDeckName("");
     setDeckCategory("");
   };
-
-  
-
-  
 
   if (page == "decks") {
     return (
@@ -138,16 +137,22 @@ const Navbars = ({ page }) => {
                 onChange={handleDeckCategory}
                 value={deckCategory}
               >
-                <option disabled defaultValue={true}>
-                  Category
-                </option>
                 <option>Math</option>
-                <option>Science</option>
-                <option>Econ</option>
-                <option>Language Arts</option>
+                <option>Comp Sci</option>
                 <option>Engineering</option>
+                <option>Science</option>
+                <option>Biology</option>
+                <option>Physics</option>
+                <option>Chemistry</option>
+                <option>Geography</option>
+                <option>Econ</option>
+                <option>Physical education</option>
+                <option>Drama</option>
+                <option>Music</option>
+                <option>Psychology</option>
+                <option>Language Arts</option>
+                <option>History</option>
                 <option>Art</option>
-                <option>Language</option>
               </select>
               <div className="modal-action flex">
                 <form method="dialog" className="flex justify-center w-full">
@@ -170,7 +175,7 @@ const Navbars = ({ page }) => {
           </dialog>
         </div>
         <Link to="/stats" className="btn btn-ghost text-lg text-white">
-            Stats
+          Stats
         </Link>
         <div className="flex-2 mr-2">
           <UserButton />
@@ -187,22 +192,18 @@ const Navbars = ({ page }) => {
     setFlashcardDef(e.target.value);
   };
 
-
   const handleCardAccept = () => {
     //set up axios call to add deck to backend
-    const { deckNum } = useParams();
-    
+
     const newTerm = {
       term: flashcardTerm,
       definition: flashcardDef,
-    }
-    setFlashCards([...flashCards, newTerm]);
-    axios
-      .post(`/addCard/${deckNum}`, newTerm)
-      .catch((err) => console.log(err));
-      setFlashcardDef("");
-      setFlashcardTerm("");
     };
+    setFlashCards([...flashCards, newTerm]);
+    axios.post(`/addCard/${deckNum}`, newTerm).catch((err) => console.log(err));
+    setFlashcardDef("");
+    setFlashcardTerm("");
+  };
 
   if (page == "flashcards") {
     return (
@@ -211,7 +212,10 @@ const Navbars = ({ page }) => {
           <Link to="/" className="btn btn-ghost text-lg text-white">
             Quizify
           </Link>
-          <button onClick={() => navigate(-1)} className="btn btn-ghost text-md text-white">
+          <button
+            onClick={() => navigate(-1)}
+            className="btn btn-ghost text-md text-white"
+          >
             <FaCaretLeft></FaCaretLeft>Back
           </button>
           {/* Open the modal using document.getElementById('ID').showModal() method */}
@@ -271,14 +275,13 @@ const Navbars = ({ page }) => {
                   >
                     Add
                   </button>
-
                 </form>
               </div>
             </div>
           </dialog>
         </div>
         <Link to="/stats" className="btn btn-ghost text-lg text-white">
-            Stats
+          Stats
         </Link>
         <div className="flex-2 mr-2">
           <UserButton />
@@ -294,13 +297,15 @@ const Navbars = ({ page }) => {
           <Link to="/" className="btn btn-ghost text-lg text-white">
             Quizify
           </Link>
-          <button onClick={() => navigate(-1)} className="btn btn-ghost text-md text-white">
+          <button
+            onClick={() => navigate(-1)}
+            className="btn btn-ghost text-md text-white"
+          >
             <FaCaretLeft></FaCaretLeft>Back
           </button>
         </div>
-        {/* Open the modal using document.getElementById('ID').showModal() method */}
         <Link to="/stats" className="btn btn-ghost text-lg text-white">
-            Stats
+          Stats
         </Link>
         <div className="flex-none mr-2">
           <UserButton />

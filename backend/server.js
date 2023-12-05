@@ -1,31 +1,32 @@
-const dotenv = require('dotenv');
+const dotenv = require("dotenv");
 dotenv.config();
-const express = require('express')
-const cors = require('cors')
-const app = express()
-process.env['PORT'] = 3001;
+const express = require("express");
+const cors = require("cors");
+const app = express();
 const PORT = process.env.PORT || 3001;
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 let grading;
 try {
-  grading = import('./../AI/grading.js');
+  grading = import("./../AI/grading.js");
 } catch (error) {
-  console.error('Error importing grading.js:', error);
+  console.error("Error importing grading.js:", error);
 }
 
-
-const DBURL = process.env.MONGODB_DATABASE_URL
-app.use(cors())
+const DBURL = process.env.MONGODB_DATABASE_URL;
+app.use(cors());
 
 if (!process.env.MONGODB_DATABASE_URL) {
-    console.error('MongoDB URL is not provided!');
-    process.exit(1);
+  console.error("MongoDB URL is not provided!");
+  process.exit(1);
 }
 
 // main().catch(err => console.log(err));
 
-mongoose.connect(`${DBURL}`);
+mongoose
+  .connect(`${DBURL}`)
+  .then(console.log("Connected to DB"))
+  .catch((err) => console.log(err));
 
 // async function main() {
 //   addUser("23rjklsd908f0s");
@@ -36,128 +37,123 @@ mongoose.connect(`${DBURL}`);
 const Schema = mongoose.Schema;
 
 const userSchema = new Schema({
-    userId: String, 
-    decks: [
+  userId: String,
+  decks: [
+    {
+      title: String,
+      category: String,
+      description: String,
+      cards: [
         {
-            title: String,
-            category: String,
-            description: String,
-            cards: [
-                {
-                    term: String,
-                    definition: String
-                }
-            ]
-        }
-    ]
+          term: String,
+          definition: String,
+        },
+      ],
+    },
+  ],
 });
-
 
 const User = mongoose.model("User", userSchema);
 
-
-app.post('/addDeck', async(req, res) => {
-    // deckName, deckCategory, deckDesc
-    try{
-        const newDeck = {
-            name: req.body.deckName,
-            category: req.body.deckCategory,
-            description: req.body.deckDesc,
-            cards: []
-        };
-        //add deck to current user's deck array, update mongoDB
-        const currentUser = User.findOneAndUpdate(
-            {userId: req.body.user_id},
-            {upsert: true}
-        );
-        currentUser.decks.push(newDeck);
-        currentUser.save();
-        res.status(200).send('Deck added successfully');
-    } catch{
-        console.error(error);
-        res.status(400);
-    }
+app.post("/addDeck", async (req, res) => {
+  // deckName, deckCategory, deckDesc
+  try {
+    const newDeck = {
+      name: req.body.deckName,
+      category: req.body.deckCategory,
+      description: req.body.deckDesc,
+      cards: [],
+    };
+    //add deck to current user's deck array, update mongoDB
+    const currentUser = User.findOneAndUpdate(
+      { userId: req.body.user_id },
+      { new: true, upsert: true }
+    );
+    currentUser.decks.push(newDeck);
+    currentUser.save();
+    res.status(200).send("Deck added successfully");
+  } catch {
+    console.error(error);
+    res.status(400);
+  }
 });
 
-
-app.post('/addCard/:decknum', async(req, res) => {
-    // cardTerm, cardDef
-    try{
-        const newCard = {
-            term: req.body.cardTerm,
-            definition: req.body.cardDef,
-            deckNum: req.params.decknum
-        };
-        //add card to current user's deck, update mongoDB
-        const currentUser = await User.findOne({userId: req.body.userId});
-        currentUser.decks[cardDeck].push(newCard);
-        currentUser.save();
-        res.status(200);
-    } catch{
-        console.error(error);
-        res.status(400);
-    }
+app.post("/addCard/:decknum", async (req, res) => {
+  // cardTerm, cardDef
+  try {
+    const newCard = {
+      term: req.body.cardTerm,
+      definition: req.body.cardDef,
+    };
+    //add card to current user's deck, update mongoDB
+    const currentUser = await User.findOne({ userId: req.body.userId });
+    currentUser.decks[req.params.decknum].push(newCard);
+    currentUser.save();
+    res.status(200);
+  } catch {
+    console.error(error);
+    res.status(400);
+  }
 });
 
 //calls test, passes in real definitions, test definitions, terms
-app.post('/test', async(req, res) => {
-    const finalGrade = await grading(req.body.realDef, req.body.testDef, req.body.terms);
-    res.status(200).send(finalGrade);
+app.post("/test", async (req, res) => {
+  const finalGrade = await grading(
+    req.body.realDef,
+    req.body.testDef,
+    req.body.terms
+  );
+  res.status(200).send(finalGrade);
 });
 
-app.get('/getDecks', async(req, res) => {
-    try {
-        const result = await User.findOne({userId: req.query.userId});
-        res.json(result.cardDeck);
-    } catch (error) {
-        console.error(error);
-        res.status(404).send('Internal Server Error');
-    }
+app.get("/getDecks", async (req, res) => {
+  try {
+    const result = await User.findOne({ userId: req.query.userId });
+    res.json(result.cardDeck);
+  } catch (error) {
+    console.error(error);
+    res.status(404).send("Internal Server Error");
+  }
 });
 
-app.get('/getFlashcards/:decknum', async (req, res) => {
-    try {
-        const result = await User.findOne({userId: req.query.userId});
-        const deckNum = req.params.decknum;
-        res.json(result.cardDeck[deckNum]);
-    } catch (error) {
-        console.error(error);
-        res.status(404).send('Internal Server Error');
-    }
+app.get("/getFlashcards/:decknum", async (req, res) => {
+  try {
+    const result = await User.findOne({ userId: req.query.userId });
+    const deckNum = req.params.decknum;
+    res.json(result.cardDeck[deckNum]);
+  } catch (error) {
+    console.error(error);
+    res.status(404).send("Internal Server Error");
+  }
 });
 
-app.get('/deleteDecks', async(req, res) => {
-    try{
-        const currentUser = User.findOne({userId: req.query.userId});
-        currentUser.decks.splice(deckIndex, 1);
-        currentUser.save();
-        res.status(200);
-    } catch (error) {
-        console.error(error);
-        res.status(404).send('Internal Server Error');
-    }
+app.delete("/deleteDecks", async (req, res) => {
+  try {
+    const currentUser = User.findOne({ userId: req.query.userId });
+    currentUser.decks.splice(deckIndex, 1);
+    currentUser.save();
+    res.status(200);
+  } catch (error) {
+    console.error(error);
+    res.status(404).send("Internal Server Error");
+  }
 });
 
-app.get('/deleteCard', async(req, res) => {
-    try{
-        const currentUser = User.findOne({userId: req.query.userId});
-        currentUser.decks[deckIndex].splice(cardIndex, 1);
-        currentUser.save();
-    } catch (error) {
-        console.error(error);
-        res.status(404).send('Internal Server Error');
-    }
-})
-
-app.get('/', function (req, res) {
-    res.send("Hello World!");
+app.delete("/deleteCard", async (req, res) => {
+  try {
+    const currentUser = User.findOne({ userId: req.query.userId });
+    currentUser.decks[deckIndex].splice(cardIndex, 1);
+    currentUser.save();
+  } catch (error) {
+    console.error(error);
+    res.status(404).send("Internal Server Error");
+  }
 });
 
+app.get("/", function (req, res) {
+  res.send("Hello World!");
+});
 
 app.listen(PORT, () => {
-    console.log('Server is running on port: ' + PORT);
+  console.log("Server is running on port: " + PORT);
 });
-
-
-
-
