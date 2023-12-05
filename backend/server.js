@@ -1,11 +1,18 @@
-require('dotenv').config()
+const dotenv = require('dotenv');
+dotenv.config();
 const express = require('express')
 const cors = require('cors')
 const app = express()
 process.env['PORT'] = 3001;
+const PORT = process.env.PORT || 3001;
 const mongoose = require('mongoose');
 
-const grading = require('./../AI/grading.js');
+let grading;
+try {
+  grading = import('./../AI/grading.js');
+} catch (error) {
+  console.error('Error importing grading.js:', error);
+}
 
 
 const DBURL = process.env.MONGODB_DATABASE_URL
@@ -16,15 +23,15 @@ if (!process.env.MONGODB_DATABASE_URL) {
     process.exit(1);
 }
 
-main().catch(err => console.log(err));
+// main().catch(err => console.log(err));
 
-await mongoose.connect(`${DBURL}`);
+mongoose.connect(`${DBURL}`);
 
-async function main() {
-  addUser("23rjklsd908f0s");
-  addDeck("CS 261", "Computer Science", "Data structures flashcards", 0, "23rjklsd908f0s");
-  addCard("Array", "Collection of items of same data type stored at contiguous memory locations", 0, "23rjklsd908f0s");
-}
+// async function main() {
+//   addUser("23rjklsd908f0s");
+//   addDeck("CS 261", "Computer Science", "Data structures flashcards", 0, "23rjklsd908f0s");
+//   addCard("Array", "Collection of items of same data type stored at contiguous memory locations", 0, "23rjklsd908f0s");
+// }
 
 const Schema = mongoose.Schema;
 
@@ -61,22 +68,17 @@ app.post('/addDeck', async(req, res) => {
         //add deck to current user's deck array, update mongoDB
         const currentUser = User.findOneAndUpdate(
             {userId: req.body.user_id},
-        const currentUser = await User.findOneAndUpdate(
-            {userId: req.body.userId},
             {upsert: true}
         );
         currentUser.decks.push(newDeck);
         currentUser.save();
-        res.status(200);
-=======
-        res.send(200);
+        res.status(200).send('Deck added successfully');
     } catch{
         console.error(error);
         res.status(400);
     }
 });
 
-})
 
 app.post('/addCard/:decknum', async(req, res) => {
     // cardTerm, cardDef
