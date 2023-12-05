@@ -56,15 +56,18 @@ app.post('/add_deck', async(req, res) => {
             description: req.body.deckDesc
         };
         //add deck to current user's deck array, update mongoDB
-        const currentUser = User.findOne({userId: req.body.user_id});
+        const currentUser = await User.findOneAndUpdate(
+            {userId: req.body.user_id},
+            {upsert: true}
+        );
         currentUser.decks.push(newDeck);
         currentUser.save();
+        res.send(200);
     } catch{
         console.error(error);
-        res.status(404);
+        res.status(400);
     }
-
-})
+});
 
 app.post('/add_card/:decknum', async(req, res) => {
     // cardTerm, cardDef
@@ -75,12 +78,13 @@ app.post('/add_card/:decknum', async(req, res) => {
             deckNum: req.params.decknum
         };
         //add card to current user's deck, update mongoDB
-        const currentUser = User.findOne({userId: req.body.user_id});
+        const currentUser = await User.findOne({userId: req.body.user_id});
         currentUser.decks[cardDeck].push(newCard);
         currentUser.save();
+        res.status(200);
     } catch{
         console.error(error);
-        res.status(404);
+        res.status(400);
     }
 });
 
