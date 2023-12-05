@@ -1,17 +1,22 @@
 // a component which will conditionally render our Navbar as to not require 3 different components
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { UserButton, SignedIn, SignedOut } from "@clerk/nextjs";
 import { FaPlus, FaCaretLeft } from "react-icons/fa";
-
+import { useContext } from "react";
+import axios from "axios"
 import { useState } from "react";
+import { useUser } from "@clerk/clerk-react";
 
 const Navbars = ({ page }) => {
   const navigate = useNavigate();
+  const { flashCards, setFlashCards } = useContext(FlashcardContext);
+  const { user } = useUser();
   const [deckName, setDeckName] = useState("");
   const [deckDesc, setDeckDesc] = useState("");
   const [deckCategory, setDeckCategory] = useState("");
   const [flashcardTerm, setFlashcardTerm] = useState("");
   const [flashcardDef, setFlashcardDef] = useState("");
+
 
   if (page === "landing") {
     return (
@@ -71,10 +76,27 @@ const Navbars = ({ page }) => {
 
   const handleDeckAccept = () => {
     //set up axios call to add deck to backend
+    
+    const newDeck = {
+      deckName: deckName,
+      deckDesc: deckDesc,
+      deckCategory: deckCategory,
+      userId: user.id,
+    }
+    setFlashCards([...flashCards, newTerm]);
+    axios
+      .post(`/addDeck`, newDeck)
+      .catch((err) => console.log(err));
+
+    
     setDeckDesc("");
     setDeckName("");
     setDeckCategory("");
   };
+
+  
+
+  
 
   if (page == "decks") {
     return (
@@ -147,7 +169,7 @@ const Navbars = ({ page }) => {
             </div>
           </dialog>
         </div>
-        <Link to="/profile" className="btn btn-ghost text-lg text-white">
+        <Link to="/stats" className="btn btn-ghost text-lg text-white">
             Stats
         </Link>
         <div className="flex-2 mr-2">
@@ -165,11 +187,22 @@ const Navbars = ({ page }) => {
     setFlashcardDef(e.target.value);
   };
 
+
   const handleCardAccept = () => {
     //set up axios call to add deck to backend
-    setFlashcardDef("");
-    setFlashcardTerm("");
-  };
+    const { deckNum } = useParams();
+    
+    const newTerm = {
+      term: flashcardTerm,
+      definition: flashcardDef,
+    }
+    setFlashCards([...flashCards, newTerm]);
+    axios
+      .post(`/addCard/${deckNum}`, newTerm)
+      .catch((err) => console.log(err));
+      setFlashcardDef("");
+      setFlashcardTerm("");
+    };
 
   if (page == "flashcards") {
     return (
@@ -244,7 +277,7 @@ const Navbars = ({ page }) => {
             </div>
           </dialog>
         </div>
-        <Link to="/profile" className="btn btn-ghost text-lg text-white">
+        <Link to="/stats" className="btn btn-ghost text-lg text-white">
             Stats
         </Link>
         <div className="flex-2 mr-2">
@@ -266,7 +299,7 @@ const Navbars = ({ page }) => {
           </button>
         </div>
         {/* Open the modal using document.getElementById('ID').showModal() method */}
-        <Link to="/profile" className="btn btn-ghost text-lg text-white">
+        <Link to="/stats" className="btn btn-ghost text-lg text-white">
             Stats
         </Link>
         <div className="flex-none mr-2">
