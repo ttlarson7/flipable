@@ -2,8 +2,10 @@ require('dotenv').config()
 const express = require('express')
 const cors = require('cors')
 const app = express()
-const PORT = 3000;
+process.env['PORT'] = 3001;
 const mongoose = require('mongoose');
+
+const grading = require('./../AI/grading.js');
 
 
 const DBURL = process.env.MONGODB_DATABASE_URL
@@ -27,83 +29,25 @@ async function main() {
 const Schema = mongoose.Schema;
 
 const userSchema = new Schema({
-    userId: {
-        type: String, 
-        required: true
-    },
-    decks: [{
-        type: Schema.Types.ObjectId, 
-        ref: "Deck"
-    }],
+    userId: String, 
+    decks: [
+        {
+            title: String,
+            category: String,
+            description: String,
+            cards: [
+                {
+                    term: String,
+                    definition: String
+                }
+            ]
+        }
+    ]
 });
 
-const deckSchema = new Schema({
-    name: {
-        type: String,
-        required: true
-    },
-    category: {
-        type: String,
-        required: true
-    },
-    description: {
-        type: String,
-        required: true
-    },
-    cards: [{
-        type: Schema.Types.ObjectId, 
-        ref: "Card",
-        required: true
-    }],
-    index: {
-        type: Number,
-        required: true
-    },
-    parentUser: {
-        //user id of parent user
-        type: String,
-        required: true
-    },
-});
-
-const cardSchema = new Schema({
-    term: {
-        type: String,
-        required: true
-    },
-    definition: {
-        type: String,
-        required: true
-    },
-    parentDeck: {
-        //index of parent deck
-        type: Number,
-        required: true
-    },
-    parentUser: {
-        //user id of parent user
-        type: String,
-        required: true
-    }
-});
 
 const User = mongoose.model("User", userSchema);
-const Deck = mongoose.model("Deck", deckSchema);
-const Card = mongoose.model("Card", cardSchema);
 
-function addUser(newId){
-    try{
-        const newUser = User.create({
-            userId: newId,
-            decks: []
-        });
-        //add user to mongodb database
-        newUser.save();
-        console.log("success");
-    } catch{
-        console.log("error");
-    }
-}
 
 app.post('/addDeck', async(req, res) => {
     // deckName, deckCategory, deckDesc
@@ -111,20 +55,26 @@ app.post('/addDeck', async(req, res) => {
         const newDeck = {
             name: req.body.deckName,
             category: req.body.deckCategory,
-            description: req.body.deckDesc
+            description: req.body.deckDesc,
+            cards: []
         };
         //add deck to current user's deck array, update mongoDB
         const currentUser = User.findOneAndUpdate(
             {userId: req.body.user_id},
+        const currentUser = await User.findOneAndUpdate(
+            {userId: req.body.userId},
             {upsert: true}
         );
         currentUser.decks.push(newDeck);
         currentUser.save();
         res.status(200);
+=======
+        res.send(200);
     } catch{
         console.error(error);
-        res.status(404);
+        res.status(400);
     }
+});
 
 })
 
@@ -140,10 +90,17 @@ app.post('/addCard/:decknum', async(req, res) => {
         const currentUser = await User.findOne({userId: req.body.userId});
         currentUser.decks[cardDeck].push(newCard);
         currentUser.save();
+        res.status(200);
     } catch{
         console.error(error);
-        res.status(404);
+        res.status(400);
     }
+});
+
+//calls test, passes in real definitions, test definitions, terms
+app.post('/test', async(req, res) => {
+    const finalGrade = await grading(req.body.realDef, req.body.testDef, req.body.terms);
+    res.status(200).send(finalGrade);
 });
 
 app.get('/getDecks', async(req, res) => {
@@ -192,10 +149,7 @@ app.get('/deleteCard', async(req, res) => {
 
 app.get('/', function (req, res) {
     res.send("Hello World!");
-    addUser("23rjklsd908f0s");
-    addDeck("CS 261", "Computer Science", "Data structures flashcards", 0, "23rjklsd908f0s");
-    addCard("Array", "Collection of items of same data type stored at contiguous memory locations", 0, "23rjklsd908f0s");
-})
+});
 
 
 app.listen(PORT, () => {
