@@ -18,10 +18,12 @@ if (!process.env.MONGODB_DATABASE_URL) {
 
 main().catch(err => console.log(err));
 
+await mongoose.connect(`${DBURL}`);
 
 async function main() {
-  await mongoose.connect(`${DBURL}`);
-
+  addUser("23rjklsd908f0s");
+  addDeck("CS 261", "Computer Science", "Data structures flashcards", 0, "23rjklsd908f0s");
+  addCard("Array", "Collection of items of same data type stored at contiguous memory locations", 0, "23rjklsd908f0s");
 }
 
 const Schema = mongoose.Schema;
@@ -57,18 +59,24 @@ app.post('/addDeck', async(req, res) => {
             cards: []
         };
         //add deck to current user's deck array, update mongoDB
+        const currentUser = User.findOneAndUpdate(
+            {userId: req.body.user_id},
         const currentUser = await User.findOneAndUpdate(
             {userId: req.body.userId},
             {upsert: true}
         );
         currentUser.decks.push(newDeck);
         currentUser.save();
+        res.status(200);
+=======
         res.send(200);
     } catch{
         console.error(error);
         res.status(400);
     }
 });
+
+})
 
 app.post('/addCard/:decknum', async(req, res) => {
     // cardTerm, cardDef
@@ -116,26 +124,28 @@ app.get('/getFlashcards/:decknum', async (req, res) => {
     }
 });
 
-function removeDeck(parentId, deckIndex){
+app.get('/deleteDecks', async(req, res) => {
     try{
-        const currentUser = User.findOne({userId: parentId});
+        const currentUser = User.findOne({userId: req.query.userId});
         currentUser.decks.splice(deckIndex, 1);
         currentUser.save();
-        console.log("success");
-    } catch{
-        console.log("error");
+        res.status(200);
+    } catch (error) {
+        console.error(error);
+        res.status(404).send('Internal Server Error');
     }
-}
+});
 
-function removeCard(parentId, deckIndex, cardIndex){
+app.get('/deleteCard', async(req, res) => {
     try{
-        const currentUser = User.findOne({userId: parentId});
+        const currentUser = User.findOne({userId: req.query.userId});
         currentUser.decks[deckIndex].splice(cardIndex, 1);
         currentUser.save();
-    } catch{
-        console.log("error");
+    } catch (error) {
+        console.error(error);
+        res.status(404).send('Internal Server Error');
     }
-}
+})
 
 app.get('/', function (req, res) {
     res.send("Hello World!");
