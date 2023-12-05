@@ -47,17 +47,18 @@ const userSchema = new Schema({
 const User = mongoose.model("User", userSchema);
 
 
-app.post('/add_deck', async(req, res) => {
+app.post('/addDeck', async(req, res) => {
     // deckName, deckCategory, deckDesc
     try{
         const newDeck = {
             name: req.body.deckName,
             category: req.body.deckCategory,
-            description: req.body.deckDesc
+            description: req.body.deckDesc,
+            cards: []
         };
         //add deck to current user's deck array, update mongoDB
         const currentUser = await User.findOneAndUpdate(
-            {userId: req.body.user_id},
+            {userId: req.body.userId},
             {upsert: true}
         );
         currentUser.decks.push(newDeck);
@@ -69,7 +70,7 @@ app.post('/add_deck', async(req, res) => {
     }
 });
 
-app.post('/add_card/:decknum', async(req, res) => {
+app.post('/addCard/:decknum', async(req, res) => {
     // cardTerm, cardDef
     try{
         const newCard = {
@@ -78,7 +79,7 @@ app.post('/add_card/:decknum', async(req, res) => {
             deckNum: req.params.decknum
         };
         //add card to current user's deck, update mongoDB
-        const currentUser = await User.findOne({userId: req.body.user_id});
+        const currentUser = await User.findOne({userId: req.body.userId});
         currentUser.decks[cardDeck].push(newCard);
         currentUser.save();
         res.status(200);
@@ -94,9 +95,9 @@ app.post('/test', async(req, res) => {
     res.status(200).send(finalGrade);
 });
 
-app.get('/get_decks', async(req, res) => {
+app.get('/getDecks', async(req, res) => {
     try {
-        const result = await User.findOne({user_id: req.query.user_id});
+        const result = await User.findOne({userId: req.query.userId});
         res.json(result.cardDeck);
     } catch (error) {
         console.error(error);
@@ -104,9 +105,9 @@ app.get('/get_decks', async(req, res) => {
     }
 });
 
-app.get('/get_flashcards/:decknum', async (req, res) => {
+app.get('/getFlashcards/:decknum', async (req, res) => {
     try {
-        const result = await User.findOne({user_id: req.query.user_id});
+        const result = await User.findOne({userId: req.query.userId});
         const deckNum = req.params.decknum;
         res.json(result.cardDeck[deckNum]);
     } catch (error) {
