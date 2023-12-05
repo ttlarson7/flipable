@@ -10,7 +10,7 @@ import { useUser } from "@clerk/clerk-react";
 const Navbars = ({ page }) => {
   const navigate = useNavigate();
   const { flashCards, setFlashCards } = useContext(FlashcardContext);
-  const { user } = useUser();
+  const user = useUser().user;
   const [deckName, setDeckName] = useState("");
   const [deckDesc, setDeckDesc] = useState("");
   const [deckCategory, setDeckCategory] = useState("");
@@ -81,7 +81,7 @@ const Navbars = ({ page }) => {
       deckName: deckName,
       deckDesc: deckDesc,
       deckCategory: deckCategory,
-      userId: user.id,
+      userId: user?.id.toString(),
     }
     setFlashCards([...flashCards, newTerm]);
     axios
