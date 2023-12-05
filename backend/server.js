@@ -2,8 +2,10 @@ require('dotenv').config()
 const express = require('express')
 const cors = require('cors')
 const app = express()
-const PORT = 3000;
+process.env['PORT'] = 3001;
 const mongoose = require('mongoose');
+
+const grading = require('./../AI/grading.js');
 
 
 const DBURL = process.env.MONGODB_DATABASE_URL
@@ -19,13 +21,7 @@ main().catch(err => console.log(err));
 
 async function main() {
   await mongoose.connect(`${DBURL}`);
-    //await mongoose.connect('mongodb://Quizzers:I<3Quizify@127.0.0.1:27017/test');
 
-  // use `await mongoose.connect('mongodb://user:password@127.0.0.1:27017/test');` if your database has auth enabled
-
-  addUser("23rjklsd908f0s");
-  addDeck("CS 261", "Computer Science", "Data structures flashcards", 0, "23rjklsd908f0s");
-  addCard("Array", "Collection of items of same data type stored at contiguous memory locations", 0, "23rjklsd908f0s");
 }
 
 const Schema = mongoose.Schema;
@@ -50,19 +46,6 @@ const userSchema = new Schema({
 
 const User = mongoose.model("User", userSchema);
 
-function addUser(newId){
-    try{
-        const newUser = User.create({
-            userId: newId,
-            decks: []
-        });
-        //add user to mongodb database
-        newUser.save();
-        console.log("success");
-    } catch{
-        console.log("error");
-    }
-}
 
 app.post('/add_deck', async(req, res) => {
     // deckName, deckCategory, deckDesc
@@ -99,6 +82,12 @@ app.post('/add_card/:decknum', async(req, res) => {
         console.error(error);
         res.status(404);
     }
+});
+
+//calls test, passes in real definitions, test definitions, terms
+app.post('/test', async(req, res) => {
+    const finalGrade = await grading(req.body.realDef, req.body.testDef, req.body.terms);
+    res.status(200).send(finalGrade);
 });
 
 app.get('/get_decks', async(req, res) => {
@@ -145,10 +134,7 @@ function removeCard(parentId, deckIndex, cardIndex){
 
 app.get('/', function (req, res) {
     res.send("Hello World!");
-    addUser("23rjklsd908f0s");
-    addDeck("CS 261", "Computer Science", "Data structures flashcards", 0, "23rjklsd908f0s");
-    addCard("Array", "Collection of items of same data type stored at contiguous memory locations", 0, "23rjklsd908f0s");
-})
+});
 
 
 app.listen(PORT, () => {
