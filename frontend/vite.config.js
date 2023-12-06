@@ -42,7 +42,14 @@ export default defineConfig({
         target: "http://localhost:3001",
         changeOrigin: true,
       },
-
+      "/decrementDeck": {
+        target: "http://localhost:3001",
+        changeOrigin: true,
+      },
+      "/decrementCard": {
+        target: "http://localhost:3001",
+        changeOrigin: true,
+      },
     },
   },
   define: {
