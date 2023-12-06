@@ -38,19 +38,34 @@ const Schema = mongoose.Schema;
 
 const userSchema = new Schema({
   userId: String,
-  decks: [
-    {
-      title: String,
-      category: String,
-      description: String,
-      cards: [
+  testsTaken: {
+    type: Number,
+    default: 0
+  },
+  decksCreated: {
+    type: Number,
+    default: 0
+  },
+  cardsCreated: {
+    type: Number,
+    default: 0
+  },
+  decks: {
+    type: [
         {
-          term: String,
-          definition: String,
-        },
-      ],
-    },
-  ],
+            title: String,
+            category: String,
+            description: String,
+            cards: [
+                {
+                    term: String,
+                    definition: String
+                }
+            ]
+        }
+    ],
+    default: []
+  }
 });
 
 const User = mongoose.model("User", userSchema);
@@ -127,10 +142,10 @@ app.get("/getFlashcards/:decknum", async (req, res) => {
   }
 });
 
-app.delete("/deleteDecks", async (req, res) => {
+app.get("/deleteDecks", async (req, res) => {
   try {
     const currentUser = User.findOne({ userId: req.query.userId });
-    currentUser.decks.splice(deckIndex, 1);
+    currentUser.decks.splice(req.query.deckIndex, 1);
     currentUser.save();
     res.status(200);
   } catch (error) {
@@ -139,19 +154,15 @@ app.delete("/deleteDecks", async (req, res) => {
   }
 });
 
-app.delete("/deleteCard", async (req, res) => {
+app.get("/deleteCard", async (req, res) => {
   try {
     const currentUser = User.findOne({ userId: req.query.userId });
-    currentUser.decks[deckIndex].splice(cardIndex, 1);
+    currentUser.decks[req.query.deckIndex].splice(req.query.cardIndex, 1);
     currentUser.save();
   } catch (error) {
     console.error(error);
     res.status(404).send("Internal Server Error");
   }
-});
-
-app.get("/", function (req, res) {
-  res.send("Hello World!");
 });
 
 app.listen(PORT, () => {
