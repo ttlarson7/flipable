@@ -63,7 +63,7 @@ app.post('/addDeck', async(req, res) => {
         );
         currentUser.decks.push(newDeck);
         currentUser.save();
-        res.send(200);
+        res.status(200);
     } catch{
         console.error(error);
         res.status(400);
