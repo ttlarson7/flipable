@@ -6,6 +6,8 @@ const app = express();
 const PORT = process.env.PORT || 3001;
 const mongoose = require("mongoose");
 
+app.use(express.json());
+
 let grading;
 try {
   grading = import("./../AI/grading.js");
@@ -73,12 +75,12 @@ app.post("/addDeck", async (req, res) => {
     };
     //add deck to current user's deck array, update mongoDB
     await User.findOneAndUpdate(
-      { userId: req.body.user_id },
+      { userId: req.body.userId },
       { $push: {decks: newDeck} },
       { new: true, upsert: true }
     );
     res.status(200).send("Deck added successfully");
-  } catch {
+  } catch(error) {
     console.error(error);
     res.status(400);
   }
@@ -96,7 +98,7 @@ app.post("/addCard/:decknum", async (req, res) => {
     currentUser.decks[req.params.decknum].push(newCard);
     await currentUser.save();
     res.status(200);
-  } catch {
+  } catch(error) {
     console.error(error);
     res.status(400);
   }
@@ -112,7 +114,7 @@ app.post("/editCard/:decknum", async (req, res) => {
       currentUser.decks[req.params.decknum].splice(req.params.decknum, 1, newCard);
       await currentUser.save();
       res.status(200);
-    } catch {
+    } catch(error) {
       console.error(error);
       res.status(400);
     }
@@ -124,7 +126,7 @@ app.post("/incrementDeck", async (req, res) => {
       currentUser.decksCreated++;
       await currentUser.save();
       res.status(200);
-    } catch {
+    } catch(error) {
       console.error(error);
       res.status(400);
     }
@@ -136,7 +138,7 @@ app.post("/incrementCard", async (req, res) => {
         currentUser.cardsCreated++;
         await currentUser.save();
         res.status(200);
-    } catch {
+    } catch(error) {
         console.error(error);
         res.status(400);
     }
@@ -148,7 +150,7 @@ app.post("/incrementTests", async (req, res) => {
       currentUser.testsTaken++;
       await currentUser.save();
       res.status(200);
-    } catch {
+    } catch(error) {
       console.error(error);
       res.status(400);
     }
@@ -231,7 +233,7 @@ app.post("/decrementDeck", async (req, res) => {
         currentUser.decksCreated--;
         await currentUser.save();
         res.status(200);
-    } catch {
+    } catch(error) {
         console.error(error);
         res.status(400);
     }
@@ -243,7 +245,7 @@ app.post("/decrementCard", async (req, res) => {
         currentUser.cardsCreated--;
         await currentUser.save();
         res.status(200);
-    } catch {
+    } catch (error) {
         console.error(error);
         res.status(400);
     }
