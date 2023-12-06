@@ -5,11 +5,11 @@ const Deckcard = ({ i, title, desc, category }) => {
     <li className="card card-bordered border-primary bg-base-100 shadow-xl flex flex-col">
       <Link to={i}>
         <div className="card-body">
-          <h2 className="card-title self-center">{title}</h2>
-          <p className="badge badge-primary badge-outline self-center">
+          <h2 className="card-title self-center text-center">{title}</h2>
+          <p className="badge badge-primary badge-outline self-center text-center">
             {category}
           </p>
-          <p className="self-center">{desc}</p>
+          <p className="self-center text-center">{desc}</p>
         </div>
       </Link>
       <div className="flex justify-center">

@@ -47,6 +47,29 @@ const FlashcardDecks = () => {
     );
   }
 
+  if (flashDecks.length === 0) {
+    return (
+      <>
+        <Navbars
+          page="decks"
+          flashDecks={flashDecks}
+          setFlashcardDecks={setFlashcardDecks}
+        ></Navbars>
+        <div className="hero min-h-screen bg-neutral">
+          <div className="hero-content text-center">
+            <div className="max-w-md">
+              <h1 className="text-5xl font-bold">No Decks?</h1>
+              <p className="py-6 text-4xl">
+                Press <b>Add</b> to add a new deck!
+              </p>
+            </div>
+          </div>
+        </div>
+        <Footer></Footer>
+      </>
+    );
+  }
+
   return (
     <div className="bg-neutral">
       <Navbars page="decks" flashDecks={flashDecks} setFlashcardDecks={setFlashcardDecks}></Navbars>
