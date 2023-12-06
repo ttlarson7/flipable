@@ -70,7 +70,7 @@ app.post("/addDeck", async (req, res) => {
       { new: true, upsert: true }
     );
     currentUser.decks.push(newDeck);
-    currentUser.save();
+    await currentUser.save();
     res.status(200).send("Deck added successfully");
   } catch {
     console.error(error);
@@ -88,7 +88,7 @@ app.post("/addCard/:decknum", async (req, res) => {
     //add card to current user's deck, update mongoDB
     const currentUser = await User.findOne({ userId: req.body.userId });
     currentUser.decks[req.params.decknum].push(newCard);
-    currentUser.save();
+    await currentUser.save();
     res.status(200);
   } catch {
     console.error(error);
@@ -131,11 +131,11 @@ app.get("/deleteDecks", async (req, res) => {
   try {
     const currentUser = User.findOne({ userId: req.query.userId });
     currentUser.decks.splice(req.query.deckIndex, 1);
-    currentUser.save();
+    await currentUser.save();
     res.status(200);
   } catch (error) {
     console.error(error);
-    res.status(404).send("Internal Server Error");
+    res.status(500).send("Internal Server Error");
   }
 });
 
@@ -143,10 +143,10 @@ app.get("/deleteCard", async (req, res) => {
   try {
     const currentUser = User.findOne({ userId: req.query.userId });
     currentUser.decks[req.query.deckIndex].splice(req.query.cardIndex, 1);
-    currentUser.save();
+    await currentUser.save();
   } catch (error) {
     console.error(error);
-    res.status(404).send("Internal Server Error");
+    res.status(500).send("Internal Server Error");
   }
 });
 
