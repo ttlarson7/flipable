@@ -38,19 +38,34 @@ const Schema = mongoose.Schema;
 
 const userSchema = new Schema({
   userId: String,
-  decks: [
-    {
-      title: String,
-      category: String,
-      description: String,
-      cards: [
+  testsTaken: {
+    type: Number,
+    default: 0
+  },
+  decksCreated: {
+    type: Number,
+    default: 0
+  },
+  cardsCreated: {
+    type: Number,
+    default: 0
+  },
+  decks: {
+    type: [
         {
-          term: String,
-          definition: String,
-        },
-      ],
-    },
-  ],
+            title: String,
+            category: String,
+            description: String,
+            cards: [
+                {
+                    term: String,
+                    definition: String
+                }
+            ]
+        }
+    ],
+    default: []
+  }
 });
 
 const User = mongoose.model("User", userSchema);

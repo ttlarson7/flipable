@@ -1,8 +1,14 @@
-
-
 const Flashcard = ({ term, definition, setFlashCards }) => {
-  
-  
+  const handleDeleteClick = () => {
+    document.getElementById("delete_modal").showModal();
+  };
+
+  const handleDelete = () => {
+    // Call the setFlashCards function passed from the parent component
+    setFlashCards();
+    // Close the modal
+    document.getElementById("delete_modal").close();
+  };
 
   return (
     <li className="flex justify-center items-center">
@@ -24,9 +30,7 @@ const Flashcard = ({ term, definition, setFlashCards }) => {
 
             <button
               className="btn btn-error rounded m-2 p-2"
-              onClick={() =>
-                document.getElementById("delete_modal").showModal()
-              }
+              onClick={handleDeleteClick}
             >
               Delete
             </button>
@@ -52,10 +56,7 @@ const Flashcard = ({ term, definition, setFlashCards }) => {
           <div className="modal-action">
             <form method="dialog">
               <button className="btn btn-success rounded">Close</button>
-              <button
-                className="btn btn-error rounded"
-                onClick={setFlashCards}
-              >
+              <button className="btn btn-error rounded" onClick={handleDelete}>
                 Delete
               </button>
             </form>

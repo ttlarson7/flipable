@@ -37,7 +37,7 @@ const FlashcardDeck = () => {
     }
   }, []);
 
-  const handleDeleteFlashcard = (index) => {
+  const handleDeleteFlashcard = (card) => {
     // axios
     //   .delete("/deleteCard", {
     //     params: {
@@ -49,9 +49,9 @@ const FlashcardDeck = () => {
 
     //   })
     //   .catch((err) => console.log(err));
-    console.log(index)
+    console.log(card)
     setFlashCards((prevFlashCards) =>
-      prevFlashCards.filter((_, ind) => ind !== index)
+      prevFlashCards.filter((cards) => cards !== card)
     );
   };
 
@@ -110,7 +110,7 @@ const FlashcardDeck = () => {
               key={i}
               term={card.term}
               definition={card.definition}
-              setFlashCards={() => handleDeleteFlashcard(i)}
+              setFlashCards={() => handleDeleteFlashcard(card)}
             />
           ))}
         </ul>
