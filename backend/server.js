@@ -21,18 +21,10 @@ if (!process.env.MONGODB_DATABASE_URL) {
   process.exit(1);
 }
 
-// main().catch(err => console.log(err));
-
 mongoose
   .connect(`${DBURL}`)
   .then(console.log("Connected to DB"))
   .catch((err) => console.log(err));
-
-// async function main() {
-//   addUser("23rjklsd908f0s");
-//   addDeck("CS 261", "Computer Science", "Data structures flashcards", 0, "23rjklsd908f0s");
-//   addCard("Array", "Collection of items of same data type stored at contiguous memory locations", 0, "23rjklsd908f0s");
-// }
 
 const Schema = mongoose.Schema;
 
@@ -80,7 +72,7 @@ app.post("/addDeck", async (req, res) => {
       cards: [],
     };
     //add deck to current user's deck array, update mongoDB
-    const currentUser = await User.findOneAndUpdate(
+    await User.findOneAndUpdate(
       { userId: req.body.user_id },
       { $push: {decks: newDeck} },
       { new: true, upsert: true }
