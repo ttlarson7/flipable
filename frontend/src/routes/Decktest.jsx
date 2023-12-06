@@ -6,6 +6,7 @@ import React, { useState, useEffect } from "react";
 import DeckcardTest from "../components/DeckcardTest";
 import TestNumbers from "../components/TestNumbers";
 import Loading from "../components/Loading";
+import axios from "axios";
 
 const Decktest = () => {
   const { flashCards } = useContext(FlashcardContext);
@@ -14,25 +15,24 @@ const Decktest = () => {
     const j = Math.floor(Math.random() * (i + 1));
     [randomFlash[i], randomFlash[j]] = [randomFlash[j], randomFlash[i]];
   }
-  const [testCards, setTestCards] = useState(randomFlash)
-
-  const initialAnswers = Array.from({ length: flashCards.length }, () => "");
-  const [answers, setAnswers] = useState(initialAnswers);
+  const [realDef, setRealDef] = useState(randomFlash)
+  const [answers, setAnswers] = useState([]);
   const [correct, setCorrect] = useState(
     Array.from({ length: flashCards.length }, () => -1)
   );
 
   const [numQ, setNumQ] = useState(-1);//going to test adding different length of tests
   const [qUpdate, setQUpdate] = useState(false);
-
   const [modalClosed, setModalClose] = useState(false);
   const [renderedQs, setRenderedQs] = useState(false);
 
 
   const handleAccept = (e) => {
     const n = document.getElementById('numQuestions');
-    if (n.value > 0) {
+    if (n.value > 0 && n.value <= flashCards.length) {
       setNumQ(n.value);
+      const initialAnswers = Array.from({ length: n.value }, () => "");
+      setAnswers(initialAnswers);
     } else {
       e.preventDefault(); 
     }
@@ -50,12 +50,23 @@ const Decktest = () => {
 
   useEffect(() => {
     if (numQ >= 0) {
-      setTestCards(randomFlash.slice(0, numQ));
+      setRealDef(randomFlash.slice(0, numQ));
       setQUpdate(true);
       setModalClose(true);
       setRenderedQs(true);
     }
   }, [numQ])
+
+
+  const handleSumbit = () => {
+    console.log("submitting: ", answers)
+    console.log("testCards: ", realDef);
+    //Testcards contains the terms and definitons in correct order
+    //answer contains the answers in the order they were answered
+    // axios.post("/test", { testCards, answers }).then((res) => {
+    //   console.log(success);
+    // })
+  }
 
 
   
@@ -93,7 +104,7 @@ const Decktest = () => {
                 Quizify
               </span>!</h1>
       <div className="flex flex-nowrap overflow-x-auto" style = {{maxWidth: "50%"}}>
-          {testCards.map((card, i) => (
+          {realDef.map((card, i) => (
             <TestNumbers
               key={i}
               scrollTo={`element${i}`}
@@ -103,7 +114,7 @@ const Decktest = () => {
         </div>
         {renderedQs && (
           <ul className="grid lg:grid-cols-2 sm:grid-cols-1 gap-4 m-4">
-          {testCards.map((card, i) => (
+          {realDef.map((card, i) => (
             <DeckcardTest
               id={`element${i}`}
               key={i}
@@ -121,7 +132,7 @@ const Decktest = () => {
         )}
           
         
-        <button className="btn btn-xs sm:btn-sm md:btn-md lg:btn-lg btn-outline btn-success mb-20 w-96">Submit</button>
+        <button className="btn btn-xs sm:btn-sm md:btn-md lg:btn-lg btn-outline btn-success mb-20 w-96" onClick = {handleSumbit}>Submit</button>
       </div>)}
       
       <Footer></Footer>
