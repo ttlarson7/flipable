@@ -91,6 +91,7 @@ const Navbars = ({
     console.log(flashDecks, newDeck);
     setFlashcardDecks([...flashDecks, newDeck]);
     axios.post(`/addDeck`, newDeck).catch((err) => console.log(err));
+    axios.post(`/incrementDeck`).catch((err) => console.log(err));
 
     setDeckDesc("");
     setDeckName("");
@@ -201,6 +202,7 @@ const Navbars = ({
     };
     setFlashCards([...flashCards, newTerm]);
     axios.post(`/addCard/${deckNum}`, newTerm).catch((err) => console.log(err));
+    axios.post(`/incrementCard`).catch((err) => console.log(err));
     setFlashcardDef("");
     setFlashcardTerm("");
   };
