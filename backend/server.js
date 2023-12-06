@@ -154,7 +154,7 @@ app.post("/test", async (req, res) => {
 
 app.get("/getDecks", async (req, res) => {
   try {
-    const result = await User.findOne({ userId: req.query.userId });
+    const user = await User.findOne({ userId: req.query.userId });
     if (!user) {
         console.log("User Not Found");
         return res.status(404).send("User Not Found");
@@ -173,9 +173,18 @@ app.get("/getDecks", async (req, res) => {
 
 app.get("/getFlashcards/:decknum", async (req, res) => {
   try {
-    const result = await User.findOne({ userId: req.query.userId });
+    const user = await User.findOne({ userId: req.query.userId });
     const deckNum = req.params.decknum;
-    res.json(result.cardDeck[deckNum]);
+    if (!user) {
+        console.log("User Not Found");
+        return res.status(404).send("User Not Found");
+    }
+    const decks = user.decks;
+    if (!decks) {
+        console.log("Decks Not Found");
+        return res.status(404).send("Decks Not Found");
+    }
+    res.json(decks[deckNum]);
   } catch (error) {
     console.error(error);
     res.status(404).send("Internal Server Error");
