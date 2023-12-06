@@ -102,7 +102,23 @@ app.post("/addCard/:decknum", async (req, res) => {
   }
 });
 
-app.post("/incrementDeck/", async (req, res) => {
+app.post("/editCard/:decknum", async (req, res) => {
+    try {
+      const newCard = {
+        term: req.body.cardTerm,
+        definition: req.body.cardDef,
+      };
+      const currentUser = await User.findOne({ userId: req.body.userId });
+      currentUser.decks[req.params.decknum].splice(req.params.decknum, 1, newCard);
+      await currentUser.save();
+      res.status(200);
+    } catch {
+      console.error(error);
+      res.status(400);
+    }
+});
+
+app.post("/incrementDeck", async (req, res) => {
     try {
       const currentUser = await User.findOne({ userId: req.body.userId });
       currentUser.decksCreated++;
@@ -160,7 +176,7 @@ app.get("/getFlashcards/:decknum", async (req, res) => {
 app.get("/deleteDecks", async (req, res) => {
   try {
     const currentUser = User.findOne({ userId: req.query.userId });
-    currentUser.decks.splice(req.query.deckIndex, 1);
+    currentUser.decks.splice(req.query.deckNum, 1);
     await currentUser.save();
     res.status(200);
   } catch (error) {
@@ -172,7 +188,7 @@ app.get("/deleteDecks", async (req, res) => {
 app.get("/deleteCard", async (req, res) => {
   try {
     const currentUser = User.findOne({ userId: req.query.userId });
-    currentUser.decks[req.query.deckIndex].splice(req.query.cardIndex, 1);
+    currentUser.decks[req.query.deckNum].splice(req.query.i, 1);
     await currentUser.save();
   } catch (error) {
     console.error(error);
