@@ -102,6 +102,30 @@ app.post("/addCard/:decknum", async (req, res) => {
   }
 });
 
+app.post("/incrementDeck/", async (req, res) => {
+    try {
+      const currentUser = await User.findOne({ userId: req.body.userId });
+      currentUser.decksCreated++;
+      await currentUser.save();
+      res.status(200);
+    } catch {
+      console.error(error);
+      res.status(400);
+    }
+  });
+
+  app.post("/incrementCard", async (req, res) => {
+    try {
+      const currentUser = await User.findOne({ userId: req.body.userId });
+      currentUser.cardsCreated++;
+      await currentUser.save();
+      res.status(200);
+    } catch {
+      console.error(error);
+      res.status(400);
+    }
+  });
+
 //calls test, passes in real definitions, test definitions, terms
 app.post("/test", async (req, res) => {
   const finalGrade = await grading(
