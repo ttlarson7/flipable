@@ -1,14 +1,14 @@
-import axios from "axios"
+import axios from "axios";
 import { useContext, useEffect, useState } from "react";
-import { useParams } from "react-router-dom"
-import { useUser } from "@clerk/clerk-react"
+import { useParams } from "react-router-dom";
+import { useUser } from "@clerk/clerk-react";
 import Navbars from "../components/Navbars";
 import Footer from "../components/Footer";
 import { FlashcardContext } from "../App";
 import Flashcard from "../components/Flashcard";
 
 const FlashcardDeck = () => {
-  const { flashCards, setFlashCards} = useContext(FlashcardContext);
+  const { flashCards, setFlashCards } = useContext(FlashcardContext);
   const [loading, setLoading] = useState(true);
   let ran = false;
   const user = useUser().user;
@@ -37,11 +37,33 @@ const FlashcardDeck = () => {
     }
   }, []);
 
+  const handleDeleteFlashcard = (index) => {
+    // axios
+    //   .delete("/deleteCard", {
+    //     params: {
+    //       deckNum: deckNum,
+    //       i: index,
+    //     },
+    //   })
+    //   .then(() => {
+
+    //   })
+    //   .catch((err) => console.log(err));
+    console.log(index)
+    setFlashCards((prevFlashCards) =>
+      prevFlashCards.filter((_, ind) => ind !== index)
+    );
+  };
+
   // if no cards, output empty cards
   if (loading) {
     return (
       <div className="bg-neutral">
-        <Navbars page="flashcards"></Navbars>
+        <Navbars
+          page="flashcards"
+          flashCards={flashCards}
+          setFlashCards={setFlashCards}
+        ></Navbars>
         <div className="min-h-screen flex justify-center">
           <span className="loading loading-infinity loading-lg self-center"></span>
         </div>
@@ -53,7 +75,11 @@ const FlashcardDeck = () => {
   if (flashCards.length === 0) {
     return (
       <>
-        <Navbars page="flashcards"></Navbars>
+        <Navbars
+          page="flashcards"
+          flashCards={flashCards}
+          setFlashCards={setFlashCards}
+        ></Navbars>
         <div className="hero min-h-screen bg-neutral">
           <div className="hero-content text-center">
             <div className="max-w-md">
@@ -71,15 +97,20 @@ const FlashcardDeck = () => {
 
   return (
     <>
-      <Navbars page="flashcards"></Navbars>
+      <Navbars
+        page="flashcards"
+        flashCards={flashCards}
+        setFlashCards={setFlashCards}
+      ></Navbars>
       <div className="mt-24 bg-neutral"></div>
-      <div className=" min-h-screen">
+      <div className="min-h-screen flex justify-center items-start mb-8">
         <ul className="grid lg:grid-cols-3 sm:grid-cols-2 gap-4 m-4">
           {flashCards.map((card, i) => (
             <Flashcard
               key={i}
               term={card.term}
               definition={card.definition}
+              setFlashCards={() => handleDeleteFlashcard(i)}
             />
           ))}
         </ul>
