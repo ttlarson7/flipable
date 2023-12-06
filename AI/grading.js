@@ -61,4 +61,4 @@ async function gradeTest(realDefs, testDefs, terms) {
 // var score =  await gradeTest(realDefs, testDefs, terms);
 // console.log(score)
 
-export default { gradeTest, grade }
+export default { gradeTest }

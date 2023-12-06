@@ -6,14 +6,23 @@ export default defineConfig({
   plugins: [react()],
   server: {
     proxy: {
-      "/get_decks": {
+      "/getDecks": {
         target: "http://localhost:3001",
         changeOrigin: true,
       },
-      "/get_flashcards": {
+      "/getFlashcards": {
         target: "http://localhost:3001",
         changeOrigin: true,
       },
+      "/addDeck": {
+        target: "http://localhost:3001",
+        changeOrigin: true,
+      },
+      "/test": {
+        target: "http://localhost:3001",
+        changeOrigin: true,
+      },
+
     },
   },
   define: {

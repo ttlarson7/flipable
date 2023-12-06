@@ -38,7 +38,7 @@ const FlashcardDecks = () => {
   if (loading) {
     return (
       <div className="bg-neutral">
-        <Navbars page="decks"></Navbars>
+        <Navbars page="decks" flashDecks={flashDecks} setFlashcardDecks={setFlashcardDecks}></Navbars>
         <div className="min-h-screen flex justify-center">
           <span className="loading loading-infinity loading-lg self-center"></span>
         </div>
@@ -49,7 +49,7 @@ const FlashcardDecks = () => {
 
   return (
     <div className="bg-neutral">
-      <Navbars page="decks"></Navbars>
+      <Navbars page="decks" flashDecks={flashDecks} setFlashcardDecks={setFlashcardDecks}></Navbars>
       <div className="mt-24 bg-neutral"></div>
       <div className=" min-h-screen">
         <ul className="grid lg:grid-cols-3 sm:grid-cols-2 gap-4 m-4">
@@ -57,9 +57,9 @@ const FlashcardDecks = () => {
             <Deckcard
               key={i}
               i={i.toString()}
-              title={deck.title}
-              desc={deck.desc}
-              category={deck.category}
+              title={deck.deckName}
+              desc={deck.deckDesc}
+              category={deck.deckCategory}
             />
           ))}
         </ul>
