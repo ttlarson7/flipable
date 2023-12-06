@@ -142,6 +142,18 @@ app.post("/incrementCard", async (req, res) => {
     }
 });
 
+app.post("/incrementTests", async (req, res) => {
+    try {
+      const currentUser = await User.findOne({ userId: req.body.userId });
+      currentUser.testsTaken++;
+      await currentUser.save();
+      res.status(200);
+    } catch {
+      console.error(error);
+      res.status(400);
+    }
+  });
+
 //calls test, passes in real definitions, test definitions, terms
 app.post("/test", async (req, res) => {
   const finalGrade = await grading(
