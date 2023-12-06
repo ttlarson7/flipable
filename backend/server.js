@@ -147,7 +147,6 @@ app.post("/test", async (req, res) => {
   const finalGrade = await grading(
     req.body.realDef,
     req.body.testDef,
-    req.body.terms
   );
   res.status(200).send(finalGrade);
 });
