@@ -127,7 +127,7 @@ app.get("/getFlashcards/:decknum", async (req, res) => {
   }
 });
 
-app.get("/deleteDecks", async (req, res) => {
+app.delete("/deleteDecks", async (req, res) => {
   try {
     const currentUser = User.findOne({ userId: req.query.userId });
     currentUser.decks.splice(req.query.deckIndex, 1);
@@ -139,7 +139,7 @@ app.get("/deleteDecks", async (req, res) => {
   }
 });
 
-app.get("/deleteCard", async (req, res) => {
+app.delete("/deleteCard", async (req, res) => {
   try {
     const currentUser = User.findOne({ userId: req.query.userId });
     currentUser.decks[req.query.deckIndex].splice(req.query.cardIndex, 1);
