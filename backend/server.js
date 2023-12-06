@@ -80,12 +80,11 @@ app.post("/addDeck", async (req, res) => {
       cards: [],
     };
     //add deck to current user's deck array, update mongoDB
-    const currentUser = User.findOneAndUpdate(
+    const currentUser = await User.findOneAndUpdate(
       { userId: req.body.user_id },
+      { $push: {decks: newDeck} },
       { new: true, upsert: true }
     );
-    currentUser.decks.push(newDeck);
-    await currentUser.save();
     res.status(200).send("Deck added successfully");
   } catch {
     console.error(error);
