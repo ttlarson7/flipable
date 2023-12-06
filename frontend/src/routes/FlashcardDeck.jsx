@@ -38,21 +38,21 @@ const FlashcardDeck = () => {
   }, []);
 
   const handleDeleteFlashcard = (card) => {
-    // axios
-    //   .delete("/deleteCard", {
-    //     params: {
-    //       deckNum: deckNum,
-    //       i: index,
-    //     },
-    //   })
-    //   .then(() => {
-
-    //   })
-    //   .catch((err) => console.log(err));
+    axios
+      .delete("/deleteCard", {
+        params: {
+          deckNum: deckNum,
+          i: index,
+        },
+      })
+      .then(() => {
+        axios.get("/decrementCard");
+        setFlashCards((prevFlashCards) =>
+          prevFlashCards.filter((cards) => cards !== card)
+        );
+      })
+      .catch((err) => console.log(err));
     console.log(card)
-    setFlashCards((prevFlashCards) =>
-      prevFlashCards.filter((cards) => cards !== card)
-    );
   };
 
   // if no cards, output empty cards

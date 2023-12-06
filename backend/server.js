@@ -66,7 +66,7 @@ app.post("/addDeck", async (req, res) => {
   // deckName, deckCategory, deckDesc
   try {
     const newDeck = {
-      name: req.body.deckName,
+      title: req.body.deckName,
       category: req.body.deckCategory,
       description: req.body.deckDesc,
       cards: [],
@@ -114,17 +114,17 @@ app.post("/incrementDeck/", async (req, res) => {
     }
   });
 
-  app.post("/incrementCard", async (req, res) => {
+app.post("/incrementCard", async (req, res) => {
     try {
-      const currentUser = await User.findOne({ userId: req.body.userId });
-      currentUser.cardsCreated++;
-      await currentUser.save();
-      res.status(200);
+        const currentUser = await User.findOne({ userId: req.body.userId });
+        currentUser.cardsCreated++;
+        await currentUser.save();
+        res.status(200);
     } catch {
-      console.error(error);
-      res.status(400);
+        console.error(error);
+        res.status(400);
     }
-  });
+});
 
 //calls test, passes in real definitions, test definitions, terms
 app.post("/test", async (req, res) => {
@@ -178,6 +178,30 @@ app.get("/deleteCard", async (req, res) => {
     console.error(error);
     res.status(500).send("Internal Server Error");
   }
+});
+
+app.post("/decrementDeck", async (req, res) => {
+    try {
+        const currentUser = await User.findOne({ userId: req.body.userId });
+        currentUser.decksCreated--;
+        await currentUser.save();
+        res.status(200);
+    } catch {
+        console.error(error);
+        res.status(400);
+    }
+});
+
+app.post("/decrementCard", async (req, res) => {
+    try {
+        const currentUser = await User.findOne({ userId: req.body.userId });
+        currentUser.cardsCreated--;
+        await currentUser.save();
+        res.status(200);
+    } catch {
+        console.error(error);
+        res.status(400);
+    }
 });
 
 app.listen(PORT, () => {
