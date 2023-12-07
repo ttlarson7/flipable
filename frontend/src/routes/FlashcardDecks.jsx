@@ -21,11 +21,7 @@ const FlashcardDecks = () => {
       axios
         .get("/getDecks", {
           params: {
-<<<<<<< HEAD
-            userId: user_id,
-=======
             userId: userId,
->>>>>>> 823d1000e0f47f37a2aeb7f743463128b69b1930
           },
         })
         .then((res) => {

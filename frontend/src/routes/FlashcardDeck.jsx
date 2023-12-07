@@ -37,7 +37,7 @@ const FlashcardDeck = () => {
     }
   }, []);
 
-  const handleDeleteFlashcard = (card) => {
+  const handleDeleteFlashcard = (index) => {
     axios
       .delete("/deleteCard", {
         params: {
@@ -47,11 +47,11 @@ const FlashcardDeck = () => {
       })
       .then(() => {
         setFlashCards((prevFlashCards) =>
-          prevFlashCards.filter((cards) => cards !== card)
+          prevFlashCards.filter((_, i) => i !== index)
         );
       })
       .catch((err) => console.log(err));
-    console.log(card)
+    console.log(i)
   };
 
   // if no cards, output empty cards
