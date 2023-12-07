@@ -20,7 +20,7 @@ const FlashcardDecks = () => {
       setLoading(true);
       axios
         .get("/getDecks", {
-          query: {
+          params: {
             user_id: user_id,
           },
         })
