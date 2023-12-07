@@ -46,7 +46,6 @@ const FlashcardDeck = () => {
         },
       })
       .then(() => {
-        axios.get("/decrementCard");
         setFlashCards((prevFlashCards) =>
           prevFlashCards.filter((cards) => cards !== card)
         );

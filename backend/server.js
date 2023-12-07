@@ -233,32 +233,6 @@ app.get("/deleteCard", async (req, res) => {
   }
 });
 
-// API endpoint to decrement the count of decks created by a user
-app.post("/decrementDeck", async (req, res) => {
-    try {
-        const currentUser = await User.findOne({ userId: req.body.userId });
-        currentUser.decksCreated--;
-        await currentUser.save();
-        res.status(200);
-    } catch (error) {
-        console.error(error);
-        res.status(400);
-    }
-});
-
-// API endpoint to decrement the count of cards created by a user
-app.post("/decrementCard", async (req, res) => {
-    try {
-        const currentUser = await User.findOne({ userId: req.body.userId });
-        currentUser.cardsCreated--;
-        await currentUser.save();
-        res.status(200);
-    } catch (error) {
-        console.error(error);
-        res.status(400);
-    }
-});
-
 // API endpoint to perform a test using the grading module
 app.post("/test", async (req, res) => {
     const finalGrade = await grading(
