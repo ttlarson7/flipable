@@ -21,19 +21,20 @@ try {
 const DBURL = process.env.MONGODB_DATABASE_URL;
 app.use(cors());
 
-// Connect to MongoDB
+// Check if MongoDB URL is provided
 if (!process.env.MONGODB_DATABASE_URL) {
   console.error("MongoDB URL is not provided!");
   process.exit(1);
 }
 
+// Connect to MongoDB
 mongoose
   .connect(`${DBURL}`)
   .then(console.log("Connected to DB"))
   .catch((err) => console.log(err));
 
+// Define MongoDB schema for user data
 const Schema = mongoose.Schema;
-
 const userSchema = new Schema({
   userId: String,
   testsTaken: {
@@ -66,10 +67,11 @@ const userSchema = new Schema({
   }
 });
 
+// Create User model based on the schema
 const User = mongoose.model("User", userSchema);
 
+// API endpoint to add a new deck to the user's decks
 app.post("/addDeck", async (req, res) => {
-  // deckName, deckCategory, deckDesc
   try {
     const newDeck = {
       title: req.body.deckName,
@@ -77,7 +79,7 @@ app.post("/addDeck", async (req, res) => {
       description: req.body.deckDesc,
       cards: [],
     };
-    //add deck to current user's deck array, update mongoDB
+    // Add deck to current user's deck array, update mongoDB
     await User.findOneAndUpdate(
       { userId: req.body.userId },
       { $push: {decks: newDeck} },
@@ -90,8 +92,8 @@ app.post("/addDeck", async (req, res) => {
   }
 });
 
+// API endpoint to add a new card to a specific deck
 app.post("/addCard/:decknum", async (req, res) => {
-  // cardTerm, cardDef
   try {
     const newCard = {
       term: req.body.cardTerm,
@@ -108,6 +110,7 @@ app.post("/addCard/:decknum", async (req, res) => {
   }
 });
 
+// API endpoint to edit a card in a specific deck
 app.post("/editCard/:decknum", async (req, res) => {
     try {
       const newCard = {
@@ -124,6 +127,7 @@ app.post("/editCard/:decknum", async (req, res) => {
     }
 });
 
+// API endpoint to increment the count of decks created by a user
 app.post("/incrementDeck", async (req, res) => {
     try {
       const currentUser = await User.findOne({ userId: req.body.userId });
@@ -136,6 +140,7 @@ app.post("/incrementDeck", async (req, res) => {
     }
   });
 
+// API endpoint to increment the count of cards created by a user
 app.post("/incrementCard", async (req, res) => {
     try {
         const currentUser = await User.findOne({ userId: req.body.userId });
@@ -148,6 +153,7 @@ app.post("/incrementCard", async (req, res) => {
     }
 });
 
+// API endpoint to increment the count of tests taken by a user
 app.post("/incrementTests", async (req, res) => {
     try {
       const currentUser = await User.findOne({ userId: req.body.userId });
@@ -160,7 +166,7 @@ app.post("/incrementTests", async (req, res) => {
     }
   });
 
-//calls test, passes in real definitions, test definitions, terms
+// API endpoint to perform a test using the grading module
 app.post("/test", async (req, res) => {
   const finalGrade = await grading(
     req.body.realDef,
@@ -169,6 +175,7 @@ app.post("/test", async (req, res) => {
   res.status(200).send(finalGrade);
 });
 
+// API endpoint to get all decks of a user
 app.get("/getDecks", async (req, res) => {
   try {
     const user = await User.findOne({ userId: req.params.userId });
@@ -188,6 +195,7 @@ app.get("/getDecks", async (req, res) => {
   }
 });
 
+// API endpoint to get all flashcards from a specific deck of a user
 app.get("/getFlashcards/:decknum", async (req, res) => {
   try {
     const user = await User.findOne({ userId: req.params.userId });
@@ -208,6 +216,7 @@ app.get("/getFlashcards/:decknum", async (req, res) => {
   }
 });
 
+// API endpoint to delete a user's decks
 app.get("/deleteDecks", async (req, res) => {
   try {
     const currentUser = User.findOne({ userId: req.query.userId });
@@ -220,6 +229,7 @@ app.get("/deleteDecks", async (req, res) => {
   }
 });
 
+// API endpoint to delete a card from a specific deck of a user
 app.get("/deleteCard", async (req, res) => {
   try {
     const currentUser = User.findOne({ userId: req.query.userId });
@@ -231,6 +241,7 @@ app.get("/deleteCard", async (req, res) => {
   }
 });
 
+// API endpoint to decrement the count of decks created by a user
 app.post("/decrementDeck", async (req, res) => {
     try {
         const currentUser = await User.findOne({ userId: req.body.userId });
@@ -243,6 +254,7 @@ app.post("/decrementDeck", async (req, res) => {
     }
 });
 
+// API endpoint to decrement the count of cards created by a user
 app.post("/decrementCard", async (req, res) => {
     try {
         const currentUser = await User.findOne({ userId: req.body.userId });
@@ -255,6 +267,7 @@ app.post("/decrementCard", async (req, res) => {
     }
 });
 
+// Start the server
 app.listen(PORT, () => {
   console.log("Server is running on port: " + PORT);
 });
