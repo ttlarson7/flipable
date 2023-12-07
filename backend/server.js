@@ -1,3 +1,4 @@
+// Import required modules
 const dotenv = require("dotenv");
 dotenv.config();
 const express = require("express");
@@ -6,6 +7,7 @@ const app = express();
 const PORT = process.env.PORT || 3001;
 const mongoose = require("mongoose");
 
+// Import grading module
 let grading;
 try {
   grading = import("./../AI/grading.js");
@@ -13,9 +15,11 @@ try {
   console.error("Error importing grading.js:", error);
 }
 
+// Set up MongoDB connection
 const DBURL = process.env.MONGODB_DATABASE_URL;
 app.use(cors());
 
+// Connect to MongoDB
 if (!process.env.MONGODB_DATABASE_URL) {
   console.error("MongoDB URL is not provided!");
   process.exit(1);
@@ -78,7 +82,7 @@ app.post("/addDeck", async (req, res) => {
       { new: true, upsert: true }
     );
     res.status(200).send("Deck added successfully");
-  } catch {
+  } catch (error) {
     console.error(error);
     res.status(400);
   }
@@ -96,7 +100,7 @@ app.post("/addCard/:decknum", async (req, res) => {
     currentUser.decks[req.params.decknum].push(newCard);
     await currentUser.save();
     res.status(200);
-  } catch {
+  } catch (error) {
     console.error(error);
     res.status(400);
   }
@@ -112,7 +116,7 @@ app.post("/editCard/:decknum", async (req, res) => {
       currentUser.decks[req.params.decknum].splice(req.params.decknum, 1, newCard);
       await currentUser.save();
       res.status(200);
-    } catch {
+    } catch (error) {
       console.error(error);
       res.status(400);
     }
@@ -124,7 +128,7 @@ app.post("/incrementDeck", async (req, res) => {
       currentUser.decksCreated++;
       await currentUser.save();
       res.status(200);
-    } catch {
+    } catch (error) {
       console.error(error);
       res.status(400);
     }
@@ -136,7 +140,7 @@ app.post("/incrementCard", async (req, res) => {
         currentUser.cardsCreated++;
         await currentUser.save();
         res.status(200);
-    } catch {
+    } catch (error) {
         console.error(error);
         res.status(400);
     }
@@ -148,7 +152,7 @@ app.post("/incrementTests", async (req, res) => {
       currentUser.testsTaken++;
       await currentUser.save();
       res.status(200);
-    } catch {
+    } catch (error) {
       console.error(error);
       res.status(400);
     }
@@ -231,7 +235,7 @@ app.post("/decrementDeck", async (req, res) => {
         currentUser.decksCreated--;
         await currentUser.save();
         res.status(200);
-    } catch {
+    } catch (error) {
         console.error(error);
         res.status(400);
     }
@@ -243,7 +247,7 @@ app.post("/decrementCard", async (req, res) => {
         currentUser.cardsCreated--;
         await currentUser.save();
         res.status(200);
-    } catch {
+    } catch (error) {
         console.error(error);
         res.status(400);
     }

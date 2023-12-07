@@ -19,7 +19,7 @@ const FlashcardDecks = () => {
       ran = true;
       setLoading(true);
       axios
-        .get("/get_decks", {
+        .get("/getDecks", {
           params: {
             user_id: user_id,
           },
