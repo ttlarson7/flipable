@@ -70,6 +70,47 @@ const userSchema = new Schema({
 // Create User model based on the schema
 const User = mongoose.model("User", userSchema);
 
+// API endpoint to get all decks of a user
+app.get("/getDecks", async (req, res) => {
+    try {
+      const user = await User.findOne({ userId: req.params.userId });
+      if (!user) {
+          console.log("User Not Found");
+          return res.status(404).send("User Not Found");
+      }
+      const decks = user.decks;
+      if (!decks) {
+          console.log("Decks Not Found");
+          return res.status(404).send("Decks Not Found");
+      }
+      res.json(decks);
+    } catch (error) {
+      console.error(error);
+      res.status(404).send("Internal Server Error");
+    }
+  });
+  
+  // API endpoint to get all flashcards from a specific deck of a user
+  app.get("/getFlashcards/:decknum", async (req, res) => {
+    try {
+      const user = await User.findOne({ userId: req.params.userId });
+      const deckNum = req.params.decknum;
+      if (!user) {
+          console.log("User Not Found");
+          return res.status(404).send("User Not Found");
+      }
+      const decks = user.decks;
+      if (!decks) {
+          console.log("Decks Not Found");
+          return res.status(404).send("Decks Not Found");
+      }
+      res.json(decks[deckNum]);
+    } catch (error) {
+      console.error(error);
+      res.status(404).send("Internal Server Error");
+    }
+  });
+
 // API endpoint to add a new deck to the user's decks
 app.post("/addDeck", async (req, res) => {
   try {
@@ -110,23 +151,6 @@ app.post("/addCard/:decknum", async (req, res) => {
   }
 });
 
-// API endpoint to edit a card in a specific deck
-app.post("/editCard/:decknum", async (req, res) => {
-    try {
-      const newCard = {
-        term: req.body.cardTerm,
-        definition: req.body.cardDef,
-      };
-      const currentUser = await User.findOne({ userId: req.body.userId });
-      currentUser.decks[req.params.decknum].splice(req.params.decknum, 1, newCard);
-      await currentUser.save();
-      res.status(200);
-    } catch (error) {
-      console.error(error);
-      res.status(400);
-    }
-});
-
 // API endpoint to increment the count of decks created by a user
 app.post("/incrementDeck", async (req, res) => {
     try {
@@ -164,56 +188,24 @@ app.post("/incrementTests", async (req, res) => {
       console.error(error);
       res.status(400);
     }
-  });
-
-// API endpoint to perform a test using the grading module
-app.post("/test", async (req, res) => {
-  const finalGrade = await grading(
-    req.body.realDef,
-    req.body.testDef,
-  );
-  res.status(200).send(finalGrade);
 });
 
-// API endpoint to get all decks of a user
-app.get("/getDecks", async (req, res) => {
-  try {
-    const user = await User.findOne({ userId: req.params.userId });
-    if (!user) {
-        console.log("User Not Found");
-        return res.status(404).send("User Not Found");
-    }
-    const decks = user.decks;
-    if (!decks) {
-        console.log("Decks Not Found");
-        return res.status(404).send("Decks Not Found");
-    }
-    res.json(decks);
-  } catch (error) {
-    console.error(error);
-    res.status(404).send("Internal Server Error");
-  }
-});
 
-// API endpoint to get all flashcards from a specific deck of a user
-app.get("/getFlashcards/:decknum", async (req, res) => {
-  try {
-    const user = await User.findOne({ userId: req.params.userId });
-    const deckNum = req.params.decknum;
-    if (!user) {
-        console.log("User Not Found");
-        return res.status(404).send("User Not Found");
+// API endpoint to edit a card in a specific deck
+app.post("/editCard/:decknum", async (req, res) => {
+    try {
+      const newCard = {
+        term: req.body.cardTerm,
+        definition: req.body.cardDef,
+      };
+      const currentUser = await User.findOne({ userId: req.body.userId });
+      currentUser.decks[req.params.decknum].splice(req.params.decknum, 1, newCard);
+      await currentUser.save();
+      res.status(200);
+    } catch (error) {
+      console.error(error);
+      res.status(400);
     }
-    const decks = user.decks;
-    if (!decks) {
-        console.log("Decks Not Found");
-        return res.status(404).send("Decks Not Found");
-    }
-    res.json(decks[deckNum]);
-  } catch (error) {
-    console.error(error);
-    res.status(404).send("Internal Server Error");
-  }
 });
 
 // API endpoint to delete a user's decks
@@ -266,6 +258,16 @@ app.post("/decrementCard", async (req, res) => {
         res.status(400);
     }
 });
+
+// API endpoint to perform a test using the grading module
+app.post("/test", async (req, res) => {
+    const finalGrade = await grading(
+      req.body.realDef,
+      req.body.testDef,
+    );
+    res.status(200).send(finalGrade);
+  });
+  
 
 // Start the server
 app.listen(PORT, () => {
