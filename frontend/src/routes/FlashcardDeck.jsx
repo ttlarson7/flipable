@@ -43,15 +43,17 @@ const FlashcardDeck = () => {
         params: {
           deckNum: deckNum,
           i: index,
+          userId: user_id
         },
       })
       .then(() => {
+        axios.get("/decrementCard");
         setFlashCards((prevFlashCards) =>
           prevFlashCards.filter((_, i) => i !== index)
         );
       })
       .catch((err) => console.log(err));
-    console.log(i)
+    console.log(index)
   };
 
   // if no cards, output empty cards
@@ -107,9 +109,10 @@ const FlashcardDeck = () => {
           {flashCards.map((card, i) => (
             <Flashcard
               key={i}
+              i={i}
               term={card.term}
               definition={card.definition}
-              setFlashCards={() => handleDeleteFlashcard(card)}
+              onDelete={handleDeleteFlashcard}
             />
           ))}
         </ul>

@@ -1,13 +1,6 @@
-const Flashcard = ({ term, definition, setFlashCards }) => {
-  const handleDeleteClick = () => {
-    document.getElementById("delete_modal").showModal();
-  };
-
-  const handleDelete = () => {
-    // Call the setFlashCards function passed from the parent component
-    setFlashCards();
-    // Close the modal
-    document.getElementById("delete_modal").close();
+const Flashcard = ({ term, definition, onDelete, i }) => {
+  const handleDeleteClick = async () => {
+    onDelete(i);
   };
 
   return (
@@ -44,25 +37,6 @@ const Flashcard = ({ term, definition, setFlashCards }) => {
           </div>
         </div>
       </label>
-      <dialog id="delete_modal" className="modal">
-        <div className="modal-box bg-base-100">
-          <h3 className="font-bold text-lg">
-            Are you sure you want to delete this card?
-          </h3>
-          <p className="py-4">
-            Press ESC key or click the close button below to close Press Delete
-            to delete your card
-          </p>
-          <div className="modal-action">
-            <form method="dialog">
-              <button className="btn btn-success rounded">Close</button>
-              <button className="btn btn-error rounded" onClick={handleDelete}>
-                Delete
-              </button>
-            </form>
-          </div>
-        </div>
-      </dialog>
     </li>
   );
 };
