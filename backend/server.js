@@ -7,7 +7,12 @@ const app = express();
 const PORT = process.env.PORT || 3001;
 const mongoose = require("mongoose");
 
+<<<<<<< HEAD
 // Import grading module
+=======
+app.use(express.json());
+
+>>>>>>> 488d71b2438df657d9c44bbecd2d3183c6c23ffe
 let grading;
 try {
   grading = import("./../AI/grading.js");
@@ -77,12 +82,16 @@ app.post("/addDeck", async (req, res) => {
     };
     //add deck to current user's deck array, update mongoDB
     await User.findOneAndUpdate(
-      { userId: req.body.user_id },
+      { userId: req.body.userId },
       { $push: {decks: newDeck} },
       { new: true, upsert: true }
     );
     res.status(200).send("Deck added successfully");
+<<<<<<< HEAD
   } catch (error) {
+=======
+  } catch(error) {
+>>>>>>> 488d71b2438df657d9c44bbecd2d3183c6c23ffe
     console.error(error);
     res.status(400);
   }
@@ -100,7 +109,11 @@ app.post("/addCard/:decknum", async (req, res) => {
     currentUser.decks[req.params.decknum].push(newCard);
     await currentUser.save();
     res.status(200);
+<<<<<<< HEAD
   } catch (error) {
+=======
+  } catch(error) {
+>>>>>>> 488d71b2438df657d9c44bbecd2d3183c6c23ffe
     console.error(error);
     res.status(400);
   }
@@ -116,7 +129,11 @@ app.post("/editCard/:decknum", async (req, res) => {
       currentUser.decks[req.params.decknum].splice(req.params.decknum, 1, newCard);
       await currentUser.save();
       res.status(200);
+<<<<<<< HEAD
     } catch (error) {
+=======
+    } catch(error) {
+>>>>>>> 488d71b2438df657d9c44bbecd2d3183c6c23ffe
       console.error(error);
       res.status(400);
     }
@@ -128,7 +145,11 @@ app.post("/incrementDeck", async (req, res) => {
       currentUser.decksCreated++;
       await currentUser.save();
       res.status(200);
+<<<<<<< HEAD
     } catch (error) {
+=======
+    } catch(error) {
+>>>>>>> 488d71b2438df657d9c44bbecd2d3183c6c23ffe
       console.error(error);
       res.status(400);
     }
@@ -140,7 +161,11 @@ app.post("/incrementCard", async (req, res) => {
         currentUser.cardsCreated++;
         await currentUser.save();
         res.status(200);
+<<<<<<< HEAD
     } catch (error) {
+=======
+    } catch(error) {
+>>>>>>> 488d71b2438df657d9c44bbecd2d3183c6c23ffe
         console.error(error);
         res.status(400);
     }
@@ -152,7 +177,11 @@ app.post("/incrementTests", async (req, res) => {
       currentUser.testsTaken++;
       await currentUser.save();
       res.status(200);
+<<<<<<< HEAD
     } catch (error) {
+=======
+    } catch(error) {
+>>>>>>> 488d71b2438df657d9c44bbecd2d3183c6c23ffe
       console.error(error);
       res.status(400);
     }
@@ -235,7 +264,11 @@ app.post("/decrementDeck", async (req, res) => {
         currentUser.decksCreated--;
         await currentUser.save();
         res.status(200);
+<<<<<<< HEAD
     } catch (error) {
+=======
+    } catch(error) {
+>>>>>>> 488d71b2438df657d9c44bbecd2d3183c6c23ffe
         console.error(error);
         res.status(400);
     }

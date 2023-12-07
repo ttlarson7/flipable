@@ -7,7 +7,6 @@ const DeckcardTest = ({ term, correct, index, setAnswers, answers, domEleID }) =
       newAnswers[index] = e.target.value;
       return newAnswers;
     });
-    console.log(answers);
   };
   if (correct[index] === -1) {
     return (

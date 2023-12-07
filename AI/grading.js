@@ -41,11 +41,11 @@ let realDefs = ["a greeting", "a farewell"];
 let testDefs = ["A way to great someone", "A banana"];
 let terms = ["hello", "goodbye"];
 
-async function gradeTest(realDefs, testDefs, terms) {
+async function gradeTest(realDefs, testDefs) {
   let score = 0;
   let finalScore = []; //holds all questions correctness 0 - wrong | 1 - right
   for (let i = 0; i < realDefs.length; i++) {
-    let correct = await grade(realDefs[i], testDefs[i], terms[i]);
+    let correct = await grade(realDefs[i].definition, testDefs[i], realDefs[i].term);
     // console.log(correct);
     if (correct) {
       finalScore.push(1);
