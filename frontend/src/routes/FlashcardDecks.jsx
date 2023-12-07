@@ -21,7 +21,7 @@ const FlashcardDecks = () => {
       axios
         .get("/getDecks", {
           params: {
-            user_id: user_id,
+            userId: user_id,
           },
         })
         .then((res) => {
@@ -80,9 +80,9 @@ const FlashcardDecks = () => {
             <Deckcard
               key={i}
               i={i.toString()}
-              title={deck.deckName}
-              desc={deck.deckDesc}
-              category={deck.deckCategory}
+              title={deck.title}
+              desc={deck.description}
+              category={deck.category}
             />
           ))}
         </ul>

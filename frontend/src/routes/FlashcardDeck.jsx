@@ -23,7 +23,7 @@ const FlashcardDeck = () => {
       axios
         .get(`/getFlashcards/${deckNum}`, {
           params: {
-            user_id: user_id,
+            userId: user_id,
           },
         })
         .then((res) => {
