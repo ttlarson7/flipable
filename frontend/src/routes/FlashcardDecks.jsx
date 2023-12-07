@@ -9,7 +9,7 @@ const FlashcardDecks = () => {
   let ran = false;
   const [loading, setLoading] = useState(true);
   const user = useUser().user;
-  const user_id = user?.id.toString();
+  const userId = user?.id.toString();
 
   const { flashDecks, setFlashcardDecks } = useContext(FlashcardContext);
 
@@ -21,7 +21,11 @@ const FlashcardDecks = () => {
       axios
         .get("/getDecks", {
           params: {
+<<<<<<< HEAD
             userId: user_id,
+=======
+            userId: userId,
+>>>>>>> 823d1000e0f47f37a2aeb7f743463128b69b1930
           },
         })
         .then((res) => {
