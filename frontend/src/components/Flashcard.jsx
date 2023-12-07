@@ -1,7 +1,4 @@
 const Flashcard = ({ term, definition, onDelete, i }) => {
-  const handleDeleteClick = async () => {
-    onDelete(i);
-  };
 
   return (
     <li className="flex justify-center items-center">
@@ -23,7 +20,7 @@ const Flashcard = ({ term, definition, onDelete, i }) => {
 
             <button
               className="btn btn-error rounded m-2 p-2"
-              onClick={handleDeleteClick}
+              onClick={() => onDelete(i)}
             >
               Delete
             </button>
