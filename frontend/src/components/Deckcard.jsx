@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 
-const Deckcard = ({ i, title, desc, category }) => {
+const Deckcard = ({ i, title, desc, category, onDelete }) => {
   return (
     <li className="card card-bordered border-primary bg-base-100 shadow-xl flex flex-col">
       <Link to={i}>
@@ -22,7 +22,7 @@ const Deckcard = ({ i, title, desc, category }) => {
 
         <button
           className="btn btn-error rounded m-2 p-2"
-          onClick={() => console.log("delete")}
+          onClick={() => onDelete(i)}
         >
           Delete
         </button>

@@ -1,5 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import { useUser } from "@clerk/clerk-react";
+import { useParams } from "react-router-dom"
 import axios from "axios";
 import { FlashcardContext } from "../App";
 import Footer from "../components/Footer";
@@ -10,6 +11,7 @@ const FlashcardDecks = () => {
   const [loading, setLoading] = useState(true);
   const user = useUser().user;
   const user_id = user?.id.toString();
+  const { deckNum } = useParams();
 
   const { flashDecks, setFlashcardDecks } = useContext(FlashcardContext);
 
@@ -35,10 +37,31 @@ const FlashcardDecks = () => {
     }
   }, []);
 
+  const handleDeleteDecks = (index) => {
+    axios
+      .delete("/deleteCard", {
+        params: {
+          deckNum: deckNum,
+          userId: user_id,
+        },
+      })
+      .then(() => {
+        setFlashcardDecks((prevFlashCards) =>
+          prevFlashCards.filter((_, i) => i !== deckNum)
+        );
+      })
+      .catch((err) => console.log(err));
+    console.log(index);
+  };
+
   if (loading) {
     return (
       <div className="bg-neutral">
-        <Navbars page="decks" flashDecks={flashDecks} setFlashcardDecks={setFlashcardDecks}></Navbars>
+        <Navbars
+          page="decks"
+          flashDecks={flashDecks}
+          setFlashcardDecks={setFlashcardDecks}
+        ></Navbars>
         <div className="min-h-screen flex justify-center">
           <span className="loading loading-infinity loading-lg self-center"></span>
         </div>
@@ -72,7 +95,11 @@ const FlashcardDecks = () => {
 
   return (
     <div className="bg-neutral">
-      <Navbars page="decks" flashDecks={flashDecks} setFlashcardDecks={setFlashcardDecks}></Navbars>
+      <Navbars
+        page="decks"
+        flashDecks={flashDecks}
+        setFlashcardDecks={setFlashcardDecks}
+      ></Navbars>
       <div className="mt-24 bg-neutral"></div>
       <div className=" min-h-screen">
         <ul className="grid lg:grid-cols-3 sm:grid-cols-2 gap-4 m-4">
@@ -83,6 +110,7 @@ const FlashcardDecks = () => {
               title={deck.title}
               desc={deck.description}
               category={deck.category}
+              onDelete={handleDeleteDecks}
             />
           ))}
         </ul>
