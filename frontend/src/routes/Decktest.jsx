@@ -58,14 +58,19 @@ const Decktest = () => {
   }, [numQ])
 
 
-  const handleSumbit = () => {
+  const handleSumbit = async () => {
     console.log("submitting: ", answers)
     console.log("testCards: ", realDef);
-    //Testcards contains the terms and definitons in correct order
-    //answer contains the answers in the order they were answered
-    // axios.post("/test", { testCards, answers }).then((res) => {
-    //   console.log(success);
-    // })
+    // Testcards contains the terms and definitons in correct order
+    // answer contains the answers in the order they were answered
+    try {
+      const response = await axios.post("/test", { realDef, answers });
+      console.log(response.data);
+      
+    }catch (err) {
+      console.log(err);
+    }
+    
   }
 
 

@@ -9,15 +9,33 @@ const mongoose = require("mongoose");
 
 app.use(express.json());
 
+
+
+
 // Import grading module
+
 let grading;
-try {
-  grading = import("./../AI/grading.js");
-} catch (error) {
-  console.error("Error importing grading.js:", error);
+async function importGrading() {
+  try {
+    const module = await import("./../AI/grading.js");
+    grading = module.default;
+    console.log("grading.js imported successfully", grading)
+  } catch (error) {
+    console.error("Error importing grading.js:", error);
+  }
 }
 
+
+importGrading();
+
+
+
+
+
+
+=======
 // Set up MongoDB connection
+
 const DBURL = process.env.MONGODB_DATABASE_URL;
 app.use(cors());
 
@@ -221,10 +239,65 @@ app.post("/incrementTests", async (req, res) => {
   }
 });
 
+
+//calls test, passes in real definitions, test definitions, terms
+app.post("/test", async (req, res) => {
+  console.log(req.body.realDef, req.body.answers);
+  const finalGrade = await grading.gradeTest(req.body.realDef, req.body.answers);
+  res.status(200).send(finalGrade);
+});
+
+app.get("/getDecks", async (req, res) => {
+  try {
+    const user = await User.findOne({ userId: req.query.userId });
+    if (!user) {
+      console.log("User Not Found");
+      return res.status(404).send("User Not Found");
+    }
+    const decks = user.decks;
+    if (!decks) {
+      console.log("Decks Not Found");
+      return res.status(404).send("Decks Not Found");
+    }
+    res.json(decks);
+  } catch (error) {
+    console.error(error);
+    res.status(404).send("Internal Server Error");
+  }
+});
+
+app.get("/getFlashcards/:deckNum", async (req, res) => {
+  try {
+    const user = await User.findOne({ userId: req.query.userId });
+    const deckNum = req.params.deckNum;
+    if (!user) {
+      console.log("User Not Found");
+      return res.status(404).send("User Not Found");
+    }
+    const decks = user.decks;
+    if (!decks) {
+      console.log("Decks Not Found");
+      return res.status(404).send("Decks Not Found");
+    }
+
+    if (deckNum < 0 || deckNum >= decks.length) {
+      console.log("Invalid Deck Number");
+      return res.status(404).send("Invalid Deck Number");
+    }
+
+    res.json(decks[deckNum].cards);
+  } catch (error) {
+    console.error(error);
+    res.status(404).send("Internal Server Error");
+  }
+});
+
+=======
 // API endpoint to delete a user's decks
+
 app.delete("/deleteDecks", async (req, res) => {
   try {
-    const currentUser = User.findOne({ userId: req.query.userId });
+    const currentUser = await User.findOne({ userId: req.query.userId });
     currentUser.decks.splice(req.query.deckNum, 1);
     await currentUser.save();
     res.status(200);
@@ -237,8 +310,9 @@ app.delete("/deleteDecks", async (req, res) => {
 // API endpoint to delete a card from a specific deck of a user
 app.delete("/deleteCard", async (req, res) => {
   try {
-    const currentUser = User.findOne({ userId: req.query.userId });
-    currentUser.decks[req.query.deckNum].cards.splice(req.query.i, 1);
+    const num = parseInt(req.query.deckNum)
+    const currentUser = await User.findOne({ userId: req.query.userId });
+    currentUser.decks[num].cards.splice(req.query.i, 1);
     await currentUser.save();
   } catch (error) {
     console.error(error);
