@@ -41,13 +41,13 @@ const FlashcardDecks = () => {
     axios
       .delete("/deleteDecks", {
         params: {
-          deckNum: deckNum,
+          deckNum: index,
           userId: user_id,
         },
       })
       .then(() => {
         setFlashcardDecks((prevFlashCards) =>
-          prevFlashCards.filter((_, i) => i !== deckNum)
+          prevFlashCards.filter((_, i) => i !== index)
         );
       })
       .catch((err) => console.log(err));
