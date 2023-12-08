@@ -1,6 +1,6 @@
 import { CiCircleCheck, CiCircleRemove } from "react-icons/ci";
 
-const DeckcardTest = ({ term, correct, index, setAnswers, answers, domEleID }) => {
+const DeckcardTest = ({ term, correct, index, setAnswers, answers, domEleID, realDefs }) => {
   const handleAnswer = (e) => {
     setAnswers(() => {
       const newAnswers = [...answers];
@@ -37,7 +37,10 @@ const DeckcardTest = ({ term, correct, index, setAnswers, answers, domEleID }) =
           <div className="card-body border border-error rounded-2xl">
             <p>What is the definition of {term}?</p>
             <div className="card-actions justify-end border-error">
-              <p>{answers[index]}</p>
+              <p>Answer: {answers[index]}</p>
+            </div>
+            <div className="card-actions justify-end border-success">
+              <p>Flashcard Term: {realDefs[index].definition}</p>
             </div>
           </div>
         </div>
@@ -48,14 +51,17 @@ const DeckcardTest = ({ term, correct, index, setAnswers, answers, domEleID }) =
   if (correct[index] === 1) {
     return (
       <div className="indicator">
-        <div className="card96 bg-base-100 shadow-xl border border-success">
-          <span className="indicator-item badge badge-success text-black">
-            <CiCircleCheck />
-          </span>
-          <div className="card-body">
+        <span className="indicator-item badge badge-success text-black">
+          <CiCircleCheck />
+        </span>
+        <div className="card w-96 bg-base-100 shadow-xl">
+          <div className="card-body border border-success rounded-2xl">
             <p>What is the definition of {term}?</p>
-            <div className="card-actions justify-end">
-              <p className="border-success">{answers[index]}</p>
+            <div className="card-actions justify-end border-success">
+              <p>Answer: {answers[index]}</p>
+            </div>
+            <div className="card-actions justify-end border-success">
+              <p>Flashcard Term: {realDefs[index].definition}</p>
             </div>
           </div>
         </div>
