@@ -26,14 +26,6 @@ export default defineConfig({
         target: "http://localhost:3001",
         changeOrigin: true,
       },
-      "/deleteDecks": {
-        target: "http://localhost:3001",
-        changeOrigin: true,
-      },
-      "/deleteCard": {
-        target: "http://localhost:3001",
-        changeOrigin: true,
-      },
       "/incrementDeck": {
         target: "http://localhost:3001",
         changeOrigin: true,
