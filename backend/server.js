@@ -298,7 +298,7 @@ app.delete("/deleteDecks", async (req, res) => {
     const currentUser = await User.findOne({ userId: req.query.userId });
     currentUser.decks.splice(num, 1);
     await currentUser.save();
-    res.status(200);
+    res.status(200).send("Deleted Deck");
   } catch (error) {
     console.error(error);
     res.status(500).send("Internal Server Error");
@@ -312,6 +312,7 @@ app.delete("/deleteCard", async (req, res) => {
     const currentUser = await User.findOne({ userId: req.query.userId });
     currentUser.decks[num].cards.splice(req.query.i, 1);
     await currentUser.save();
+    res.status(200).send("Deleted Card");
   } catch (error) {
     console.error(error);
     res.status(500).send(error);
