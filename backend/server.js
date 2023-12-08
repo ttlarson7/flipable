@@ -9,6 +9,7 @@ const mongoose = require("mongoose");
 
 app.use(express.json());
 // Import grading module
+
 let grading;
 async function importGrading() {
  try {
@@ -19,8 +20,11 @@ async function importGrading() {
    console.error("Error importing grading.js:", error);
  }
 }
+
+
 importGrading();
 // Set up MongoDB connection
+
 const DBURL = process.env.MONGODB_DATABASE_URL;
 app.use(cors());
 
@@ -39,35 +43,35 @@ mongoose
 // Create User model based on the schema
 const Schema = mongoose.Schema;
 const userSchema = new Schema({
-    userId: String,
-    testsTaken: {
-        type: Number,
-        default: 0,
-    },
-    decksCreated: {
-        type: Number,
-        default: 0,
-    },
-    cardsCreated: {
-        type: Number,
-        default: 0,
-    },
-    decks: {
+  userId: String,
+  testsTaken: {
+    type: Number,
+    default: 0,
+  },
+  decksCreated: {
+    type: Number,
+    default: 0,
+  },
+  cardsCreated: {
+    type: Number,
+    default: 0,
+  },
+  decks: {
     type: [
-        {
+      {
         title: String,
         category: String,
         description: String,
         cards: [
-            {
+          {
             term: String,
             definition: String,
-            },
+          },
         ],
-        },
+      },
     ],
     default: [],
-    },
+  },
 });
 
 // Create User model based on the schema
@@ -75,46 +79,47 @@ const User = mongoose.model("User", userSchema);
 
 // API endpoint to perform a test using the grading module
 app.post("/test", async (req, res) => {
-   const finalGrade = await grading.gradeTest(req.body.realDef, req.body.testDef);
-   res.status(200).send(finalGrade);
+    const finalGrade = await grading.gradeTest(req.body.realDef, req.body.testDef);
+    res.status(200).send(finalGrade);
 });
- // API endpoint to get all decks of a user
+  
+// API endpoint to get all decks of a user
 app.get("/getDecks", async (req, res) => {
-    try {
+try {
     const user = await User.findOne({ userId: req.query.userId });
     if (!user) {
     console.log("User Not Found");
-        return res.status(404).send("User Not Found");
+    return res.status(404).send("User Not Found");
     }
     const decks = user.decks;
     if (!decks) {
-        console.log("Decks Not Found");
-        return res.status(404).send("Decks Not Found");
+    console.log("Decks Not Found");
+    return res.status(404).send("Decks Not Found");
     }
     res.json(decks);
-    } catch (error) {
-        console.error(error);
-        res.status(404).send("Internal Server Error");
-    }
+} catch (error) {
+    console.error(error);
+    res.status(404).send("Internal Server Error");
+}
 });
 
 app.get("/getDecks", async (req, res) => {
-    try {
+  try {
     const user = await User.findOne({ userId: req.query.userId });
     if (!user) {
-        console.log("User Not Found");
-        return res.status(404).send("User Not Found");
+      console.log("User Not Found");
+      return res.status(404).send("User Not Found");
     }
     const decks = user.decks;
     if (!decks) {
-        console.log("Decks Not Found");
-        return res.status(404).send("Decks Not Found");
+      console.log("Decks Not Found");
+      return res.status(404).send("Decks Not Found");
     }
     res.json(decks);
-    } catch (error) {
-        console.error(error);
-        res.status(404).send("Internal Server Error");
-    }
+  } catch (error) {
+    console.error(error);
+    res.status(404).send("Internal Server Error");
+  }
 });
 
 // API endpoint to get all flashcards from a specific deck of a user
@@ -140,6 +145,12 @@ app.get("/getFlashcards/:deckNum", async (req, res) => {
         console.error(error);
         res.status(404).send("Internal Server Error");
     }
+
+    res.json(decks[deckNum].cards);
+} catch (error) {
+    console.error(error);
+    res.status(404).send("Internal Server Error");
+}
 });
 
 // API endpoint to add a new deck to the user's decks
@@ -203,28 +214,28 @@ app.post("/editCard/:decknum", async (req, res) => {
 
 // API endpoint to increment the count of decks created by a user
 app.post("/incrementDeck", async (req, res) => {
-    try {
-        const currentUser = await User.findOne({ userId: req.body.userId });
-        currentUser.decksCreated++;
-        await currentUser.save();
-        res.status(200).send("Incremented Deck");
-    } catch (error) {
-        console.error(error);
-        res.status(400);
-    }
+  try {
+    const currentUser = await User.findOne({ userId: req.body.userId });
+    currentUser.decksCreated++;
+    await currentUser.save();
+    res.status(200).send("Incremented");
+  } catch (error) {
+    console.error(error);
+    res.status(400);
+  }
 });
 
 // API endpoint to increment the count of cards created by a user
 app.post("/incrementCard", async (req, res) => {
-    try {
-        const currentUser = await User.findOne({ userId: req.body.userId });
-        currentUser.cardsCreated++;
-        await currentUser.save();
-        res.status(200).send("Incremented Card");
-    } catch (error) {
-        console.error(error);
-        res.status(400);
-    }
+  try {
+    const currentUser = await User.findOne({ userId: req.body.userId });
+    currentUser.cardsCreated++;
+    await currentUser.save();
+    res.status(200).send("Incremented");
+  } catch (error) {
+    console.error(error);
+    res.status(400);
+  }
 });
 
 // API endpoint to increment the count of tests taken by a user
@@ -233,29 +244,48 @@ app.post("/incrementTests", async (req, res) => {
         const currentUser = await User.findOne({ userId: req.body.userId });
         currentUser.testsTaken++;
         await currentUser.save();
-        res.status(200);
+        res.status(200).send("Incremented");
     } catch (error) {
         console.error(error);
         res.status(400);
     }
 });
 
-// API endpoint to return user statistics
-app.get("/getUser", async (req, res) => {
-    try {
-        const user = await User.findOne({ userId: req.query.userId });
-        const userStats = {
-            decksCreated: user.decksCreated,
-            cardsCreated: user.cardsCreated,
-            testsTaken: user.testsTaken
-        };
-        res.json(userStats);
-        res.status(200).send("Returned User Statistics");
-    } catch (error) {
-        console.error(error);
-        res.status(404).send("Internal Server Error");
+
+//calls test, passes in real definitions, test definitions, terms
+app.post("/test", async (req, res) => {
+  console.log(req.body.realDef, req.body.answers);
+  const finalGrade = await grading.gradeTest(req.body.realDef, req.body.answers);
+  res.status(200).send(finalGrade);
+});
+
+
+
+app.get("/getFlashcards/:deckNum", async (req, res) => {
+  try {
+    const user = await User.findOne({ userId: req.query.userId });
+    const deckNum = req.params.deckNum;
+    if (!user) {
+      console.log("User Not Found");
+      return res.status(404).send("User Not Found");
     }
-})
+    const decks = user.decks;
+    if (!decks) {
+      console.log("Decks Not Found");
+      return res.status(404).send("Decks Not Found");
+    }
+
+    if (deckNum < 0 || deckNum >= decks.length) {
+      console.log("Invalid Deck Number");
+      return res.status(404).send("Invalid Deck Number");
+    }
+
+    res.json(decks[deckNum].cards);
+  } catch (error) {
+    console.error(error);
+    res.status(404).send("Internal Server Error");
+  }
+});
 
 // API endpoint that calls test, passes in real definitions, test definitions, terms
 app.post("/test", async (req, res) => {
@@ -290,17 +320,18 @@ app.get("/getFlashcards/:deckNum", async (req, res) => {
 });
 
 // API endpoint to delete a user's decks
+
 app.delete("/deleteDecks", async (req, res) => {
-    try {
-        const num = parseInt(req.query.deckNum)
-        const currentUser = await User.findOne({ userId: req.query.userId });
-        currentUser.decks.splice(num, 1);
-        await currentUser.save();
-        res.status(200).send("Deleted Deck");
-    } catch (error) {
-        console.error(error);
-        res.status(500).send("Internal Server Error");
-    }
+  try {
+    const num = parseInt(req.query.deckNum)
+    const currentUser = await User.findOne({ userId: req.query.userId });
+    currentUser.decks.splice(num, 1);
+    await currentUser.save();
+    res.status(200).send("Deleted Deck");
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Internal Server Error");
+  }
 });
 
 // API endpoint to delete a card from a specific deck of a user

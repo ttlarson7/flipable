@@ -118,6 +118,11 @@ const Decktest = () => {
           <h1 className="text-4xl font-bold mb-5">Time to <span className="animate-text bg-gradient-to-r from-teal-800 via-green-700 to-blue-800 bg-clip-text text-transparent font-black">
             Quizify
           </span>!</h1>
+          {graded && (
+            <div className = " text-xl">
+              <p>{correct[-1]}/{numQ}</p>
+              </div>
+          )}
           <div className="flex flex-nowrap overflow-x-auto" style={{ maxWidth: "50%" }}>
             {realDef.map((card, i) => (
               <TestNumbers
