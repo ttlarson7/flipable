@@ -201,7 +201,7 @@ app.post("/editCard/:decknum", async (req, res) => {
 // API endpoint to increment the count of decks created by a user
 app.post("/incrementDeck", async (req, res) => {
   try {
-    const currentUser = await User.findOne({ userId: req.body.userId });
+    const currentUser = await User.findOne({ userId: req.body.idIncrement });
     currentUser.decksCreated++;
     await currentUser.save();
     res.status(200);
@@ -214,8 +214,8 @@ app.post("/incrementDeck", async (req, res) => {
 // API endpoint to increment the count of cards created by a user
 app.post("/incrementCard", async (req, res) => {
   try {
-    const currentUser = await User.findOne({ userId: req.body.userId });
-    currentUser.cardsCreated += 1;
+    const currentUser = await User.findOne({ userId: req.body.idIncrement });
+    currentUser.cardsCreated++;
     await currentUser.save();
     res.status(200);
   } catch (error) {
