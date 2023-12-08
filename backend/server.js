@@ -292,7 +292,7 @@ app.get("/getFlashcards/:deckNum", async (req, res) => {
   }
 });
 
-=======
+// =======
 // API endpoint to delete a user's decks
 
 app.delete("/deleteDecks", async (req, res) => {
