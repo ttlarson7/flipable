@@ -52,7 +52,6 @@ const FlashcardDeck = () => {
         );
       })
       .catch((err) => console.log(err));
-    console.log(index)
   };
 
   // if no cards, output empty cards
