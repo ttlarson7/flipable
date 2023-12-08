@@ -88,7 +88,7 @@ const User = mongoose.model("User", userSchema);
 
 // API endpoint to perform a test using the grading module
 app.post("/test", async (req, res) => {
-    const finalGrade = await grading(req.body.realDef, req.body.testDef);
+    const finalGrade = await grading.gradeTest(req.body.realDef, req.body.testDef);
     res.status(200).send(finalGrade);
 });
   
