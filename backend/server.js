@@ -242,6 +242,7 @@ app.delete("/deleteCard", async (req, res) => {
     await currentUser.save();
   } catch (error) {
     console.error(error);
+    console.log("JKFLDS");
     res.status(500).send(error);
   }
 });
