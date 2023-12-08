@@ -81,7 +81,7 @@ const Navbars = ({
 
   const handleDeckAccept = () => {
     //set up axios call to add deck to backend
-
+    const idIncrement = user?.id.toString()
     const newDeck = {
       title: deckName,
       description: deckDesc,
@@ -91,7 +91,7 @@ const Navbars = ({
     console.log(flashDecks, newDeck);
     setFlashcardDecks([...flashDecks, newDeck]);
     axios.post(`/addDeck`, newDeck).catch((err) => console.log(err));
-    axios.post(`/incrementDeck`).catch((err) => console.log(err));
+    axios.post(`/incrementDeck`, idIncrement).catch((err) => console.log(err));
 
     setDeckDesc("");
     setDeckName("");
@@ -197,7 +197,7 @@ const Navbars = ({
 
   const handleCardAccept = () => {
     //set up axios call to add deck to backend
-
+    const idIncrement = user?.id.toString();
     const newTerm = {
       term: flashcardTerm,
       definition: flashcardDef,
@@ -205,7 +205,7 @@ const Navbars = ({
     };
     setFlashCards([...flashCards, newTerm]);
     axios.post(`/addCard/${deckNum}`, newTerm).catch((err) => console.log(err));
-    axios.post(`/incrementCard`).catch((err) => console.log(err));
+    axios.post(`/incrementCard`, idIncrement).catch((err) => console.log(err));
     setFlashcardDef("");
     setFlashcardTerm("");
   };
