@@ -127,9 +127,9 @@ try {
 app.post("/addDeck", async (req, res) => {
   try {
     const newDeck = {
-      title: req.body.deckName,
-      category: req.body.deckCategory,
-      description: req.body.deckDesc,
+      title: req.body.title,
+      category: req.body.category,
+      description: req.body.description,
       cards: [],
     };
     await User.findOneAndUpdate(
