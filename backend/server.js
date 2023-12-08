@@ -237,8 +237,9 @@ app.delete("/deleteDecks", async (req, res) => {
 // API endpoint to delete a card from a specific deck of a user
 app.delete("/deleteCard", async (req, res) => {
   try {
+    const num = parseInt(req.query.deckNum)
     const currentUser = User.findOne({ userId: req.query.userId });
-    currentUser.decks[req.query.deckNum].cards.splice(req.query.i, 1);
+    currentUser.decks[num].cards.splice(req.query.i, 1);
     await currentUser.save();
   } catch (error) {
     console.error(error);
