@@ -7,7 +7,7 @@ import DeckcardTest from "../components/DeckcardTest";
 import TestNumbers from "../components/TestNumbers";
 import Loading from "../components/Loading";
 import axios from "axios";
-import { set } from "mongoose";
+
 
 const Decktest = () => {
   const { flashCards } = useContext(FlashcardContext);
@@ -104,7 +104,7 @@ const Decktest = () => {
           <div className="modal-box">
             <h3 className="font-bold text-lg">Hello!</h3>
             <div className="flex flex-row">
-              <p className="py-4 mr-5">How many questions would you like?</p>
+              <p className="py-4 mr-5">How many questions would you like? Max: {flashCards.length} </p>
               <input id="numQuestions" type="text" placeholder="Type here" className="input input-bordered input-secondary w-1/4 max-w-xs" />
             </div>
             <div className="modal-action">
