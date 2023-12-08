@@ -1,21 +1,46 @@
-import { useState, useContext } from "react";
+import axios from "axios";
+import { useState, useContext, useEffect } from "react";
 import { FlashcardContext } from "../App";
 import { useNavigate } from "react-router-dom";
 import Navbars from "../components/Navbars";
 import Footer from "../components/Footer";
 import { FaCaretLeft, FaCaretRight } from "react-icons/fa";
+import { useParams } from "react-router-dom";
+import { useUser } from "@clerk/clerk-react";
 
 function FlashcardsPractice() {
   const navigate = useNavigate();
-  const { flashCards } = useContext(FlashcardContext);
+  const { flashCards, setFlashCards } = useContext(FlashcardContext);
   const [deck, setDeck] = useState([...flashCards]);
   const [currentCardIndex, setCurrentCardIndex] = useState(0);
-  const [moveState, setMoveState] = useState(
-    "swap swap-flip text-9xl"
-  );
+  const [moveState, setMoveState] = useState("swap swap-flip text-9xl");
   const [isAnimating, setIsAnimating] = useState(false);
   const [progress, setProgress] = useState(1);
   const [isCardFlipped, setIsCardFlipped] = useState(false);
+  const user = useUser().user;
+  const user_id = user?.id.toString();
+  const { deckNum } = useParams();
+
+  let ran = false;
+
+  useEffect(() => {
+    if (!ran) {
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+      ran = true;
+      axios
+        .get(`/getFlashcards/${deckNum}`, {
+          params: {
+            userId: user_id,
+          },
+        })
+        .then((res) => {
+          setFlashCards(res.data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  }, []);
 
   const canAddBack = deck.length === 1;
 
@@ -24,7 +49,7 @@ function FlashcardsPractice() {
     setIsAnimating(true);
 
     setMoveState(
-      "animate-fade-right animate-once animate-ease-in-out animate-reverse swap swap-flip text-3xl w-96 md:w-64 lg:w-80 xl:w-96"
+      "animate-fade-right animate-once animate-ease-in-out animate-reverse swap swap-flip text-9xl"
     );
     const shuffledDeck = [...deck];
     const removedCard = shuffledDeck.splice(currentCardIndex, 1)[0];
@@ -39,10 +64,10 @@ function FlashcardsPractice() {
 
     setTimeout(() => {
       setMoveState(
-        "animate-jump-in animate-once animate-ease-in-out swap swap-flip text-3xl w-96 md:w-64 lg:w-80 xl:w-96"
+        "animate-jump-in animate-once animate-ease-in-out swap swap-flip text-9xl"
       );
       setTimeout(() => {
-        setMoveState("swap swap-flip text-3xl w-96 md:w-64 lg:w-80 xl:w-96");
+        setMoveState("swap swap-flip text-9xl");
         setIsAnimating(false);
       }, 325);
     }, 650);
@@ -53,7 +78,7 @@ function FlashcardsPractice() {
     setIsAnimating(true);
 
     setMoveState(
-      "animate-fade-left animate-once animate-ease-in-out animate-reverse swap swap-flip text-3xl w-96 md:w-64 lg:w-80 xl:w-96"
+      "animate-fade-left animate-once animate-ease-in-out animate-reverse swap swap-flip text-9xl"
     );
     const updatedDeck = [...deck];
     updatedDeck.splice(currentCardIndex, 1);
@@ -70,7 +95,7 @@ function FlashcardsPractice() {
         "animate-jump-in animate-once animate-ease-in-out swap swap-flip text-3xl w-96 md:w-64 lg:w-80 xl:w-96"
       );
       setTimeout(() => {
-        setMoveState("swap swap-flip text-3xl w-96 md:w-64 lg:w-80 xl:w-96");
+        setMoveState("swap swap-flip text-9xl");
         setIsAnimating(false);
       }, 325);
     }, 650);
@@ -145,21 +170,21 @@ function FlashcardsPractice() {
           ></progress>
         </div>
         {deck.length > 0 && (
-          <div className="w-96 md:w-64 lg:w-80 xl:w-96 top-40">
+          <div className="flex flex-col items-center justify-center top-40">
             <label className={moveState}>
               <input
                 type="checkbox"
                 checked={isCardFlipped}
                 onChange={() => setIsCardFlipped(!isCardFlipped)}
               />
-              <div className="card items-center text-center swap-off bg-base-100 h-64 md:h-80 lg:h-96 xl:h-96 flex justify-center border border-primary">
+              <div className="card items-center text-center swap-off bg-base-100 h-64 w-80 justify-center border border-primary">
                 <div className="bg-primary border border-primary rounded">
                   <p className="card-title text-base-100 font-bold text-2xl ml-3 mr-3 mb-1">
                     {deck[currentCardIndex].term}
                   </p>
                 </div>
               </div>
-              <div className="card items-center text-center swap-on bg-base-100 h-64 md:h-80 lg:h-96 xl:h-96 flex justify-center border border-primary overflow-auto">
+              <div className="card items-center text-center swap-on bg-base-100 h-64 w-80 flex justify-center border border-primary overflow-auto">
                 <div className="max-w-full pt-6">
                   <p className="text-2xl m-4 whitespace-normal break-words">
                     {deck[currentCardIndex].definition}
