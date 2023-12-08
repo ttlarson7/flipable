@@ -84,7 +84,7 @@ const Navbars = ({
 
     const newDeck = {
       title: deckName,
-      descrition: deckDesc,
+      description: deckDesc,
       category: deckCategory,
       userId: user?.id.toString(),
     };
@@ -120,6 +120,7 @@ const Navbars = ({
             <div className="modal-box flex flex-col bg-neutral">
               <h3 className="font-bold text-lg self-center">Add New Deck</h3>
               <input
+                required={true}
                 value={deckName}
                 type="text"
                 placeholder="Deck Name"
@@ -127,6 +128,7 @@ const Navbars = ({
                 onChange={handleDeckTitle}
               />
               <input
+                required={true}
                 value={deckDesc}
                 type="text"
                 placeholder="Deck Desc."
@@ -199,6 +201,7 @@ const Navbars = ({
     const newTerm = {
       term: flashcardTerm,
       definition: flashcardDef,
+      userId: user?.id.toString(),
     };
     setFlashCards([...flashCards, newTerm]);
     axios.post(`/addCard/${deckNum}`, newTerm).catch((err) => console.log(err));
@@ -250,6 +253,7 @@ const Navbars = ({
                 Add New Flashcard
               </h3>
               <input
+                required={true}
                 value={flashcardTerm}
                 type="text"
                 placeholder="Flashcard Term"
@@ -257,6 +261,7 @@ const Navbars = ({
                 onChange={handleCardTerm}
               />
               <textarea
+                required={true}
                 value={flashcardDef}
                 placeholder="Flashcard Definition"
                 className="textarea textarea-primary w-full max-w-xs self-center my-2"
