@@ -224,7 +224,7 @@ app.post("/incrementTests", async (req, res) => {
 // API endpoint to delete a user's decks
 app.delete("/deleteDecks", async (req, res) => {
   try {
-    const currentUser = User.findOne({ userId: req.query.userId });
+    const currentUser = await User.findOne({ userId: req.query.userId });
     currentUser.decks.splice(req.query.deckNum, 1);
     await currentUser.save();
     res.status(200);
@@ -238,12 +238,11 @@ app.delete("/deleteDecks", async (req, res) => {
 app.delete("/deleteCard", async (req, res) => {
   try {
     const num = parseInt(req.query.deckNum)
-    const currentUser = User.findOne({ userId: req.query.userId });
+    const currentUser = await User.findOne({ userId: req.query.userId });
     currentUser.decks[num].cards.splice(req.query.i, 1);
     await currentUser.save();
   } catch (error) {
     console.error(error);
-    console.log("JKFLDS");
     res.status(500).send(error);
   }
 });
