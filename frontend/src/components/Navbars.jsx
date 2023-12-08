@@ -84,7 +84,7 @@ const Navbars = ({
 
     const newDeck = {
       title: deckName,
-      descrition: deckDesc,
+      description: deckDesc,
       category: deckCategory,
       userId: user?.id.toString(),
     };
