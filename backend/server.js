@@ -226,7 +226,7 @@ app.delete("/deleteDecks", async (req, res) => {
 app.delete("/deleteCard", async (req, res) => {
   try {
     const currentUser = User.findOne({ userId: req.query.userId });
-    currentUser.decks[req.query.deckNume].cards.splice(req.query.i, 1);
+    currentUser.decks[req.query.deckNum].cards.splice(req.query.i, 1);
     await currentUser.save();
   } catch (error) {
     console.error(error);
