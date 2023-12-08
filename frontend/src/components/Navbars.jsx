@@ -83,9 +83,9 @@ const Navbars = ({
     //set up axios call to add deck to backend
 
     const newDeck = {
-      title: deckName,
-      descrition: deckDesc,
-      category: deckCategory,
+      title: title,
+      description: description,
+      category: category,
       userId: user?.id.toString(),
     };
     console.log(flashDecks, newDeck);
