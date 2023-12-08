@@ -149,7 +149,7 @@ app.post("/addCard/:deckNum", async (req, res) => {
   try {
     const newCard = {
       term: req.body.term,
-      definition: req.body.definition,
+      definition: req.body.definition
     };
     const currentUser = await User.findOne({ userId: req.body.userId });
     currentUser.decks[req.params.deckNum].cards.push(newCard);
