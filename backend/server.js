@@ -32,8 +32,6 @@ importGrading();
 
 
 
-
-=======
 // Set up MongoDB connection
 
 const DBURL = process.env.MONGODB_DATABASE_URL;
@@ -90,7 +88,7 @@ const User = mongoose.model("User", userSchema);
 
 // API endpoint to perform a test using the grading module
 app.post("/test", async (req, res) => {
-    const finalGrade = await grading(req.body.realDef, req.body.testDef);
+    const finalGrade = await grading.gradeTest(req.body.realDef, req.body.testDef);
     res.status(200).send(finalGrade);
 });
   
@@ -292,7 +290,6 @@ app.get("/getFlashcards/:deckNum", async (req, res) => {
   }
 });
 
-// =======
 // API endpoint to delete a user's decks
 
 app.delete("/deleteDecks", async (req, res) => {

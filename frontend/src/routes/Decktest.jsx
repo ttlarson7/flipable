@@ -64,9 +64,12 @@ const Decktest = () => {
     // Testcards contains the terms and definitons in correct order
     // answer contains the answers in the order they were answered
     try {
+
       const response = await axios.post("/test", { realDef, answers });
       console.log(response.data);
-      
+      setCorrect(response.data.slice(0, response.data.length - 1));
+      console.log("correct: ", correct )
+
     }catch (err) {
       console.log(err);
     }
