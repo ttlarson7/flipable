@@ -120,6 +120,7 @@ const Navbars = ({
             <div className="modal-box flex flex-col bg-neutral">
               <h3 className="font-bold text-lg self-center">Add New Deck</h3>
               <input
+                required={true}
                 value={deckName}
                 type="text"
                 placeholder="Deck Name"
@@ -127,6 +128,7 @@ const Navbars = ({
                 onChange={handleDeckTitle}
               />
               <input
+                required={true}
                 value={deckDesc}
                 type="text"
                 placeholder="Deck Desc."
@@ -251,6 +253,7 @@ const Navbars = ({
                 Add New Flashcard
               </h3>
               <input
+                required={true}
                 value={flashcardTerm}
                 type="text"
                 placeholder="Flashcard Term"
@@ -258,6 +261,7 @@ const Navbars = ({
                 onChange={handleCardTerm}
               />
               <textarea
+                required={true}
                 value={flashcardDef}
                 placeholder="Flashcard Definition"
                 className="textarea textarea-primary w-full max-w-xs self-center my-2"

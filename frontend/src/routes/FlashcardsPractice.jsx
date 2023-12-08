@@ -11,7 +11,7 @@ function FlashcardsPractice() {
   const [deck, setDeck] = useState([...flashCards]);
   const [currentCardIndex, setCurrentCardIndex] = useState(0);
   const [moveState, setMoveState] = useState(
-    "swap swap-flip text-3xl w-96 md:w-64 lg:w-80 xl:w-96"
+    "swap swap-flip text-9xl"
   );
   const [isAnimating, setIsAnimating] = useState(false);
   const [progress, setProgress] = useState(1);
