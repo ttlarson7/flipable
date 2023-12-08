@@ -294,8 +294,9 @@ app.get("/getFlashcards/:deckNum", async (req, res) => {
 
 app.delete("/deleteDecks", async (req, res) => {
   try {
+    const num = parseInt(req.query.deckNum)
     const currentUser = await User.findOne({ userId: req.query.userId });
-    currentUser.decks.splice(req.query.deckNum, 1);
+    currentUser.decks.splice(num, 1);
     await currentUser.save();
     res.status(200);
   } catch (error) {

@@ -39,7 +39,7 @@ const FlashcardDecks = () => {
 
   const handleDeleteDecks = (index) => {
     axios
-      .delete("/deleteCard", {
+      .delete("/deleteDecks", {
         params: {
           deckNum: deckNum,
           userId: user_id,
