@@ -7,10 +7,12 @@ import DeckcardTest from "../components/DeckcardTest";
 import TestNumbers from "../components/TestNumbers";
 import Loading from "../components/Loading";
 import axios from "axios";
+import { set } from "mongoose";
 
 const Decktest = () => {
   const { flashCards } = useContext(FlashcardContext);
   const [graded, setGraded] = useState(false);
+  const [gradingNow, setGradingNow] = useState(false);
   var randomFlash = [...flashCards];//copy the flash card deck
   for (var i = 0; i < randomFlash.length; i++){ // randomize flashcards
     const j = Math.floor(Math.random() * (i + 1));
@@ -21,7 +23,6 @@ const Decktest = () => {
   const [correct, setCorrect] = useState(
     Array.from({ length: flashCards.length }, () => -1)
   );
-
   const [numQ, setNumQ] = useState(-1);//going to test adding different length of tests
   const [qUpdate, setQUpdate] = useState(false);
   const [modalClosed, setModalClose] = useState(false);
@@ -62,6 +63,7 @@ const Decktest = () => {
   const handleSumbit = async () => {
     console.log("submitting: ", answers)
     console.log("testCards: ", realDef);
+    setGradingNow(true);
     // Testcards contains the terms and definitons in correct order
     // answer contains the answers in the order they were answered
     try {
@@ -69,87 +71,92 @@ const Decktest = () => {
       const response = await axios.post("/test", { realDef, answers });
       console.log(response.data);
       setCorrect(response.data.slice(0, response.data.length - 1));
+      setGradingNow(false);
       setGraded(true);
 
     }catch (err) {
       console.log(err);
+      
     }
     
   }
 
 
+  if (gradingNow) {
+    return (
+      <div className="bg-neutral">
+        <Navbars page="test"></Navbars>
+        <div className="mt-24 bg-neutral"></div>
+        <Loading />
+        <Footer></Footer>
+      </div>
+    );
+  }
+  else {
+    
   
-
-  
-  
-
-
-
-
-
-
-
-  return (
-    <div className="bg-neutral">
-      <Navbars page="test"></Navbars>
-      <div className="mt-24 bg-neutral"></div>
-      {!modalClosed && <Loading />}
-      <dialog id="my_modal_test" className="modal">
+    return (
+      <div className="bg-neutral">
+        <Navbars page="test"></Navbars>
+        <div className="mt-24 bg-neutral"></div>
+        {!modalClosed && <Loading />}
+        <dialog id="my_modal_test" className="modal">
           <div className="modal-box">
-          <h3 className="font-bold text-lg">Hello!</h3>
-          <div className = "flex flex-row">
-          <p className="py-4 mr-5">How many questions would you like?</p>
-          <input id = "numQuestions" type="text" placeholder="Type here" className="input input-bordered input-secondary w-1/4 max-w-xs"/>
-          </div>
+            <h3 className="font-bold text-lg">Hello!</h3>
+            <div className="flex flex-row">
+              <p className="py-4 mr-5">How many questions would you like?</p>
+              <input id="numQuestions" type="text" placeholder="Type here" className="input input-bordered input-secondary w-1/4 max-w-xs" />
+            </div>
             <div className="modal-action">
               <form method="dialog">
-                <button className="btn btn-secondary" onClick = {handleAccept}>accept</button>
+                <button className="btn btn-secondary" onClick={handleAccept}>accept</button>
               </form>
             </div>
           </div>
         </dialog>
-      {modalClosed && qUpdate && (<div className=" min-h-screen flex flex-col items-center justify-center">
-      <h1 className = "text-4xl font-bold mb-5">Time to <span className="animate-text bg-gradient-to-r from-teal-800 via-green-700 to-blue-800 bg-clip-text text-transparent font-black">
-                Quizify
-              </span>!</h1>
-      <div className="flex flex-nowrap overflow-x-auto" style = {{maxWidth: "50%"}}>
-          {realDef.map((card, i) => (
-            <TestNumbers
-              key={i}
-              scrollTo={`element${i}`}
-              index={i + 1}
-            />
-          ))}
-        </div>
-        {renderedQs && (
-          <ul className="grid lg:grid-cols-2 sm:grid-cols-1 gap-4 m-4">
-          {realDef.map((card, i) => (
-            <DeckcardTest
-              id={`element${i}`}
-              key={i}
-              index={i}
-              term={card.term}
-              correct={correct}
-              answers={answers}
-              setAnswers={setAnswers}
-              domEleID={`element${i}`}
-              realDefs={realDef}
-            />
-          ))}
+        {modalClosed && qUpdate && (<div className=" min-h-screen flex flex-col items-center justify-center">
+          <h1 className="text-4xl font-bold mb-5">Time to <span className="animate-text bg-gradient-to-r from-teal-800 via-green-700 to-blue-800 bg-clip-text text-transparent font-black">
+            Quizify
+          </span>!</h1>
+          <div className="flex flex-nowrap overflow-x-auto" style={{ maxWidth: "50%" }}>
+            {realDef.map((card, i) => (
+              <TestNumbers
+                key={i}
+                scrollTo={`element${i}`}
+                index={i + 1}
+              />
+            ))}
+          </div>
+          {renderedQs && (
+            <ul className="grid lg:grid-cols-2 sm:grid-cols-1 gap-4 m-4">
+              {realDef.map((card, i) => (
+                <DeckcardTest
+                  id={`element${i}`}
+                  key={i}
+                  index={i}
+                  term={card.term}
+                  correct={correct}
+                  answers={answers}
+                  setAnswers={setAnswers}
+                  domEleID={`element${i}`}
+                  realDefs={realDef}
+                />
+              ))}
+            
+            </ul>
+            
+          )}
+            
+          {!graded && (
+            <button className="btn btn-xs sm:btn-sm md:btn-md lg:btn-lg btn-outline btn-success mb-20 w-96" onClick={handleSumbit}>Submit</button>
+          )}
           
-        </ul>
-          
-        )}
-          
-        {!graded && (
-          <button className="btn btn-xs sm:btn-sm md:btn-md lg:btn-lg btn-outline btn-success mb-20 w-96" onClick = {handleSumbit}>Submit</button>
-        )}
+        </div>)}
         
-      </div>)}
-      
-      <Footer></Footer>
-    </div>
-  );
+        <Footer></Footer>
+      </div>
+    );
+  }
 };
 
 export default Decktest;
