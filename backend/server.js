@@ -147,10 +147,6 @@ app.get("/getFlashcards/:deckNum", async (req, res) => {
     }
 
     res.json(decks[deckNum].cards);
-} catch (error) {
-    console.error(error);
-    res.status(404).send("Internal Server Error");
-}
 });
 
 // API endpoint to add a new deck to the user's decks
