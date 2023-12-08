@@ -10,6 +10,7 @@ import axios from "axios";
 
 const Decktest = () => {
   const { flashCards } = useContext(FlashcardContext);
+  const [graded, setGraded] = useState(false);
   var randomFlash = [...flashCards];//copy the flash card deck
   for (var i = 0; i < randomFlash.length; i++){ // randomize flashcards
     const j = Math.floor(Math.random() * (i + 1));
@@ -68,7 +69,7 @@ const Decktest = () => {
       const response = await axios.post("/test", { realDef, answers });
       console.log(response.data);
       setCorrect(response.data.slice(0, response.data.length - 1));
-      console.log("correct: ", correct )
+      setGraded(true);
 
     }catch (err) {
       console.log(err);
@@ -131,7 +132,8 @@ const Decktest = () => {
               correct={correct}
               answers={answers}
               setAnswers={setAnswers}
-              domEleID = {`element${i}`}
+              domEleID={`element${i}`}
+              realDefs={realDef}
             />
           ))}
           
@@ -139,8 +141,10 @@ const Decktest = () => {
           
         )}
           
+        {!graded && (
+          <button className="btn btn-xs sm:btn-sm md:btn-md lg:btn-lg btn-outline btn-success mb-20 w-96" onClick = {handleSumbit}>Submit</button>
+        )}
         
-        <button className="btn btn-xs sm:btn-sm md:btn-md lg:btn-lg btn-outline btn-success mb-20 w-96" onClick = {handleSumbit}>Submit</button>
       </div>)}
       
       <Footer></Footer>

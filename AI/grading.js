@@ -8,7 +8,7 @@ const openai = new OpenAI(process.env.OPENAI_API_KEY);
 async function grade(def1, def2, word) {
   const completion = await openai.chat.completions.create({
     messages: [
-      { role: "system", content: "You are a helpful assistant." }, //sets up the prompt
+      { role: "system", content: "You are a helpful assistant who grades test questions based on conceptual understanding." }, //sets up the prompt
       {
         role: "user",
         content: `I'm giving you two definitions of the word ${word}`,
@@ -17,7 +17,7 @@ async function grade(def1, def2, word) {
       { role: "assistant", content: `${def2}` },
       {
         role: "user",
-        content: "Are these definitions similar, respond with yes or no.",
+        content: `Is ${def1} similar to ${def2}? Response with yes or no.`,
       },
     ],
     model: "gpt-3.5-turbo",
@@ -45,9 +45,7 @@ async function gradeTest(realDefs, testDefs) {
   let score = 0;
   let finalScore = []; //holds all questions correctness 0 - wrong | 1 - right
   for (let i = 0; i < realDefs.length; i++) {
-    console.log(realDefs[i].definition, testDefs[i]);
     let correct = await grade(realDefs[i].definition, testDefs[i], realDefs[i].term);
-    console.log(correct);
     if (correct) {
       finalScore.push(1);
       score++;
