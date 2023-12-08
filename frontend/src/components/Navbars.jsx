@@ -81,7 +81,9 @@ const Navbars = ({
 
   const handleDeckAccept = () => {
     //set up axios call to add deck to backend
-    const idIncrement = user?.id.toString()
+    const idIncrement = {
+      userId: user?.id.toString()
+    }
     const newDeck = {
       title: deckName,
       description: deckDesc,
@@ -197,7 +199,9 @@ const Navbars = ({
 
   const handleCardAccept = () => {
     //set up axios call to add deck to backend
-    const idIncrement = user?.id.toString();
+    const idIncrement =  {
+      userId: user?.id.toString()
+    }
     const newTerm = {
       term: flashcardTerm,
       definition: flashcardDef,
