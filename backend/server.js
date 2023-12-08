@@ -8,12 +8,24 @@ const mongoose = require("mongoose");
 
 app.use(express.json());
 
+
 let grading;
-try {
-  grading = import("./../AI/grading.js");
-} catch (error) {
-  console.error("Error importing grading.js:", error);
+async function importGrading() {
+  try {
+    const module = await import("./../AI/grading.js");
+    grading = module.default;
+    console.log("grading.js imported successfully", grading)
+  } catch (error) {
+    console.error("Error importing grading.js:", error);
+  }
 }
+
+importGrading();
+
+
+
+
+
 
 const DBURL = process.env.MONGODB_DATABASE_URL;
 app.use(cors());
@@ -162,7 +174,8 @@ app.post("/incrementTests", async (req, res) => {
 
 //calls test, passes in real definitions, test definitions, terms
 app.post("/test", async (req, res) => {
-  const finalGrade = await grading(req.body.realDef, req.body.testDef);
+  console.log(req.body.realDef, req.body.answers);
+  const finalGrade = await grading.gradeTest(req.body.realDef, req.body.answers);
   res.status(200).send(finalGrade);
 });
 
