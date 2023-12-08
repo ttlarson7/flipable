@@ -201,7 +201,7 @@ const Navbars = ({
     const newTerm = {
       term: flashcardTerm,
       definition: flashcardDef,
-      userId: user?.id.toString(),
+      userId: user?.id.toString()
     };
     setFlashCards([...flashCards, newTerm]);
     axios.post(`/addCard/${deckNum}`, newTerm).catch((err) => console.log(err));

@@ -32,7 +32,6 @@ importGrading();
 
 
 
-
 // Set up MongoDB connection
 
 const DBURL = process.env.MONGODB_DATABASE_URL;

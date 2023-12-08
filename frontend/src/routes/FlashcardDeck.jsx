@@ -43,7 +43,7 @@ const FlashcardDeck = () => {
         params: {
           deckNum: deckNum,
           i: index,
-          userId: user_id
+          userId: user?.id.toString()
         },
       })
       .then(() => {
