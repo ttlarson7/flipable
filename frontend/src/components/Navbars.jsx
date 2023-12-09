@@ -214,6 +214,10 @@ const Navbars = ({
     setFlashcardTerm("");
   };
 
+  const handleTest = () => {
+    axios.post('/incrementTests', { userId: user?.id.toString() }).catch((err) => console.log(err));
+  }
+
   if (page == "flashcards") {
     return (
       <div className="navbar glass top-0 fixed z-50 bg-neutral">
@@ -247,7 +251,7 @@ const Navbars = ({
                 <Link to="flashcard-practice">Flashcards</Link>
               </li>
               <li>
-                <Link to="test">Test</Link>
+                <Link to="test" onClick = {handleTest}>Test</Link>
               </li>
             </ul>
           </div>

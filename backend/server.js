@@ -124,33 +124,29 @@ app.get("/getDecks", async (req, res) => {
 
 // API endpoint to get all flashcards from a specific deck of a user
 app.get("/getFlashcards/:deckNum", async (req, res) => {
-        try {
+    try {
         const user = await User.findOne({ userId: req.query.userId });
         const deckNum = req.params.deckNum;
-    if (!user) {
-        console.log("User Not Found");
-        return res.status(404).send("User Not Found");
-    }
-    const decks = user.decks;
-    if (!decks) {
-        console.log("Decks Not Found");
-        return res.status(404).send("Decks Not Found");
-    }
-    if (deckNum < 0 || deckNum >= decks.length) {
-        console.log("Invalid Deck Number");
-        return res.status(404).send("Invalid Deck Number");
-    }
-    res.json(decks[deckNum].cards);
+        if (!user) {
+            console.log("User Not Found");
+            return res.status(404).send("User Not Found");
+        }
+        const decks = user.decks;
+        if (!decks) {
+            console.log("Decks Not Found");
+            return res.status(404).send("Decks Not Found");
+        }
+        if (deckNum < 0 || deckNum >= decks.length) {
+            console.log("Invalid Deck Number");
+            return res.status(404).send("Invalid Deck Number");
+        }
+        res.json(decks[deckNum].cards);
     } catch (error) {
         console.error(error);
         res.status(404).send("Internal Server Error");
     }
 
-    res.json(decks[deckNum].cards);
-} catch (error) {
-    console.error(error);
-    res.status(404).send("Internal Server Error");
-}
+    
 });
 
 // API endpoint to add a new deck to the user's decks
@@ -245,11 +241,27 @@ app.post("/incrementTests", async (req, res) => {
         currentUser.testsTaken++;
         await currentUser.save();
         res.status(200).send("Incremented");
-    } catch (error) {
+      } catch (error) {
         console.error(error);
         res.status(400);
-    }
+      }
 });
+
+app.get("/getUser", async (req, res) => {
+    try {
+        const currentUser = await User.findOne({ userId: req.query.userId });
+        const response = {
+            testsTaken: currentUser.testsTaken,
+            decksCreated: currentUser.decksCreated,
+            cardsCreated: currentUser.cardsCreated
+        }
+        res.status(200).json(response);
+        
+    } catch (err) {
+        console.error(err);
+        res.status(400).send("Failed to get User Stats")
+    }
+})
 
 
 //calls test, passes in real definitions, test definitions, terms
