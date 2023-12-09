@@ -163,6 +163,7 @@ app.post("/addDeck", async (req, res) => {
       username: req.body.username,
       cards: [],
     };
+    console.log(newDeck.username);
     await User.findOneAndUpdate(
       { userId: req.body.userId },
       { $push: { decks: newDeck } },
