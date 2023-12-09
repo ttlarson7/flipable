@@ -89,6 +89,8 @@ const Navbars = ({
       description: deckDesc,
       category: deckCategory,
       userId: user?.id.toString(),
+      username: user?.username.toString(),
+      private: false
     };
     console.log(flashDecks, newDeck);
     setFlashcardDecks([...flashDecks, newDeck]);
