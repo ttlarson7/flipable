@@ -32,6 +32,12 @@ const Navbars = ({
                 Quizify
               </Link>
             </div>
+            <Link
+              to="/community"
+              className="btn btn-ghost text-base text-white"
+            >
+              Community
+            </Link>
             <div className="flex-2 mr-2">
               <UserButton />
             </div>
@@ -82,8 +88,8 @@ const Navbars = ({
   const handleDeckAccept = () => {
     //set up axios call to add deck to backend
     const idIncrement = {
-      userId: user?.id.toString()
-    }
+      userId: user?.id.toString(),
+    };
     const newDeck = {
       title: deckName,
       description: deckDesc,
@@ -179,7 +185,10 @@ const Navbars = ({
             </div>
           </dialog>
         </div>
-        <Link to="/stats" className="btn btn-ghost text-lg text-white">
+        <Link to="/community" className="btn btn-ghost text-base text-white">
+          Community
+        </Link>
+        <Link to="/stats" className="btn btn-ghost text-base text-white">
           Stats
         </Link>
         <div className="flex-2 mr-2">
@@ -199,13 +208,13 @@ const Navbars = ({
 
   const handleCardAccept = () => {
     //set up axios call to add deck to backend
-    const idIncrement =  {
-      userId: user?.id.toString()
-    }
+    const idIncrement = {
+      userId: user?.id.toString(),
+    };
     const newTerm = {
       term: flashcardTerm,
       definition: flashcardDef,
-      userId: user?.id.toString()
+      userId: user?.id.toString(),
     };
     setFlashCards([...flashCards, newTerm]);
     axios.post(`/addCard/${deckNum}`, newTerm).catch((err) => console.log(err));
@@ -291,7 +300,10 @@ const Navbars = ({
             </div>
           </dialog>
         </div>
-        <Link to="/stats" className="btn btn-ghost text-lg text-white">
+        <Link to="/community" className="btn btn-ghost text-base text-white">
+          Community
+        </Link>
+        <Link to="/stats" className="btn btn-ghost text-base text-white">
           Stats
         </Link>
         <div className="flex-2 mr-2">
@@ -315,7 +327,10 @@ const Navbars = ({
             <FaCaretLeft></FaCaretLeft>Back
           </button>
         </div>
-        <Link to="/stats" className="btn btn-ghost text-lg text-white">
+        <Link to="/community" className="btn btn-ghost text-base text-white">
+          Community
+        </Link>
+        <Link to="/stats" className="btn btn-ghost text-base text-white">
           Stats
         </Link>
         <div className="flex-none mr-2">
