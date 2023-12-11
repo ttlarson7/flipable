@@ -343,6 +343,33 @@ const Navbars = ({
       </div>
     );
   }
+
+  if (page == "community") {
+    return (
+      <div className="navbar glass top-0 fixed z-50 bg-neutral">
+        <div className="flex-1">
+          <Link to="/" className="btn btn-ghost text-lg text-white">
+            Quizify
+          </Link>
+          <button
+            onClick={() => navigate(-1)}
+            className="btn btn-ghost text-md text-white"
+          >
+            <FaCaretLeft></FaCaretLeft>Back
+          </button>
+        </div>
+        <Link to="/community" className="btn btn-ghost text-base text-white">
+          Community
+        </Link>
+        <Link to="/stats" className="btn btn-ghost text-base text-white">
+          Stats
+        </Link>
+        <div className="flex-none mr-2">
+          <UserButton />
+        </div>
+      </div>
+    );
+  }
 };
 
 export default Navbars;
