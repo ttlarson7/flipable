@@ -7,6 +7,7 @@ import DeckcardTest from "../components/DeckcardTest";
 import TestNumbers from "../components/TestNumbers";
 import Loading from "../components/Loading";
 import axios from "axios";
+import { set } from "lodash";
 
 
 const Decktest = () => {
@@ -27,6 +28,7 @@ const Decktest = () => {
   const [qUpdate, setQUpdate] = useState(false);
   const [modalClosed, setModalClose] = useState(false);
   const [renderedQs, setRenderedQs] = useState(false);
+  const [numCorrect, setNumCorrect] = useState(0);
 
 
   const handleAccept = (e) => {
@@ -73,7 +75,8 @@ const Decktest = () => {
       setCorrect(response.data.slice(0, response.data.length - 1));
       setGradingNow(false);
       setGraded(true);
-
+      setNumCorrect(response.data[response.data.length - 1]);
+      
     }catch (err) {
       console.log(err);
       
@@ -119,9 +122,7 @@ const Decktest = () => {
             Quizify
           </span>!</h1>
           {graded && (
-            <div className = " text-xl">
-              <p>{correct[-1]}/{numQ}</p>
-              </div>
+            <div className="radial-progress" style={{"--value":(((numCorrect/correct.length))*100)}} role="progressbar">{(((numCorrect/correct.length))*100)}%</div>
           )}
           <div className="flex flex-nowrap overflow-x-auto" style={{ maxWidth: "50%" }}>
             {realDef.map((card, i) => (

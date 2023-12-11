@@ -19,6 +19,7 @@ import Decktest from "./routes/Decktest";
 import AboutUs from "./routes/AboutUs";
 import ContactUs from "./routes/ContactUs";
 import Stats from "./routes/Stats";
+import Community from "./routes/Community";
 
 // we now have context for each componenet wanting to get access to flashcardDecks and flashcards
 export const FlashcardContext = createContext();
@@ -92,6 +93,19 @@ const ClerkRoutes = () => {
               <>
                 <SignedIn>
                   <Decktest />
+                </SignedIn>
+                <SignedOut>
+                  <RedirectToSignIn />
+                </SignedOut>
+              </>
+            }
+          />
+          <Route
+            path="/community"
+            element={
+              <>
+                <SignedIn>
+                  <Community />
                 </SignedIn>
                 <SignedOut>
                   <RedirectToSignIn />

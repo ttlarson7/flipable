@@ -32,6 +32,12 @@ const Navbars = ({
                 Quizify
               </Link>
             </div>
+            <Link
+              to="/community"
+              className="btn btn-ghost text-base text-white"
+            >
+              Community
+            </Link>
             <div className="flex-2 mr-2">
               <UserButton />
             </div>
@@ -79,16 +85,20 @@ const Navbars = ({
     setDeckCategory("Math");
   };
 
+  const [priv, setPriv] = useState(false);
+
   const handleDeckAccept = () => {
     //set up axios call to add deck to backend
     const idIncrement = {
-      userId: user?.id.toString()
-    }
+      userId: user?.id.toString(),
+    };
     const newDeck = {
       title: deckName,
       description: deckDesc,
       category: deckCategory,
       userId: user?.id.toString(),
+      username: user?.username.toString(),
+      private: priv
     };
     console.log(flashDecks, newDeck);
     setFlashcardDecks([...flashDecks, newDeck]);
@@ -159,6 +169,10 @@ const Navbars = ({
                 <option>History</option>
                 <option>Art</option>
               </select>
+              <label htmlFor = "privateCheck" className = "self-center">Private:</label>
+              <input id = "privateCheck" type="checkbox" className="toggle toggle-warning self-center" checked={priv} onChange={() => {
+                setPriv(!priv)
+              }} />
               <div className="modal-action flex">
                 <form method="dialog" className="flex justify-center w-full">
                   {/* if there is a button in form, it will close the modal */}
@@ -179,7 +193,10 @@ const Navbars = ({
             </div>
           </dialog>
         </div>
-        <Link to="/stats" className="btn btn-ghost text-lg text-white">
+        <Link to="/community" className="btn btn-ghost text-base text-white">
+          Community
+        </Link>
+        <Link to="/stats" className="btn btn-ghost text-base text-white">
           Stats
         </Link>
         <div className="flex-2 mr-2">
@@ -199,13 +216,13 @@ const Navbars = ({
 
   const handleCardAccept = () => {
     //set up axios call to add deck to backend
-    const idIncrement =  {
-      userId: user?.id.toString()
-    }
+    const idIncrement = {
+      userId: user?.id.toString(),
+    };
     const newTerm = {
       term: flashcardTerm,
       definition: flashcardDef,
-      userId: user?.id.toString()
+      userId: user?.id.toString(),
     };
     setFlashCards([...flashCards, newTerm]);
     axios.post(`/addCard/${deckNum}`, newTerm).catch((err) => console.log(err));
@@ -295,7 +312,10 @@ const Navbars = ({
             </div>
           </dialog>
         </div>
-        <Link to="/stats" className="btn btn-ghost text-lg text-white">
+        <Link to="/community" className="btn btn-ghost text-base text-white">
+          Community
+        </Link>
+        <Link to="/stats" className="btn btn-ghost text-base text-white">
           Stats
         </Link>
         <div className="flex-2 mr-2">
@@ -319,7 +339,31 @@ const Navbars = ({
             <FaCaretLeft></FaCaretLeft>Back
           </button>
         </div>
-        <Link to="/stats" className="btn btn-ghost text-lg text-white">
+        <Link to="/stats" className="btn btn-ghost text-base text-white">
+          Stats
+        </Link>
+        <div className="flex-none mr-2">
+          <UserButton />
+        </div>
+      </div>
+    );
+  }
+
+  if (page == "community") {
+    return (
+      <div className="navbar glass top-0 fixed z-50 bg-neutral">
+        <div className="flex-1">
+          <Link to="/" className="btn btn-ghost text-lg text-white">
+            Quizify
+          </Link>
+          <button
+            onClick={() => navigate(-1)}
+            className="btn btn-ghost text-md text-white"
+          >
+            <FaCaretLeft></FaCaretLeft>Back
+          </button>
+        </div>
+        <Link to="/stats" className="btn btn-ghost text-base text-white">
           Stats
         </Link>
         <div className="flex-none mr-2">
