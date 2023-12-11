@@ -284,7 +284,7 @@ app.delete("/deleteCard", async (req, res) => {
   }
 });
 
-//find all public decks and return them
+// API endpoint to find all public decks and return them
 app.get("/getCommunityDecks"), async (req, res) => {
   try {
     let allDecks = []
@@ -303,9 +303,9 @@ app.get("/getCommunityDecks"), async (req, res) => {
     console.error(error);
     res.status(500).send(error);
   }
-})
+}
 
-
+// API endpoint to change a user's deck's privacy option
 app.post("/updatePrivate", async (req, res) => {
   try {
     const user = await User.findOne({ userId: req.body.userId });
