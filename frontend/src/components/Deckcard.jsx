@@ -1,7 +1,20 @@
 import { Link } from "react-router-dom";
 import { useState } from "react";
+import axios from "axios"
+import { useUser } from "@clerk/clerk-react"
 
 const Deckcard = ({ i, title, desc, category, onDelete, deckPrivate }) => {
+  const { user } = useUser();
+  const userId = user?.id.toString();
+
+  const togglePrivate = () => {
+    setIsPrivate(!isPrivate)
+    axios.post("/updatePrivate", {
+      deckNum: i,
+      userId: userId
+    })
+  }
+
   const [isPrivate, setIsPrivate] = useState(deckPrivate);
 
   return (
@@ -23,13 +36,13 @@ const Deckcard = ({ i, title, desc, category, onDelete, deckPrivate }) => {
           Delete
         </button>
         <div className="form-control self-center ml-6">
-          <span className="label-text self-center">Private: {isPrivate}</span>
+          <span className="label-text self-center">Private:</span>
           <label className="label cursor-pointer">
             <input
               type="checkbox"
               className="toggle toggle-warning"
               checked={isPrivate}
-              onChange={() => setIsPrivate(!isPrivate)}
+              onChange={togglePrivate}
             />
           </label>
         </div>
