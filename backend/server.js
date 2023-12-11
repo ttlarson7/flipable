@@ -284,8 +284,8 @@ app.delete("/deleteCard", async (req, res) => {
   }
 });
 
-//find all public decks and return
-app.get("/getCommunityDecks", async (req, res) => {
+//find all public decks and return them
+app.get("/getCommunityDecks"), async (req, res) => {
   try {
     let allDecks = []
     const users = await User.find({})
