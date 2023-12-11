@@ -65,7 +65,6 @@ const userSchema = new Schema({
         category: String,
         description: String,
         private: Boolean,
-        userName: String,
         cards: [
           {
             term: String,
@@ -136,7 +135,6 @@ app.post("/addDeck", async (req, res) => {
       category: req.body.category,
       description: req.body.description,
       private: req.body.private,
-      username: req.body.username,
       cards: req.body.cards || [],
     };
     console.log(newDeck.username);
@@ -287,7 +285,7 @@ app.delete("/deleteCard", async (req, res) => {
 });
 
 //find all public decks and return
-app.get("/getCommunityDecks"), async (req, res) => {
+app.get("/getCommunityDecks", async (req, res) => {
   try {
     let allDecks = []
     const users = await User.find({})
@@ -305,13 +303,12 @@ app.get("/getCommunityDecks"), async (req, res) => {
     console.error(error);
     res.status(500).send(error);
   }
-}
+})
 
 
-app.post("/updatePrivate", (req, res) => {
+app.post("/updatePrivate", async (req, res) => {
   try {
-
-    const user = findOne({ userId: req.body.userId });
+    const user = await User.findOne({ userId: req.body.userId });
     user.decks[req.body.deckNum].private = !user.decks[req.body.deckNum].private;
     user.save();
     res.status(200).send("Updated Private");
