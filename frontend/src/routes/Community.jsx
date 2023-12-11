@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useUser } from "@clerk/clerk-react";
-import axios from "axios"
+import axios from "axios";
 import Navbars from "../components/Navbars";
 import Footer from "../components/Footer";
 import CommunityDeck from "../components/CommunityDeck";
@@ -35,11 +35,21 @@ const Community = () => {
   if (loading) {
     return (
       <div className="bg-neutral">
-        <Navbars
-          page="community"
-        ></Navbars>
+        <Navbars page="community"></Navbars>
         <div className="min-h-screen flex justify-center">
           <span className="loading loading-infinity loading-lg self-center"></span>
+        </div>
+        <Footer></Footer>
+      </div>
+    );
+  }
+
+  if (communityDecks.length == 0) {
+    return (
+      <div className="bg-neutral">
+        <Navbars page="community"></Navbars>
+        <div className="min-h-screen flex justify-center">
+          Bruh, no one uses this site
         </div>
         <Footer></Footer>
       </div>
