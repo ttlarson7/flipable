@@ -53,7 +53,11 @@ export default defineConfig({
       "/getUser": {
         target: "http://localhost:3001",
         changeOrigin: true
-      }
+      },
+      "/getCommunityDecks": {
+        target: "http://localhost:3001",
+        changeOrigin: true
+      },
     },
   },
   define: {

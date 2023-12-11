@@ -333,9 +333,6 @@ const Navbars = ({
             <FaCaretLeft></FaCaretLeft>Back
           </button>
         </div>
-        <Link to="/community" className="btn btn-ghost text-base text-white">
-          Community
-        </Link>
         <Link to="/stats" className="btn btn-ghost text-base text-white">
           Stats
         </Link>
@@ -360,9 +357,6 @@ const Navbars = ({
             <FaCaretLeft></FaCaretLeft>Back
           </button>
         </div>
-        <Link to="/community" className="btn btn-ghost text-base text-white">
-          Community
-        </Link>
         <Link to="/stats" className="btn btn-ghost text-base text-white">
           Stats
         </Link>

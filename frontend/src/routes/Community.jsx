@@ -3,10 +3,11 @@ import { useUser } from "@clerk/clerk-react";
 import axios from "axios"
 import Navbars from "../components/Navbars";
 import Footer from "../components/Footer";
+import CommunityDeck from "../components/CommunityDeck";
 
 const Community = () => {
-  const [CommunityDecks, setCommunityDecks] = useState([]);
-  // const []
+  const [communityDecks, setCommunityDecks] = useState([]);
+  const [communityCards, setCommunityCards] = useState([]);
   const [loading, setLoading] = useState(true);
   const user = useUser().user;
   const user_id = user?.id.toString();
@@ -19,11 +20,7 @@ const Community = () => {
       ran = true;
       setLoading(true);
       axios
-        .get("/getDecks", {
-          params: {
-            userId: user_id,
-          },
-        })
+        .get("/getCommunityDecks")
         .then((res) => {
           setCommunityDecks(res.data);
           setLoading(false);
@@ -39,7 +36,7 @@ const Community = () => {
     return (
       <div className="bg-neutral">
         <Navbars
-          page="decks"
+          page="community"
         ></Navbars>
         <div className="min-h-screen flex justify-center">
           <span className="loading loading-infinity loading-lg self-center"></span>
@@ -51,8 +48,21 @@ const Community = () => {
 
   return (
     <>
-      <Navbars></Navbars>
-      
+      <Navbars page="community"></Navbars>
+      <div className="mt-24 bg-neutral"></div>
+      <div className=" min-h-screen">
+        <ul className="grid lg:grid-cols-3 sm:grid-cols-2 gap-4 m-4">
+          {communityDecks.map((deck, i) => (
+            <CommunityDeck
+              key={i}
+              i={i}
+              title={deck.title}
+              desc={deck.description}
+              category={deck.category}
+            />
+          ))}
+        </ul>
+      </div>
       <Footer></Footer>
     </>
   );
