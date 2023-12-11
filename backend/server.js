@@ -307,6 +307,21 @@ app.get("/getCommunityDecks"), async (req, res) => {
   }
 }
 
+
+app.post("/updatePrivate", (req, res) => {
+  try {
+
+    const user = findOne({ userId: req.body.userId });
+    user.decks[req.body.deckNum].private = !user.decks[req.body.deckNum].private;
+    user.save();
+    res.status(200).send("Updated Private");
+    
+  } catch (err) {
+    console.log(err);
+    res.status(404).send(err)
+  }
+})
+
 // Start the server
 app.listen(PORT, () => {
  console.log("Server is running on port: " + PORT);
