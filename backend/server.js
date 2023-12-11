@@ -44,6 +44,7 @@ mongoose
 const Schema = mongoose.Schema;
 const userSchema = new Schema({
   userId: String,
+  userName: String,
   testsTaken: {
     type: Number,
     default: 0,
@@ -62,6 +63,8 @@ const userSchema = new Schema({
         title: String,
         category: String,
         description: String,
+        private: Boolean,
+        userName: String,
         cards: [
           {
             term: String,
@@ -153,20 +156,23 @@ app.get("/getFlashcards/:deckNum", async (req, res) => {
 app.post("/addDeck", async (req, res) => {
     try {
     const newDeck = {
-        title: req.body.title,
-        category: req.body.category,
-        description: req.body.description,
-        cards: [],
+      title: req.body.title,
+      category: req.body.category,
+      description: req.body.description,
+      private: req.body.private,
+      username: req.body.username,
+      cards: [],
     };
+    console.log(newDeck.username);
     await User.findOneAndUpdate(
-        { userId: req.body.userId },
-        { $push: { decks: newDeck } },
-        { new: true, upsert: true }
+      { userId: req.body.userId },
+      { $push: { decks: newDeck } },
+      { new: true, upsert: true }
     );
     res.status(200).send("Deck added successfully");
     } catch (error) {
-        console.error(error);
-        res.status(400);
+      console.error(error);
+      res.status(400);
     }
 });
 
@@ -301,38 +307,37 @@ app.get("/getFlashcards/:deckNum", async (req, res) => {
 
 // API endpoint that calls test, passes in real definitions, test definitions, terms
 app.post("/test", async (req, res) => {
-    console.log(req.body.realDef, req.body.answers);
-    const finalGrade = await grading.gradeTest(req.body.realDef, req.body.answers);
-    res.status(200).send(finalGrade);
+  console.log(req.body.realDef, req.body.answers);
+  const finalGrade = await grading.gradeTest(req.body.realDef, req.body.answers);
+  res.status(200).send(finalGrade);
 });
 
 // API endpoint to get flashcards
 app.get("/getFlashcards/:deckNum", async (req, res) => {
-    try {
-        const user = await User.findOne({ userId: req.query.userId });
-        const deckNum = req.params.deckNum;
-        if (!user) {
-            console.log("User Not Found");
-            return res.status(404).send("User Not Found");
-        }
-        const decks = user.decks;
-        if (!decks) {
-            console.log("Decks Not Found");
-            return res.status(404).send("Decks Not Found");
-        }
-        if (deckNum < 0 || deckNum >= decks.length) {
-            console.log("Invalid Deck Number");
-            return res.status(404).send("Invalid Deck Number");
-        }
-        res.json(decks[deckNum].cards);
-        } catch (error) {
-            console.error(error);
-            res.status(404).send("Internal Server Error");
+  try {
+    const user = await User.findOne({ userId: req.query.userId });
+    const deckNum = req.params.deckNum;
+    if (!user) {
+      console.log("User Not Found");
+      return res.status(404).send("User Not Found");
     }
+    const decks = user.decks;
+    if (!decks) {
+      console.log("Decks Not Found");
+      return res.status(404).send("Decks Not Found");
+    }
+    if (deckNum < 0 || deckNum >= decks.length) {
+      console.log("Invalid Deck Number");
+      return res.status(404).send("Invalid Deck Number");
+    }
+    res.json(decks[deckNum].cards);
+    } catch (error) {
+      console.error(error);
+      res.status(404).send("Internal Server Error");
+  }
 });
 
 // API endpoint to delete a user's decks
-
 app.delete("/deleteDecks", async (req, res) => {
   try {
     const num = parseInt(req.query.deckNum)
@@ -348,17 +353,37 @@ app.delete("/deleteDecks", async (req, res) => {
 
 // API endpoint to delete a card from a specific deck of a user
 app.delete("/deleteCard", async (req, res) => {
-    try {
-        const num = parseInt(req.query.deckNum)
-        const currentUser = await User.findOne({ userId: req.query.userId });
-        currentUser.decks[num].cards.splice(req.query.i, 1);
-        await currentUser.save();
+  try {
+    const num = parseInt(req.query.deckNum)
+    const currentUser = await User.findOne({ userId: req.query.userId });
+    currentUser.decks[num].cards.splice(req.query.i, 1);
+    await currentUser.save();
     res.status(200).send("Deleted Card");
-    } catch (error) {
-        console.error(error);
-        res.status(500).send(error);
-    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).send(error);
+  }
 });
+
+//find all public decks and return
+app.get("/getCommunityDecks"), async (req, res) => {
+  try {
+    const allDecks = []
+    const users = await User.find({})
+    //for every person, for every deck, add public decks to the alldecks array
+    for (let i = 0; i < users.length; i++) {
+      for (let j = 0; j < users[i].decks.length; j++) {
+        if (users[i].decks[j].private == false) {
+          allDecks.push(users[i].decks[j]);
+        }
+      }
+    }
+    res.json(allDecks).status(200);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send(error);
+  }
+}
 
 // Start the server
 app.listen(PORT, () => {
