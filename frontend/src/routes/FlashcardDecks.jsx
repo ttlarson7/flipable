@@ -109,6 +109,7 @@ const FlashcardDecks = () => {
               desc={deck.description}
               category={deck.category}
               onDelete={handleDeleteDecks}
+              deckPrivate={deck.private}
             />
           ))}
         </ul>
