@@ -8,6 +8,7 @@ const PORT = process.env.PORT || 3001;
 const mongoose = require("mongoose");
 
 app.use(express.json());
+// app.use(cors());
 // Import grading module
 
 let grading;
@@ -79,12 +80,6 @@ const userSchema = new Schema({
 
 // Create User model based on the schema
 const User = mongoose.model("User", userSchema);
-
-// API endpoint to perform a test using the grading module
-app.post("/test", async (req, res) => {
-    const finalGrade = await grading.gradeTest(req.body.realDef, req.body.testDef);
-    res.status(200).send(finalGrade);
-});
   
 // API endpoint to get all decks of a user
 app.get("/getDecks", async (req, res) => {
@@ -104,25 +99,6 @@ try {
     console.error(error);
     res.status(404).send("Internal Server Error");
 }
-});
-
-app.get("/getDecks", async (req, res) => {
-  try {
-    const user = await User.findOne({ userId: req.query.userId });
-    if (!user) {
-      console.log("User Not Found");
-      return res.status(404).send("User Not Found");
-    }
-    const decks = user.decks;
-    if (!decks) {
-      console.log("Decks Not Found");
-      return res.status(404).send("Decks Not Found");
-    }
-    res.json(decks);
-  } catch (error) {
-    console.error(error);
-    res.status(404).send("Internal Server Error");
-  }
 });
 
 // API endpoint to get all flashcards from a specific deck of a user
@@ -161,7 +137,7 @@ app.post("/addDeck", async (req, res) => {
       description: req.body.description,
       private: req.body.private,
       username: req.body.username,
-      cards: [],
+      cards: req.body.cards || [],
     };
     console.log(newDeck.username);
     await User.findOneAndUpdate(
@@ -272,69 +248,14 @@ app.get("/getUser", async (req, res) => {
 
 //calls test, passes in real definitions, test definitions, terms
 app.post("/test", async (req, res) => {
-  console.log(req.body.realDef, req.body.answers);
-  const finalGrade = await grading.gradeTest(req.body.realDef, req.body.answers);
-  res.status(200).send(finalGrade);
-});
-
-
-
-app.get("/getFlashcards/:deckNum", async (req, res) => {
   try {
-    const user = await User.findOne({ userId: req.query.userId });
-    const deckNum = req.params.deckNum;
-    if (!user) {
-      console.log("User Not Found");
-      return res.status(404).send("User Not Found");
-    }
-    const decks = user.decks;
-    if (!decks) {
-      console.log("Decks Not Found");
-      return res.status(404).send("Decks Not Found");
-    }
-
-    if (deckNum < 0 || deckNum >= decks.length) {
-      console.log("Invalid Deck Number");
-      return res.status(404).send("Invalid Deck Number");
-    }
-
-    res.json(decks[deckNum].cards);
-  } catch (error) {
-    console.error(error);
-    res.status(404).send("Internal Server Error");
+    console.log(req.body)
+    const finalGrade = await grading.gradeTest(req.body.realDef, req.body.answers);
+    res.status(200).send(finalGrade);
+  } catch (err) {
+    res.status(404).send(err)
   }
-});
-
-// API endpoint that calls test, passes in real definitions, test definitions, terms
-app.post("/test", async (req, res) => {
-  console.log(req.body.realDef, req.body.answers);
-  const finalGrade = await grading.gradeTest(req.body.realDef, req.body.answers);
-  res.status(200).send(finalGrade);
-});
-
-// API endpoint to get flashcards
-app.get("/getFlashcards/:deckNum", async (req, res) => {
-  try {
-    const user = await User.findOne({ userId: req.query.userId });
-    const deckNum = req.params.deckNum;
-    if (!user) {
-      console.log("User Not Found");
-      return res.status(404).send("User Not Found");
-    }
-    const decks = user.decks;
-    if (!decks) {
-      console.log("Decks Not Found");
-      return res.status(404).send("Decks Not Found");
-    }
-    if (deckNum < 0 || deckNum >= decks.length) {
-      console.log("Invalid Deck Number");
-      return res.status(404).send("Invalid Deck Number");
-    }
-    res.json(decks[deckNum].cards);
-    } catch (error) {
-      console.error(error);
-      res.status(404).send("Internal Server Error");
-  }
+  
 });
 
 // API endpoint to delete a user's decks
@@ -368,8 +289,9 @@ app.delete("/deleteCard", async (req, res) => {
 //find all public decks and return
 app.get("/getCommunityDecks"), async (req, res) => {
   try {
-    const allDecks = []
+    let allDecks = []
     const users = await User.find({})
+    // console.log(users)
     //for every person, for every deck, add public decks to the alldecks array
     for (let i = 0; i < users.length; i++) {
       for (let j = 0; j < users[i].decks.length; j++) {
