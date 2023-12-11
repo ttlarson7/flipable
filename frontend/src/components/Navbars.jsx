@@ -85,6 +85,8 @@ const Navbars = ({
     setDeckCategory("Math");
   };
 
+  const [priv, setPriv] = useState(false);
+
   const handleDeckAccept = () => {
     //set up axios call to add deck to backend
     const idIncrement = {
@@ -96,7 +98,7 @@ const Navbars = ({
       category: deckCategory,
       userId: user?.id.toString(),
       username: user?.username.toString(),
-      private: false
+      private: priv
     };
     console.log(flashDecks, newDeck);
     setFlashcardDecks([...flashDecks, newDeck]);
@@ -167,6 +169,9 @@ const Navbars = ({
                 <option>History</option>
                 <option>Art</option>
               </select>
+              <input type="checkbox" className="toggle toggle-warning self-center" checked={priv} onChange={() => {
+                setPriv(!priv)
+              }} />
               <div className="modal-action flex">
                 <form method="dialog" className="flex justify-center w-full">
                   {/* if there is a button in form, it will close the modal */}

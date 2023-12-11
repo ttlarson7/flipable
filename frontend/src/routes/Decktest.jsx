@@ -122,7 +122,7 @@ const Decktest = () => {
             Quizify
           </span>!</h1>
           {graded && (
-            <div className="radial-progress" style={{"--value":((numCorrect/correct.length)*100)}} role="progressbar">{((numCorrect/correct.length)*100)}%</div>
+            <div className="radial-progress" style={{"--value":(((numCorrect/correct.length))*100)}} role="progressbar">{(((numCorrect/correct.length))*100)}%</div>
           )}
           <div className="flex flex-nowrap overflow-x-auto" style={{ maxWidth: "50%" }}>
             {realDef.map((card, i) => (
