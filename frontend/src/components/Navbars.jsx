@@ -169,7 +169,8 @@ const Navbars = ({
                 <option>History</option>
                 <option>Art</option>
               </select>
-              <input type="checkbox" className="toggle toggle-warning self-center" checked={priv} onChange={() => {
+              <label htmlFor = "privateCheck" className = "self-center">Private:</label>
+              <input id = "privateCheck" type="checkbox" className="toggle toggle-warning self-center" checked={priv} onChange={() => {
                 setPriv(!priv)
               }} />
               <div className="modal-action flex">
