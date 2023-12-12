@@ -27,7 +27,7 @@ const Deckcard = ({ i, title, desc, category, onDelete, deckPrivate }) => {
       // Automatically hide the toast after 10 seconds
       setTimeout(() => {
         setShowToast(false);
-      }, 10000);
+      }, 2000);
     } catch (error) {
       // Handle error
       console.error("Error updating private status:", error);
@@ -46,7 +46,7 @@ const Deckcard = ({ i, title, desc, category, onDelete, deckPrivate }) => {
           className="toast toast-end"
           onClick={() => setShowToast(false)}
         >
-          <div className="alert alert-success">
+          <div className="alert alert-success hover:cursor-pointer">
             <span>Private status updated successfully.</span>
           </div>
         </motion.div>

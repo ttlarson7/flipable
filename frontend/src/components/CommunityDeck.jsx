@@ -35,7 +35,7 @@ const CommunityDeck = ({ i, title, desc, category, communityDecks }) => {
         // Automatically hide the toast after 10 seconds
         setTimeout(() => {
           setShowCopyToast(false);
-        }, 10000);
+        }, 2000);
       })
       .catch((err) => console.log(err));
 
@@ -54,7 +54,7 @@ const CommunityDeck = ({ i, title, desc, category, communityDecks }) => {
           className="toast toast-end"
           onClick={() => setShowCopyToast(false)}
         >
-          <div className="alert alert-success">
+          <div className="alert alert-success hover:cursor-pointer">
             <span>Deck copied successfully.</span>
           </div>
         </motion.div>

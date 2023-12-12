@@ -8,7 +8,11 @@ const openai = new OpenAI(process.env.OPENAI_API_KEY);
 async function grade(def1, def2, word) {
   const completion = await openai.chat.completions.create({
     messages: [
-      { role: "system", content: "You are a helpful assistant who evaluates the similarity between two definitions." }, // Prompt introduction
+      {
+        role: "system",
+        content:
+          "You are a helpful assistant who evaluates the similarity between two definitions.",
+      }, // Prompt introduction
       {
         role: "user",
         content: `I'm presenting two definitions for the term "${word}".`,
@@ -17,7 +21,7 @@ async function grade(def1, def2, word) {
       { role: "assistant", content: `Definition 2: ${def2}` },
       {
         role: "user",
-        content: `Are these definitions similar? Please respond with "yes" or "no".`,
+        content: `Compare the semantic similarity between two input definitions and output 'yes' if they convey similar meanings, even with potential syntactic differences, and 'no' if their meanings significantly differ. Focus on capturing the essence of their definitions rather than strict syntactical matching.`,
       },
     ],
     model: "gpt-3.5-turbo",
@@ -45,7 +49,11 @@ async function gradeTest(realDefs, testDefs) {
   let score = 0;
   let finalScore = []; //holds all questions correctness 0 - wrong | 1 - right
   for (let i = 0; i < realDefs.length; i++) {
-    let correct = await grade(realDefs[i].definition, testDefs[i], realDefs[i].term);
+    let correct = await grade(
+      realDefs[i].definition,
+      testDefs[i],
+      realDefs[i].term
+    );
     if (correct) {
       finalScore.push(1);
       score++;
@@ -60,4 +68,4 @@ async function gradeTest(realDefs, testDefs) {
 // var score =  await gradeTest(realDefs, testDefs, terms);
 // console.log(score)
 
-export default { gradeTest }
+export default { gradeTest };
