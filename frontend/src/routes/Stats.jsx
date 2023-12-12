@@ -4,7 +4,7 @@ import { PiExamThin, PiCardsFill } from "react-icons/pi";
 import { useUser } from "@clerk/clerk-react";
 import Navbars from "../components/Navbars";
 import Footer from "../components/Footer";
-import Loading from "../components/Loading";
+// import Loading from "../components/Loading";
 import axios from "axios";
 
 function Stats() {
@@ -15,20 +15,20 @@ function Stats() {
   const [testCount, setTestCount] = useState(0);
   const [cardCount, setCardCount] = useState(0);
 
-
   useEffect(() => {
-    axios.get("/getUser", {
-      params: {
-        userId: user.id.toString(),
-      },
-    })
+    axios
+      .get("/getUser", {
+        params: {
+          userId: user.id.toString(),
+        },
+      })
       .then((res) => {
         setDeckCount(res.data.decksCreated);
         setTestCount(res.data.testsTaken);
         setCardCount(res.data.cardsCreated);
       })
       .catch((err) => console.log(err));
-  }, [])
+  }, []);
 
   // add useEffects for getting and updating user stats from the DB
 
@@ -37,7 +37,6 @@ function Stats() {
   return (
     <div>
       <Navbars page={"profile"}></Navbars>
-      <div className="mt-16"></div>
       <div className="hero min-h-screen">
         <div className="hero-content flex-col lg:flex-row-reverse">
           <div className="stats stats-vertical shadow">
