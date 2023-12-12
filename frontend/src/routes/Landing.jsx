@@ -5,8 +5,8 @@ import Footer from "../components/Footer";
 import about from "../assets/undraw_moonlight_-5-ksn.svg";
 import { TypeAnimation } from "react-type-animation";
 import landingimg from "../assets/undraw_team_work_k-80-m.svg";
-import lost from "../assets/undraw_lost_re_xqjt.svg";
-import found from "../assets/undraw_through_the_park_lxnl.svg";
+import lost from "../assets/lost.svg";
+import found from "../assets/found.svg";
 
 const Landing = () => {
   const slideInFromLeft = {
