@@ -5,6 +5,8 @@ import Footer from "../components/Footer";
 import about from "../assets/undraw_moonlight_-5-ksn.svg";
 import { TypeAnimation } from "react-type-animation";
 import landingimg from "../assets/undraw_team_work_k-80-m.svg";
+import lost from "../assets/undraw_lost_re_xqjt.svg";
+import found from "../assets/undraw_through_the_park_lxnl.svg";
 
 const Landing = () => {
   const slideInFromLeft = {
@@ -92,27 +94,16 @@ const Landing = () => {
         initial="hidden"
         animate="visible"
         variants={slideInFromLeft}
-        className="carousel carousel-center my-32"
+        className="diff aspect-[16/9] h-96 bg-accent mb-24"
       >
-        <div className="stats stats-vertical lg:stats-horizontal shadow w-">
-          <div className="stat">
-            <div className="stat-title">Downloads</div>
-            <div className="stat-value">31K</div>
-            <div className="stat-desc">Jan 1st - Feb 1st</div>
-          </div>
-
-          <div className="stat">
-            <div className="stat-title">New Users</div>
-            <div className="stat-value">4,200</div>
-            <div className="stat-desc">↗︎ 400 (22%)</div>
-          </div>
-
-          <div className="stat">
-            <div className="stat-title">New Registers</div>
-            <div className="stat-value">1,200</div>
-            <div className="stat-desc">↘︎ 90 (14%)</div>
-          </div>
+        <div className="diff-item-1">
+          {/* <p className="self-center font-bold">Before Quizify</p> */}
+          <img src={lost} className=" object-contain" />
         </div>
+        <div className="diff-item-2 bg-secondary">
+          <img src={found} className=" object-contain" />
+        </div>
+        <div className="diff-resizer">After</div>
       </motion.div>
       <motion.div
         initial="hidden"

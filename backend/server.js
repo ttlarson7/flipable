@@ -8,6 +8,7 @@ const PORT = process.env.PORT || 3001;
 const mongoose = require("mongoose");
 
 app.use(express.json());
+app.use(express.static('dist'));
 // app.use(cors());
 // Import grading module
 
