@@ -84,8 +84,27 @@ const Decktest = () => {
     
   }
 
-
-  if (gradingNow) {
+  if (randomFlash.length === 0) {
+    return (
+      <>
+        <Navbars
+          page="test"
+        ></Navbars>
+        <div className="hero min-h-screen bg-neutral">
+          <div className="hero-content text-center">
+            <div className="max-w-md">
+              <h1 className="text-5xl font-bold">No Cards?</h1>
+              <p className="py-6 text-4xl">
+                Go back to the <b>flashcard page</b> and add some!!
+              </p>
+            </div>
+          </div>
+        </div>
+        <Footer></Footer>
+      </>
+    );
+  }
+  else if (gradingNow) {
     return (
       <div className="bg-neutral">
         <Navbars page="test"></Navbars>
