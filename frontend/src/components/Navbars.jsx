@@ -18,6 +18,7 @@ const Navbars = ({
   const user = useUser().user;
   const [deckName, setDeckName] = useState("");
   const [deckDesc, setDeckDesc] = useState("");
+  const [priv, setPriv] = useState(false);
   const [deckCategory, setDeckCategory] = useState("Math");
   const [flashcardTerm, setFlashcardTerm] = useState("");
   const [flashcardDef, setFlashcardDef] = useState("");
@@ -85,8 +86,6 @@ const Navbars = ({
     setDeckCategory("Math");
   };
 
-  const [priv, setPriv] = useState(false);
-
   const handleDeckAccept = () => {
     //set up axios call to add deck to backend
     const idIncrement = {
@@ -97,7 +96,7 @@ const Navbars = ({
       description: deckDesc,
       category: deckCategory,
       userId: user?.id.toString(),
-      private: priv
+      private: priv,
     };
     console.log(flashDecks, newDeck);
     setFlashcardDecks([...flashDecks, newDeck]);
@@ -168,10 +167,18 @@ const Navbars = ({
                 <option>History</option>
                 <option>Art</option>
               </select>
-              <label htmlFor = "privateCheck" className = "self-center">Private:</label>
-              <input id = "privateCheck" type="checkbox" className="toggle toggle-warning self-center" checked={priv} onChange={() => {
-                setPriv(!priv)
-              }} />
+              <label htmlFor="privateCheck" className="self-center">
+                Private:
+              </label>
+              <input
+                id="privateCheck"
+                type="checkbox"
+                className="toggle toggle-warning self-center"
+                checked={priv}
+                onChange={() => {
+                  setPriv(!priv);
+                }}
+              />
               <div className="modal-action flex">
                 <form method="dialog" className="flex justify-center w-full">
                   {/* if there is a button in form, it will close the modal */}
@@ -231,8 +238,10 @@ const Navbars = ({
   };
 
   const handleTest = () => {
-    axios.post('/incrementTests', { userId: user?.id.toString() }).catch((err) => console.log(err));
-  }
+    axios
+      .post("/incrementTests", { userId: user?.id.toString() })
+      .catch((err) => console.log(err));
+  };
 
   if (page == "flashcards") {
     return (
@@ -267,7 +276,9 @@ const Navbars = ({
                 <Link to="flashcard-practice">Flashcards</Link>
               </li>
               <li>
-                <Link to="test" onClick = {handleTest}>Test</Link>
+                <Link to="test" onClick={handleTest}>
+                  Test
+                </Link>
               </li>
             </ul>
           </div>
