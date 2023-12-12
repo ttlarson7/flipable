@@ -45,7 +45,6 @@ mongoose
 const Schema = mongoose.Schema;
 const userSchema = new Schema({
   userId: String,
-  userName: String,
   testsTaken: {
     type: Number,
     default: 0,
@@ -96,7 +95,7 @@ try {
     res.json(decks);
 } catch (error) {
     console.error(error);
-    res.status(404).send("Internal Server Error");
+    res.status(400).send(error);
 }
 });
 
@@ -121,7 +120,7 @@ app.get("/getFlashcards/:deckNum", async (req, res) => {
         res.json(decks[deckNum].cards);
     } catch (error) {
         console.error(error);
-        res.status(404).send("Internal Server Error");
+        res.status(400).send(error);
     }
 
     
@@ -137,7 +136,6 @@ app.post("/addDeck", async (req, res) => {
       private: req.body.private,
       cards: req.body.cards || [],
     };
-    console.log(newDeck.username);
     await User.findOneAndUpdate(
       { userId: req.body.userId },
       { $push: { decks: newDeck } },
@@ -146,7 +144,7 @@ app.post("/addDeck", async (req, res) => {
     res.status(200).send("Deck added successfully");
     } catch (error) {
       console.error(error);
-      res.status(400);
+      res.status(400).send(error);
     }
 });
 
@@ -160,10 +158,10 @@ app.post("/addCard/:deckNum", async (req, res) => {
     const currentUser = await User.findOne({ userId: req.body.userId });
     currentUser.decks[req.params.deckNum].cards.push(newCard);
     await currentUser.save();
-    res.status(200);
+    res.status(200).send("Card added");
     } catch (error) {
         console.error(error);
-        res.status(400);
+        res.status(400).send(error);
     }
 });
 
@@ -181,10 +179,10 @@ app.post("/editCard/:decknum", async (req, res) => {
         newCard
     );
     await currentUser.save();
-    res.status(200);
+    res.status(200).send("Card edited");
     } catch (error) {
         console.error(error);
-        res.status(400);
+        res.status(400).send(error);
     }
 });
 
@@ -197,7 +195,7 @@ app.post("/incrementDeck", async (req, res) => {
     res.status(200).send("Incremented");
   } catch (error) {
     console.error(error);
-    res.status(400);
+    res.status(400).send(error);
   }
 });
 
@@ -210,7 +208,7 @@ app.post("/incrementCard", async (req, res) => {
     res.status(200).send("Incremented");
   } catch (error) {
     console.error(error);
-    res.status(400);
+    res.status(400).send(error);
   }
 });
 
@@ -223,7 +221,7 @@ app.post("/incrementTests", async (req, res) => {
         res.status(200).send("Incremented");
       } catch (error) {
         console.error(error);
-        res.status(400);
+        res.status(400).send(error);
       }
 });
 
@@ -239,7 +237,7 @@ app.get("/getUser", async (req, res) => {
         
     } catch (err) {
         console.error(err);
-        res.status(400).send("Failed to get User Stats")
+        res.status(400).send(err)
     }
 })
 
@@ -251,7 +249,7 @@ app.post("/test", async (req, res) => {
     const finalGrade = await grading.gradeTest(req.body.realDef, req.body.answers);
     res.status(200).send(finalGrade);
   } catch (err) {
-    res.status(404).send(err)
+    res.status(400).send(err)
   }
   
 });
@@ -266,7 +264,7 @@ app.delete("/deleteDecks", async (req, res) => {
     res.status(200).send("Deleted Deck");
   } catch (error) {
     console.error(error);
-    res.status(500).send("Internal Server Error");
+    res.status(400).send(error);
   }
 });
 
@@ -280,12 +278,12 @@ app.delete("/deleteCard", async (req, res) => {
     res.status(200).send("Deleted Card");
   } catch (error) {
     console.error(error);
-    res.status(500).send(error);
+    res.status(400).send(error);
   }
 });
 
 // API endpoint to find all public decks and return them
-app.get("/getCommunityDecks"), async (req, res) => {
+app.get("/getCommunityDecks", async (req, res) => {
   try {
     let allDecks = []
     const users = await User.find({})
@@ -301,9 +299,9 @@ app.get("/getCommunityDecks"), async (req, res) => {
     res.json(allDecks).status(200);
   } catch (error) {
     console.error(error);
-    res.status(500).send(error);
+    res.status(400).send(error);
   }
-}
+})
 
 // API endpoint to change a user's deck's privacy option
 app.post("/updatePrivate", async (req, res) => {
@@ -315,7 +313,7 @@ app.post("/updatePrivate", async (req, res) => {
     
   } catch (err) {
     console.log(err);
-    res.status(404).send(err)
+    res.status(400).send(err)
   }
 })
 
