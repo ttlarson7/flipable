@@ -1,17 +1,17 @@
-import { useState, useEffect } from "react";
-import { useUser } from "@clerk/clerk-react";
+import { useState, useEffect, useContext } from "react";
+import { FlashcardContext } from "../App";
+// import { useUser } from "@clerk/clerk-react";
 import axios from "axios";
 import Navbars from "../components/Navbars";
 import Footer from "../components/Footer";
 import CommunityDeck from "../components/CommunityDeck";
 
 const Community = () => {
-  const [communityDecks, setCommunityDecks] = useState([]);
-  const [communityCards, setCommunityCards] = useState([]);
+  const { communityDecks, setCommunityDecks } = useContext(FlashcardContext);
   const [loading, setLoading] = useState(true);
-  const user = useUser().user;
-  const user_id = user?.id.toString();
-  const user_name = user.username;
+  // const user = useUser().user;
+  // const user_id = user?.id.toString();
+  // const user_name = user.username;
   let ran = false;
 
   useEffect(() => {
@@ -69,6 +69,7 @@ const Community = () => {
               title={deck.title}
               desc={deck.description}
               category={deck.category}
+              communityDecks={communityDecks}
             />
           ))}
         </ul>

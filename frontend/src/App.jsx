@@ -29,10 +29,18 @@ const ClerkRoutes = () => {
   const navigate = useNavigate();
   const [flashDecks, setFlashcardDecks] = useState([]);
   const [flashCards, setFlashCards] = useState([]);
+  const [communityDecks, setCommunityDecks] = useState([]);
 
   return (
     <FlashcardContext.Provider
-      value={{ flashDecks, setFlashcardDecks, flashCards, setFlashCards }}
+      value={{
+        flashDecks,
+        setFlashcardDecks,
+        flashCards,
+        setFlashCards,
+        communityDecks,
+        setCommunityDecks,
+      }}
     >
       <ClerkProvider
         publishableKey={clerkPubKey}
