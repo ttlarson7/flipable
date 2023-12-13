@@ -275,8 +275,12 @@ app.delete("/deleteDecks", async (req, res) => {
   }
 });
 
+
+app.delete("/deleteDecks", async (req, res) => {
+
 // API endpoint to delete a card from a specific deck of a user
 app.delete("/deleteCard", async (req, res) => {
+
   try {
     const num = parseInt(req.query.deckNum);
     const currentUser = await User.findOne({ userId: req.query.userId });
@@ -289,8 +293,12 @@ app.delete("/deleteCard", async (req, res) => {
   }
 });
 
+
+app.delete("/deleteCard", async (req, res) => {
+
 // API endpoint to find all public decks and return them
 app.get("/getCommunityDecks", async (req, res) => {
+
   try {
     let allDecks = [];
     const users = await User.find({});
