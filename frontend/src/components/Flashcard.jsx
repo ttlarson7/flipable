@@ -1,9 +1,6 @@
+import { FaTrashAlt } from "react-icons/fa";
 
-
-const Flashcard = ({ term, definition, setFlashCards }) => {
-  
-  
-
+const Flashcard = ({ term, definition, onDelete, i }) => {
   return (
     <li className="flex justify-center items-center">
       <label className="swap swap-flip text-9xl ">
@@ -16,19 +13,10 @@ const Flashcard = ({ term, definition, setFlashCards }) => {
           </div>
           <div className="flex justify-center">
             <button
-              className="m-2 p-2 py-4 btn btn-neutral rounded"
-              onClick={() => console.log("Edit clicked")}
+              className="btn btn-error rounded m-2 p-4"
+              onClick={() => onDelete(i)}
             >
-              Edit
-            </button>
-
-            <button
-              className="btn btn-error rounded m-2 p-2"
-              onClick={() =>
-                document.getElementById("delete_modal").showModal()
-              }
-            >
-              Delete
+              <FaTrashAlt/>
             </button>
           </div>
         </div>
@@ -40,28 +28,6 @@ const Flashcard = ({ term, definition, setFlashCards }) => {
           </div>
         </div>
       </label>
-      <dialog id="delete_modal" className="modal">
-        <div className="modal-box bg-base-100">
-          <h3 className="font-bold text-lg">
-            Are you sure you want to delete this card?
-          </h3>
-          <p className="py-4">
-            Press ESC key or click the close button below to close Press Delete
-            to delete your card
-          </p>
-          <div className="modal-action">
-            <form method="dialog">
-              <button className="btn btn-success rounded">Close</button>
-              <button
-                className="btn btn-error rounded"
-                onClick={setFlashCards}
-              >
-                Delete
-              </button>
-            </form>
-          </div>
-        </div>
-      </dialog>
     </li>
   );
 };

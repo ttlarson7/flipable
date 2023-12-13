@@ -19,9 +19,9 @@ const FlashcardDecks = () => {
       ran = true;
       setLoading(true);
       axios
-        .get("/get_decks", {
+        .get("/getDecks", {
           params: {
-            user_id: user_id,
+            userId: user_id,
           },
         })
         .then((res) => {
@@ -33,12 +33,37 @@ const FlashcardDecks = () => {
           setLoading(false);
         });
     }
-  }, []);
+  }, [setFlashcardDecks]);
+
+  const handleDeleteDecks = (index) => {
+    axios
+      .delete("/deleteDecks", {
+        params: {
+          deckNum: index,
+          userId: user_id,
+        },
+      })
+      .then(() => {
+        setFlashcardDecks((prevFlashCards) =>
+
+          prevFlashCards.filter((_, i) => i !== index)
+
+          prevFlashCards.filter((_, i) => i !== parseInt(index))
+
+        );
+      })
+      .catch((err) => console.log(err));
+    console.log(index);
+  };
 
   if (loading) {
     return (
       <div className="bg-neutral">
-        <Navbars page="decks" flashDecks={flashDecks} setFlashcardDecks={setFlashcardDecks}></Navbars>
+        <Navbars
+          page="decks"
+          flashDecks={flashDecks}
+          setFlashcardDecks={setFlashcardDecks}
+        ></Navbars>
         <div className="min-h-screen flex justify-center">
           <span className="loading loading-infinity loading-lg self-center"></span>
         </div>
@@ -47,9 +72,36 @@ const FlashcardDecks = () => {
     );
   }
 
+  if (flashDecks.length === 0) {
+    return (
+      <>
+        <Navbars
+          page="decks"
+          flashDecks={flashDecks}
+          setFlashcardDecks={setFlashcardDecks}
+        ></Navbars>
+        <div className="hero min-h-screen bg-neutral">
+          <div className="hero-content text-center">
+            <div className="max-w-md">
+              <h1 className="text-5xl font-bold">No Decks?</h1>
+              <p className="py-6 text-4xl">
+                Press <b>Add</b> to add a new deck!
+              </p>
+            </div>
+          </div>
+        </div>
+        <Footer></Footer>
+      </>
+    );
+  }
+
   return (
     <div className="bg-neutral">
-      <Navbars page="decks" flashDecks={flashDecks} setFlashcardDecks={setFlashcardDecks}></Navbars>
+      <Navbars
+        page="decks"
+        flashDecks={flashDecks}
+        setFlashcardDecks={setFlashcardDecks}
+      ></Navbars>
       <div className="mt-24 bg-neutral"></div>
       <div className=" min-h-screen">
         <ul className="grid lg:grid-cols-3 sm:grid-cols-2 gap-4 m-4">
@@ -57,9 +109,11 @@ const FlashcardDecks = () => {
             <Deckcard
               key={i}
               i={i.toString()}
-              title={deck.deckName}
-              desc={deck.deckDesc}
-              category={deck.deckCategory}
+              title={deck.title}
+              desc={deck.description}
+              category={deck.category}
+              onDelete={handleDeleteDecks}
+              deckPrivate={deck.private}
             />
           ))}
         </ul>

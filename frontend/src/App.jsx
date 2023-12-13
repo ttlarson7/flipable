@@ -19,6 +19,7 @@ import Decktest from "./routes/Decktest";
 import AboutUs from "./routes/AboutUs";
 import ContactUs from "./routes/ContactUs";
 import Stats from "./routes/Stats";
+import Community from "./routes/Community";
 
 // we now have context for each componenet wanting to get access to flashcardDecks and flashcards
 export const FlashcardContext = createContext();
@@ -26,58 +27,20 @@ export const FlashcardContext = createContext();
 const ClerkRoutes = () => {
   const clerkPubKey = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
   const navigate = useNavigate();
-  const [flashDecks, setFlashcardDecks] = useState([
-    { deckName: "CS290", deckDesc: "web development", deckCategory: "Comp Sci" },
-    { deckName: "CS261", deckDesc: "data structures", deckCategory: "Comp Sci" },
-  ]);
-  const [flashCards, setFlashCards] = useState([
-    {
-      term: "react",
-      definition:
-        "A frontend library for creating components. It is widely used in web development and allows users to create reusable components.",
-    },
-    {
-      term: "vue",
-      definition:
-        "A frontend library for creating components. It is widely used in web development and allows users to create reusable components.",
-    },
-    {
-      term: "angular",
-      definition:
-        "A frontend library for creating components. It is widely used in web development and allows users to create reusable components.",
-    },
-    {
-      term: "svelte",
-      definition:
-        "A frontend library for creating components. It is widely used in web development and allows users to create reusable components.",
-    },
-    {
-      term: "ember",
-      definition:
-        "A frontend library for creating components. It is widely used in web development and allows users to create reusable components.",
-    },
-    {
-      term: "backbone",
-      definition:
-        "A frontend library for creating components. It is widely used in web development and allows users to create reusable components.",
-    },
-    // Add more terms below
-    {
-      term: "express",
-      definition:
-        "A web application framework for Node.js, designed for building web applications and APIs.",
-    },
-    {
-      term: "mongoDB",
-      definition:
-        "A NoSQL database that provides high performance, high availability, and easy scalability.",
-    },
-    // Add as many terms as needed
-  ]);
+  const [flashDecks, setFlashcardDecks] = useState([]);
+  const [flashCards, setFlashCards] = useState([]);
+  const [communityDecks, setCommunityDecks] = useState([]);
 
   return (
     <FlashcardContext.Provider
-      value={{ flashDecks, setFlashcardDecks, flashCards, setFlashCards }}
+      value={{
+        flashDecks,
+        setFlashcardDecks,
+        flashCards,
+        setFlashCards,
+        communityDecks,
+        setCommunityDecks,
+      }}
     >
       <ClerkProvider
         publishableKey={clerkPubKey}
@@ -138,6 +101,19 @@ const ClerkRoutes = () => {
               <>
                 <SignedIn>
                   <Decktest />
+                </SignedIn>
+                <SignedOut>
+                  <RedirectToSignIn />
+                </SignedOut>
+              </>
+            }
+          />
+          <Route
+            path="/community"
+            element={
+              <>
+                <SignedIn>
+                  <Community />
                 </SignedIn>
                 <SignedOut>
                   <RedirectToSignIn />

@@ -6,13 +6,61 @@ export default defineConfig({
   plugins: [react()],
   server: {
     proxy: {
-      "/get_decks": {
+      "/getDecks": {
         target: "http://localhost:3001",
         changeOrigin: true,
       },
-      "/get_flashcards": {
+      "/getFlashcards": {
         target: "http://localhost:3001",
         changeOrigin: true,
+      },
+      "/addDeck": {
+        target: "http://localhost:3001",
+        changeOrigin: true,
+      },
+      "/addCard": {
+        target: "http://localhost:3001",
+        changeOrigin: true,
+      },
+      "/test": {
+        target: "http://localhost:3001",
+        changeOrigin: true,
+      },
+      "/incrementDeck": {
+        target: "http://localhost:3001",
+        changeOrigin: true,
+      },
+      "/incrementCard": {
+        target: "http://localhost:3001",
+        changeOrigin: true,
+      },
+      "/editCard": {
+        target: "http://localhost:3001",
+        changeOrigin: true,
+      },
+      "/incrementTests": {
+        target: "http://localhost:3001",
+        changeOrigin: true,
+      },
+      "/deleteCard": {
+        target: "http://localhost:3001",
+        changeOrigin: true
+      },
+      "/deleteDecks": {
+        target: "http://localhost:3001",
+        changeOrigin: true
+      },
+      "/getUser": {
+        target: "http://localhost:3001",
+        changeOrigin: true
+      },
+      "/getCommunityDecks": {
+        target: "http://localhost:3001",
+        changeOrigin: true
+      },
+      "/updatePrivate": {
+        target: "http://localhost:3001",
+        changeOrigin: true
       },
     },
   },

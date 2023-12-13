@@ -18,6 +18,7 @@ const Navbars = ({
   const user = useUser().user;
   const [deckName, setDeckName] = useState("");
   const [deckDesc, setDeckDesc] = useState("");
+  const [priv, setPriv] = useState(false);
   const [deckCategory, setDeckCategory] = useState("Math");
   const [flashcardTerm, setFlashcardTerm] = useState("");
   const [flashcardDef, setFlashcardDef] = useState("");
@@ -32,6 +33,12 @@ const Navbars = ({
                 Quizify
               </Link>
             </div>
+            <Link
+              to="/community"
+              className="btn btn-ghost text-base text-white"
+            >
+              Community
+            </Link>
             <div className="flex-2 mr-2">
               <UserButton />
             </div>
@@ -81,20 +88,25 @@ const Navbars = ({
 
   const handleDeckAccept = () => {
     //set up axios call to add deck to backend
-
-    const newDeck = {
-      deckName: deckName,
-      deckDesc: deckDesc,
-      deckCategory: deckCategory,
+    const idIncrement = {
       userId: user?.id.toString(),
+    };
+    const newDeck = {
+      title: deckName,
+      description: deckDesc,
+      category: deckCategory,
+      userId: user?.id.toString(),
+      private: priv,
     };
     console.log(flashDecks, newDeck);
     setFlashcardDecks([...flashDecks, newDeck]);
     axios.post(`/addDeck`, newDeck).catch((err) => console.log(err));
+    axios.post(`/incrementDeck`, idIncrement).catch((err) => console.log(err));
 
     setDeckDesc("");
     setDeckName("");
-    setDeckCategory("");
+    setDeckCategory("math");
+    setPriv(false);
   };
 
   if (page == "decks") {
@@ -119,6 +131,7 @@ const Navbars = ({
             <div className="modal-box flex flex-col bg-neutral">
               <h3 className="font-bold text-lg self-center">Add New Deck</h3>
               <input
+                required={true}
                 value={deckName}
                 type="text"
                 placeholder="Deck Name"
@@ -126,6 +139,7 @@ const Navbars = ({
                 onChange={handleDeckTitle}
               />
               <input
+                required={true}
                 value={deckDesc}
                 type="text"
                 placeholder="Deck Desc."
@@ -154,6 +168,18 @@ const Navbars = ({
                 <option>History</option>
                 <option>Art</option>
               </select>
+              <label htmlFor="privateCheck" className="self-center">
+                Private:
+              </label>
+              <input
+                id="privateCheck"
+                type="checkbox"
+                className="toggle toggle-warning self-center"
+                checked={priv}
+                onChange={() => {
+                  setPriv(!priv);
+                }}
+              />
               <div className="modal-action flex">
                 <form method="dialog" className="flex justify-center w-full">
                   {/* if there is a button in form, it will close the modal */}
@@ -174,7 +200,10 @@ const Navbars = ({
             </div>
           </dialog>
         </div>
-        <Link to="/stats" className="btn btn-ghost text-lg text-white">
+        <Link to="/community" className="btn btn-ghost text-base text-white">
+          Community
+        </Link>
+        <Link to="/stats" className="btn btn-ghost text-base text-white">
           Stats
         </Link>
         <div className="flex-2 mr-2">
@@ -194,15 +223,25 @@ const Navbars = ({
 
   const handleCardAccept = () => {
     //set up axios call to add deck to backend
-
+    const idIncrement = {
+      userId: user?.id.toString(),
+    };
     const newTerm = {
       term: flashcardTerm,
       definition: flashcardDef,
+      userId: user?.id.toString(),
     };
     setFlashCards([...flashCards, newTerm]);
     axios.post(`/addCard/${deckNum}`, newTerm).catch((err) => console.log(err));
+    axios.post(`/incrementCard`, idIncrement).catch((err) => console.log(err));
     setFlashcardDef("");
     setFlashcardTerm("");
+  };
+
+  const handleTest = () => {
+    axios
+      .post("/incrementTests", { userId: user?.id.toString() })
+      .catch((err) => console.log(err));
   };
 
   if (page == "flashcards") {
@@ -226,28 +265,13 @@ const Navbars = ({
             <FaPlus />
             Add
           </button>
-          <div className="dropdown text-white">
-            <label tabIndex={0} className="btn btn-ghost">
-              Practice
-            </label>
-            <ul
-              tabIndex={0}
-              className="dropdown-content z-[1] menu p-2 shadow glass rounded-box w-52 bg-neutral"
-            >
-              <li>
-                <Link to="flashcard-practice">Flashcards</Link>
-              </li>
-              <li>
-                <Link to="test">Test</Link>
-              </li>
-            </ul>
-          </div>
           <dialog id="my_modal_1" className="modal">
             <div className="modal-box flex flex-col bg-neutral">
               <h3 className="font-bold text-lg self-center">
                 Add New Flashcard
               </h3>
               <input
+                required={true}
                 value={flashcardTerm}
                 type="text"
                 placeholder="Flashcard Term"
@@ -255,6 +279,7 @@ const Navbars = ({
                 onChange={handleCardTerm}
               />
               <textarea
+                required={true}
                 value={flashcardDef}
                 placeholder="Flashcard Definition"
                 className="textarea textarea-primary w-full max-w-xs self-center my-2"
@@ -280,7 +305,28 @@ const Navbars = ({
             </div>
           </dialog>
         </div>
-        <Link to="/stats" className="btn btn-ghost text-lg text-white">
+        <div className="dropdown text-white">
+          <label tabIndex={0} className="btn btn-ghost text-base">
+            Practice
+          </label>
+          <ul
+            tabIndex={0}
+            className="dropdown-content z-[1] menu p-2 shadow glass rounded-box w-52 bg-neutral"
+          >
+            <li>
+              <Link to="flashcard-practice">Flashcards</Link>
+            </li>
+            <li>
+              <Link to="test" onClick={handleTest}>
+                Test
+              </Link>
+            </li>
+          </ul>
+        </div>
+        <Link to="/community" className="btn btn-ghost text-base text-white">
+          Community
+        </Link>
+        <Link to="/stats" className="btn btn-ghost text-base text-white">
           Stats
         </Link>
         <div className="flex-2 mr-2">
@@ -304,7 +350,31 @@ const Navbars = ({
             <FaCaretLeft></FaCaretLeft>Back
           </button>
         </div>
-        <Link to="/stats" className="btn btn-ghost text-lg text-white">
+        <Link to="/stats" className="btn btn-ghost text-base text-white">
+          Stats
+        </Link>
+        <div className="flex-none mr-2">
+          <UserButton />
+        </div>
+      </div>
+    );
+  }
+
+  if (page == "community") {
+    return (
+      <div className="navbar glass top-0 fixed z-50 bg-neutral">
+        <div className="flex-1">
+          <Link to="/" className="btn btn-ghost text-lg text-white">
+            Quizify
+          </Link>
+          <Link to="/" className="btn btn-ghost text-md text-white">
+            <FaCaretLeft></FaCaretLeft>Back
+          </Link>
+        </div>
+        <Link to="/flashcards" className="btn btn-ghost text-base text-white">
+          Flashcards
+        </Link>
+        <Link to="/stats" className="btn btn-ghost text-base text-white">
           Stats
         </Link>
         <div className="flex-none mr-2">

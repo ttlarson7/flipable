@@ -6,10 +6,12 @@ import Navbars from "../components/Navbars";
 import Footer from "../components/Footer";
 import { FlashcardContext } from "../App";
 import Flashcard from "../components/Flashcard";
+import Invalid from "./Invalid";
 
 const FlashcardDeck = () => {
   const { flashCards, setFlashCards } = useContext(FlashcardContext);
   const [loading, setLoading] = useState(true);
+  const [invalid, setInvalid] = useState(false);
   let ran = false;
   const user = useUser().user;
   const user_id = user?.id.toString();
@@ -21,9 +23,9 @@ const FlashcardDeck = () => {
       ran = true;
       setLoading(true);
       axios
-        .get(`/get_flashcards/${deckNum}`, {
+        .get(`/getFlashcards/${deckNum}`, {
           params: {
-            user_id: user_id,
+            userId: user_id,
           },
         })
         .then((res) => {
@@ -33,29 +35,33 @@ const FlashcardDeck = () => {
         .catch((err) => {
           console.log(err);
           setLoading(false);
+          setInvalid(true);
         });
     }
   }, []);
 
   const handleDeleteFlashcard = (index) => {
-    // axios
-    //   .delete("/deleteCard", {
-    //     params: {
-    //       deckNum: deckNum,
-    //       i: index,
-    //     },
-    //   })
-    //   .then(() => {
-
-    //   })
-    //   .catch((err) => console.log(err));
-    console.log(index)
-    setFlashCards((prevFlashCards) =>
-      prevFlashCards.filter((_, ind) => ind !== index)
-    );
+    axios
+      .delete("/deleteCard", {
+        params: {
+          deckNum: deckNum,
+          i: index,
+          userId: user?.id.toString(),
+        },
+      })
+      .then(() => {
+        setFlashCards((prevFlashCards) =>
+          prevFlashCards.filter((_, i) => i !== index)
+        );
+      })
+      .catch((err) => console.log(err));
   };
 
   // if no cards, output empty cards
+  if (invalid) {
+    return <Invalid />;
+  }
+
   if (loading) {
     return (
       <div className="bg-neutral">
@@ -108,9 +114,10 @@ const FlashcardDeck = () => {
           {flashCards.map((card, i) => (
             <Flashcard
               key={i}
+              i={i}
               term={card.term}
               definition={card.definition}
-              setFlashCards={() => handleDeleteFlashcard(i)}
+              onDelete={handleDeleteFlashcard}
             />
           ))}
         </ul>
