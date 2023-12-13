@@ -45,7 +45,11 @@ const FlashcardDecks = () => {
       })
       .then(() => {
         setFlashcardDecks((prevFlashCards) =>
+
+          prevFlashCards.filter((_, i) => i !== index)
+
           prevFlashCards.filter((_, i) => i !== parseInt(index))
+
         );
       })
       .catch((err) => console.log(err));
@@ -109,6 +113,7 @@ const FlashcardDecks = () => {
               desc={deck.description}
               category={deck.category}
               onDelete={handleDeleteDecks}
+              deckPrivate={deck.private}
             />
           ))}
         </ul>

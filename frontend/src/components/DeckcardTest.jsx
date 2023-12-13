@@ -1,6 +1,6 @@
 import { CiCircleCheck, CiCircleRemove } from "react-icons/ci";
 
-const DeckcardTest = ({ term, correct, index, setAnswers, answers, domEleID, realDefs }) => {
+const DeckcardTest = ({ term, setCorrect, correct, index, setAnswers, answers, domEleID, realDefs, setNumCorrect, numCorrect }) => {
   const handleAnswer = (e) => {
     setAnswers(() => {
       const newAnswers = [...answers];
@@ -8,6 +8,20 @@ const DeckcardTest = ({ term, correct, index, setAnswers, answers, domEleID, rea
       return newAnswers;
     });
   };
+  const changeCorrect = () => {
+    setNumCorrect(() => {
+      if (correct[index] === 1) {
+        return numCorrect - 1;
+      } else {
+        return numCorrect + 1;
+      }
+    });
+    setCorrect(() => {
+      const newCorrect = [...correct];
+      newCorrect[index] = (newCorrect[index] + 1) % 2
+      return newCorrect;
+  })
+}
   if (correct[index] === -1) {
     return (
       <div className="card w-96 bg-base-100 shadow-xl" id = {`${domEleID}`} >
@@ -42,6 +56,7 @@ const DeckcardTest = ({ term, correct, index, setAnswers, answers, domEleID, rea
             <div className="card-actions justify-end border-success">
               <p>Flashcard Term: {realDefs[index].definition}</p>
             </div>
+            <button className="btn btn-warning max-w-min max-h-min" onClick = {changeCorrect}>Mark Correct</button>
           </div>
         </div>
       </div>
@@ -63,7 +78,9 @@ const DeckcardTest = ({ term, correct, index, setAnswers, answers, domEleID, rea
             <div className="card-actions justify-end border-success">
               <p>Flashcard Term: {realDefs[index].definition}</p>
             </div>
+            <button className="btn btn-warning max-w-min" onClick = {changeCorrect}>Mark Wrong</button>
           </div>
+          
         </div>
       </div>
     );

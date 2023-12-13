@@ -4,12 +4,31 @@ import { PiExamThin, PiCardsFill } from "react-icons/pi";
 import { useUser } from "@clerk/clerk-react";
 import Navbars from "../components/Navbars";
 import Footer from "../components/Footer";
-import Loading from "../components/Loading";
+// import Loading from "../components/Loading";
+import axios from "axios";
 
 function Stats() {
   const { user } = useUser();
   const username = user.fullName;
   const userImg = user.imageUrl;
+  const [deckCount, setDeckCount] = useState(0);
+  const [testCount, setTestCount] = useState(0);
+  const [cardCount, setCardCount] = useState(0);
+
+  useEffect(() => {
+    axios
+      .get("/getUser", {
+        params: {
+          userId: user.id.toString(),
+        },
+      })
+      .then((res) => {
+        setDeckCount(res.data.decksCreated);
+        setTestCount(res.data.testsTaken);
+        setCardCount(res.data.cardsCreated);
+      })
+      .catch((err) => console.log(err));
+  }, []);
 
   // add useEffects for getting and updating user stats from the DB
 
@@ -18,7 +37,6 @@ function Stats() {
   return (
     <div>
       <Navbars page={"profile"}></Navbars>
-      <div className="mt-16"></div>
       <div className="hero min-h-screen">
         <div className="hero-content flex-col lg:flex-row-reverse">
           <div className="stats stats-vertical shadow">
@@ -26,8 +44,8 @@ function Stats() {
               <div className="stat-figure text-primary text-6xl">
                 <PiExamThin />
               </div>
-              <div className="stat-title">Total Test Taken</div>
-              <div className="stat-value text-primary">25</div>
+              <div className="stat-title">Total Tests Taken</div>
+              <div className="stat-value text-primary">{testCount}</div>
             </div>
 
             <div className="stat">
@@ -35,7 +53,7 @@ function Stats() {
                 <PiCardsFill />
               </div>
               <div className="stat-title">Flashcards Created</div>
-              <div className="stat-value text-secondary">37</div>
+              <div className="stat-value text-secondary">{cardCount}</div>
             </div>
 
             <div className="stat">
@@ -46,7 +64,7 @@ function Stats() {
                   </div>
                 </div>
               </div>
-              <div className="stat-value">5</div>
+              <div className="stat-value">{deckCount}</div>
               <div className="stat-title">Decks Created</div>
             </div>
           </div>{" "}

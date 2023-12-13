@@ -49,7 +49,19 @@ export default defineConfig({
       "/deleteDecks": {
         target: "http://localhost:3001",
         changeOrigin: true
-      }
+      },
+      "/getUser": {
+        target: "http://localhost:3001",
+        changeOrigin: true
+      },
+      "/getCommunityDecks": {
+        target: "http://localhost:3001",
+        changeOrigin: true
+      },
+      "/updatePrivate": {
+        target: "http://localhost:3001",
+        changeOrigin: true
+      },
     },
   },
   define: {

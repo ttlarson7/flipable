@@ -7,6 +7,7 @@ import DeckcardTest from "../components/DeckcardTest";
 import TestNumbers from "../components/TestNumbers";
 import Loading from "../components/Loading";
 import axios from "axios";
+import { set } from "lodash";
 
 
 const Decktest = () => {
@@ -27,6 +28,7 @@ const Decktest = () => {
   const [qUpdate, setQUpdate] = useState(false);
   const [modalClosed, setModalClose] = useState(false);
   const [renderedQs, setRenderedQs] = useState(false);
+  const [numCorrect, setNumCorrect] = useState(0);
 
 
   const handleAccept = (e) => {
@@ -73,7 +75,8 @@ const Decktest = () => {
       setCorrect(response.data.slice(0, response.data.length - 1));
       setGradingNow(false);
       setGraded(true);
-
+      setNumCorrect(response.data[response.data.length - 1]);
+      
     }catch (err) {
       console.log(err);
       
@@ -81,8 +84,27 @@ const Decktest = () => {
     
   }
 
-
-  if (gradingNow) {
+  if (randomFlash.length === 0) {
+    return (
+      <>
+        <Navbars
+          page="test"
+        ></Navbars>
+        <div className="hero min-h-screen bg-neutral">
+          <div className="hero-content text-center">
+            <div className="max-w-md">
+              <h1 className="text-5xl font-bold">No Cards?</h1>
+              <p className="py-6 text-4xl">
+                Go back to the <b>flashcard page</b> and add some!!
+              </p>
+            </div>
+          </div>
+        </div>
+        <Footer></Footer>
+      </>
+    );
+  }
+  else if (gradingNow) {
     return (
       <div className="bg-neutral">
         <Navbars page="test"></Navbars>
@@ -119,9 +141,9 @@ const Decktest = () => {
             Quizify
           </span>!</h1>
           {graded && (
-            <div className = " text-xl">
-              <p>{correct[-1]}/{numQ}</p>
-              </div>
+            <div className="radial-progress" style={{ "--value": Math.floor((numCorrect / correct.length) * 100) }} role="progressbar">
+            {Math.floor((numCorrect / correct.length) * 100)}%
+          </div>
           )}
           <div className="flex flex-nowrap overflow-x-auto" style={{ maxWidth: "50%" }}>
             {realDef.map((card, i) => (
@@ -140,11 +162,14 @@ const Decktest = () => {
                   key={i}
                   index={i}
                   term={card.term}
+                  setCorrect={setCorrect}
                   correct={correct}
                   answers={answers}
                   setAnswers={setAnswers}
                   domEleID={`element${i}`}
                   realDefs={realDef}
+                  setNumCorrect={setNumCorrect}
+                  numCorrect={numCorrect}
                 />
               ))}
             
