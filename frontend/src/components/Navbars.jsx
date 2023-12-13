@@ -264,24 +264,6 @@ const Navbars = ({
             <FaPlus />
             Add
           </button>
-          <div className="dropdown text-white">
-            <label tabIndex={0} className="btn btn-ghost">
-              Practice
-            </label>
-            <ul
-              tabIndex={0}
-              className="dropdown-content z-[1] menu p-2 shadow glass rounded-box w-52 bg-neutral"
-            >
-              <li>
-                <Link to="flashcard-practice">Flashcards</Link>
-              </li>
-              <li>
-                <Link to="test" onClick={handleTest}>
-                  Test
-                </Link>
-              </li>
-            </ul>
-          </div>
           <dialog id="my_modal_1" className="modal">
             <div className="modal-box flex flex-col bg-neutral">
               <h3 className="font-bold text-lg self-center">
@@ -321,6 +303,24 @@ const Navbars = ({
               </div>
             </div>
           </dialog>
+        </div>
+        <div className="dropdown text-white">
+          <label tabIndex={0} className="btn btn-ghost text-base">
+            Practice
+          </label>
+          <ul
+            tabIndex={0}
+            className="dropdown-content z-[1] menu p-2 shadow glass rounded-box w-52 bg-neutral"
+          >
+            <li>
+              <Link to="flashcard-practice">Flashcards</Link>
+            </li>
+            <li>
+              <Link to="test" onClick={handleTest}>
+                Test
+              </Link>
+            </li>
+          </ul>
         </div>
         <Link to="/community" className="btn btn-ghost text-base text-white">
           Community
@@ -366,13 +366,13 @@ const Navbars = ({
           <Link to="/" className="btn btn-ghost text-lg text-white">
             Quizify
           </Link>
-          <button
-            onClick={() => navigate(-1)}
-            className="btn btn-ghost text-md text-white"
-          >
+          <Link to="/" className="btn btn-ghost text-md text-white">
             <FaCaretLeft></FaCaretLeft>Back
-          </button>
+          </Link>
         </div>
+        <Link to="/flashcards" className="btn btn-ghost text-base text-white">
+          Flashcards
+        </Link>
         <Link to="/stats" className="btn btn-ghost text-base text-white">
           Stats
         </Link>
