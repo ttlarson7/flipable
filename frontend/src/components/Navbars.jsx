@@ -105,7 +105,8 @@ const Navbars = ({
 
     setDeckDesc("");
     setDeckName("");
-    setDeckCategory("");
+    setDeckCategory("math");
+    setPriv(false);
   };
 
   if (page == "decks") {
