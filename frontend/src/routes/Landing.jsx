@@ -22,8 +22,9 @@ const Landing = () => {
   return (
     <motion.div
       initial="hidden"
-      animate="visible"
+      animate={{ opacity: 1, x: 0 }}
       variants={slideInFromLeft}
+      transition={{ duration: 1, ease: "easeOut", delay: 0.35 }}
       className="flex flex-col items-center bg-neutral"
     >
       <Navbars page={"landing"}></Navbars>

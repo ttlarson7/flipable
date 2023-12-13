@@ -1,5 +1,6 @@
-const Flashcard = ({ term, definition, onDelete, i }) => {
+import { FaTrashAlt } from "react-icons/fa";
 
+const Flashcard = ({ term, definition, onDelete, i }) => {
   return (
     <li className="flex justify-center items-center">
       <label className="swap swap-flip text-9xl ">
@@ -12,17 +13,10 @@ const Flashcard = ({ term, definition, onDelete, i }) => {
           </div>
           <div className="flex justify-center">
             <button
-              className="m-2 p-2 py-4 btn btn-neutral rounded"
-              onClick={() => console.log("Edit clicked")}
-            >
-              Edit
-            </button>
-
-            <button
-              className="btn btn-error rounded m-2 p-2"
+              className="btn btn-error rounded m-2 p-4"
               onClick={() => onDelete(i)}
             >
-              Delete
+              <FaTrashAlt/>
             </button>
           </div>
         </div>

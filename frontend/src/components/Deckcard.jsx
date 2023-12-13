@@ -3,6 +3,7 @@ import { useState } from "react";
 import axios from "axios";
 import { useUser } from "@clerk/clerk-react";
 import { motion } from "framer-motion";
+import { FaTrashAlt } from "react-icons/fa";
 
 const Deckcard = ({ i, title, desc, category, onDelete, deckPrivate }) => {
   const { user } = useUser();
@@ -65,10 +66,10 @@ const Deckcard = ({ i, title, desc, category, onDelete, deckPrivate }) => {
         </Link>
         <div className="flex justify-center">
           <button
-            className="btn btn-error rounded m-2 p-2"
+            className="btn btn-error rounded m-2 p-4"
             onClick={() => onDelete(i)}
           >
-            Delete
+            <FaTrashAlt />
           </button>
           <div className="form-control self-center ml-6">
             <span className="label-text self-center">Private:</span>
