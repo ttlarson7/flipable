@@ -44,7 +44,7 @@ function Stats() {
               <div className="stat-figure text-primary text-6xl">
                 <PiExamThin />
               </div>
-              <div className="stat-title">Total Test Taken</div>
+              <div className="stat-title">Total Tests Taken</div>
               <div className="stat-value text-primary">{testCount}</div>
             </div>
 
