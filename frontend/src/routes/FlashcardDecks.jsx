@@ -1,6 +1,5 @@
 import { useContext, useEffect, useState } from "react";
 import { useUser } from "@clerk/clerk-react";
-import { useParams } from "react-router-dom"
 import axios from "axios";
 import { FlashcardContext } from "../App";
 import Footer from "../components/Footer";
@@ -11,7 +10,6 @@ const FlashcardDecks = () => {
   const [loading, setLoading] = useState(true);
   const user = useUser().user;
   const user_id = user?.id.toString();
-  const { deckNum } = useParams();
 
   const { flashDecks, setFlashcardDecks } = useContext(FlashcardContext);
 
@@ -35,7 +33,7 @@ const FlashcardDecks = () => {
           setLoading(false);
         });
     }
-  }, []);
+  }, [setFlashcardDecks]);
 
   const handleDeleteDecks = (index) => {
     axios
@@ -47,7 +45,11 @@ const FlashcardDecks = () => {
       })
       .then(() => {
         setFlashcardDecks((prevFlashCards) =>
+
           prevFlashCards.filter((_, i) => i !== index)
+
+          prevFlashCards.filter((_, i) => i !== parseInt(index))
+
         );
       })
       .catch((err) => console.log(err));
@@ -111,6 +113,7 @@ const FlashcardDecks = () => {
               desc={deck.description}
               category={deck.category}
               onDelete={handleDeleteDecks}
+              deckPrivate={deck.private}
             />
           ))}
         </ul>

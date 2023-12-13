@@ -8,16 +8,20 @@ const openai = new OpenAI(process.env.OPENAI_API_KEY);
 async function grade(def1, def2, word) {
   const completion = await openai.chat.completions.create({
     messages: [
-      { role: "system", content: "You are a helpful assistant." }, //sets up the prompt
+      {
+        role: "system",
+        content:
+          "You are a helpful assistant who evaluates the similarity between two definitions.",
+      }, // Prompt introduction
       {
         role: "user",
-        content: `I'm giving you two definitions of the word ${word}`,
+        content: `I'm presenting two definitions for the term "${word}".`,
       },
-      { role: "assistant", content: `${def1}` },
-      { role: "assistant", content: `${def2}` },
+      { role: "assistant", content: `Definition 1: ${def1}` },
+      { role: "assistant", content: `Definition 2: ${def2}` },
       {
         role: "user",
-        content: "Are these definitions similar, respond with yes or no.",
+        content: `Compare the semantic similarity between two input definitions and output 'yes' if they convey similar meanings, even with potential syntactic differences, and 'no' if their meanings significantly differ. Focus on capturing the essence of their definitions rather than strict syntactical matching.`,
       },
     ],
     model: "gpt-3.5-turbo",
@@ -45,9 +49,11 @@ async function gradeTest(realDefs, testDefs) {
   let score = 0;
   let finalScore = []; //holds all questions correctness 0 - wrong | 1 - right
   for (let i = 0; i < realDefs.length; i++) {
-    console.log(realDefs[i].definition, testDefs[i]);
-    let correct = await grade(realDefs[i].definition, testDefs[i], realDefs[i].term);
-    console.log(correct);
+    let correct = await grade(
+      realDefs[i].definition,
+      testDefs[i],
+      realDefs[i].term
+    );
     if (correct) {
       finalScore.push(1);
       score++;
@@ -62,4 +68,4 @@ async function gradeTest(realDefs, testDefs) {
 // var score =  await gradeTest(realDefs, testDefs, terms);
 // console.log(score)
 
-export default { gradeTest }
+export default { gradeTest };

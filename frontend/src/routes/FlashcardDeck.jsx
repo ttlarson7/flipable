@@ -6,10 +6,12 @@ import Navbars from "../components/Navbars";
 import Footer from "../components/Footer";
 import { FlashcardContext } from "../App";
 import Flashcard from "../components/Flashcard";
+import Invalid from "./Invalid";
 
 const FlashcardDeck = () => {
   const { flashCards, setFlashCards } = useContext(FlashcardContext);
   const [loading, setLoading] = useState(true);
+  const [invalid, setInvalid] = useState(false);
   let ran = false;
   const user = useUser().user;
   const user_id = user?.id.toString();
@@ -33,6 +35,7 @@ const FlashcardDeck = () => {
         .catch((err) => {
           console.log(err);
           setLoading(false);
+          setInvalid(true);
         });
     }
   }, []);
@@ -43,7 +46,7 @@ const FlashcardDeck = () => {
         params: {
           deckNum: deckNum,
           i: index,
-          userId: user?.id.toString()
+          userId: user?.id.toString(),
         },
       })
       .then(() => {
@@ -52,10 +55,13 @@ const FlashcardDeck = () => {
         );
       })
       .catch((err) => console.log(err));
-    console.log(index)
   };
 
   // if no cards, output empty cards
+  if (invalid) {
+    return <Invalid />;
+  }
+
   if (loading) {
     return (
       <div className="bg-neutral">
